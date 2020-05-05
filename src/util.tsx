@@ -93,6 +93,8 @@ export function getScreenValue<S>(
   if (typeof val !== 'object') {
     return val
   }
+
+  // track down to next smallest set
   const screenMap: ScreenProps<S> = val
   let index = keys.indexOf(currentScreen)
   while (index >= 0) {
@@ -101,6 +103,16 @@ export function getScreenValue<S>(
     }
     index -= 1
   }
+
+  // else track up to next largest set
+  index = keys.indexOf(currentScreen)
+  while (index < keys.length) {
+    if (screenMap[keys[index]] !== undefined) {
+      return screenMap[keys[index]] as S
+    }
+    index += 1
+  }
+
   throw Error('Config not valid')
 }
 
