@@ -6,77 +6,77 @@ const presets = {
       clipped: false,
       collapsible: {
         xs: false,
-        sm: true
+        sm: true,
       },
       collapsedWidth: 64,
       footerShrink: true,
       navAnchor: 'left',
       navVariant: {
         xs: 'temporary',
-        sm: 'permanent'
+        sm: 'permanent',
       },
       navWidth: 256,
       headerPosition: 'relative',
-      squeezed: true
+      squeezed: true,
     }
   },
   createFixedLayout: (config: LayoutConfig): LayoutConfig => ({
     ...presets.createDefaultLayout(),
     navVariant: {
       xs: 'temporary',
-      md: 'permanent'
+      md: 'permanent',
     },
     collapsible: {
       xs: false,
-      md: true
+      md: true,
     },
     clipped: true,
     squeezed: true,
     headerPosition: 'sticky',
-    ...config
+    ...config,
   }),
   createContentBasedLayout: (config: LayoutConfig): LayoutConfig => ({
     ...presets.createDefaultLayout(),
     navWidth: {
       sm: 200,
-      md: 256
+      md: 256,
     },
     navVariant: {
       xs: 'temporary',
-      sm: 'persistent'
+      sm: 'persistent',
     },
     collapsible: false,
-    ...config
+    ...config,
   }),
   createCozyLayout: (config: LayoutConfig): LayoutConfig => ({
     ...presets.createDefaultLayout(),
     navVariant: {
       xs: 'persistent',
-      sm: 'permanent'
+      sm: 'permanent',
     },
     navWidth: {
       sm: 200,
       md: 256,
-      xs: 64
+      xs: 64,
     },
     collapsible: {
       xs: false,
-      sm: true
+      sm: true,
     },
     clipped: false,
-    ...config
+    ...config,
   }),
   createMuiTreasuryLayout: (config: LayoutConfig): LayoutConfig => ({
     ...presets.createDefaultLayout(),
     navWidth: 200,
     navVariant: {
       xs: 'temporary',
-      md: 'permanent'
+      md: 'permanent',
     },
     clipped: true,
     collapsible: false,
-    ...config
-  })
+    ...config,
+  }),
 }
 
 const keys: Array<Breakpoint> = ['xs', 'sm', 'md', 'lg', 'xl']

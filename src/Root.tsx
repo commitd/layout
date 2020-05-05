@@ -5,7 +5,7 @@ import React, {
   createContext,
   HTMLAttributes,
   ReactNode,
-  ElementType
+  ElementType,
 } from 'react'
 import presets, { getScreenValue } from './util'
 import { makeStyles, CssBaseline } from '@material-ui/core'
@@ -35,7 +35,7 @@ function defaultContext(): Layout {
     squeezed: true,
     screen: 'xl',
     setCollapsed: () => null,
-    setOpen: () => null
+    setOpen: () => null,
   }
 }
 
@@ -45,8 +45,8 @@ export const LayoutContext = createContext(defaultContext())
 const useStyles = makeStyles({
   root: {
     display: 'flex',
-    flexDirection: 'column'
-  }
+    flexDirection: 'column',
+  },
 })
 
 const createNewContext = (
@@ -66,7 +66,7 @@ const createNewContext = (
     navAnchor,
     headerPosition,
     squeezed,
-    footerShrink
+    footerShrink,
   } = config
 
   return {
@@ -98,7 +98,7 @@ const createNewContext = (
     setOpen: (val: boolean | object) =>
       setOpen(typeof val === 'object' ? !open : val),
     setCollapsed: (val: boolean | object) =>
-      setCollapsed(typeof val === 'object' ? !collapsed : val)
+      setCollapsed(typeof val === 'object' ? !collapsed : val),
   }
 }
 

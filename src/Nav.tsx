@@ -4,7 +4,7 @@ import React, {
   ReactNode,
   ElementType,
   HTMLAttributes,
-  Fragment
+  Fragment,
 } from 'react'
 import {
   Grow,
@@ -12,7 +12,7 @@ import {
   Button,
   IconButton,
   Theme,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core'
 import { LayoutContext } from './Root'
 
@@ -26,12 +26,12 @@ const useStyles = makeStyles<Theme>(
       flexDirection: 'column',
       transition: transitions.create(['width'], {
         easing: transitions.easing.sharp,
-        duration: transitions.duration.leavingScreen
-      })
+        duration: transitions.duration.leavingScreen,
+      }),
     },
     content: {
       flexGrow: 1,
-      overflow: 'auto'
+      overflow: 'auto',
     },
     collapseButton: {
       backgroundColor: palette.grey[50],
@@ -40,8 +40,8 @@ const useStyles = makeStyles<Theme>(
       borderTop: '1px solid',
       borderColor: 'rgba(0,0,0,0.12)',
       [breakpoints.up('sm')]: {
-        minHeight: 40
-      }
+        minHeight: 40,
+      },
     },
     closeButton: {
       position: 'absolute',
@@ -50,12 +50,12 @@ const useStyles = makeStyles<Theme>(
       background: palette.common.white,
       boxShadow: shadows[2],
       '@media (hover: none)': {
-        backgroundColor: palette.grey[300]
+        backgroundColor: palette.grey[300],
       },
       '&:hover': {
-        backgroundColor: '#e5e5e5'
-      }
-    }
+        backgroundColor: '#e5e5e5',
+      },
+    },
   })
 )
 
@@ -90,7 +90,7 @@ const Nav = ({
     collapsedWidth,
     collapsible,
     collapsed,
-    setCollapsed
+    setCollapsed,
   } = ctx
   const getWidth = () => {
     if (collapsible && collapsed) return collapsedWidth

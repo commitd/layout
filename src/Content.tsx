@@ -2,7 +2,7 @@ import React, {
   useContext,
   ReactNode,
   ElementType,
-  HTMLAttributes
+  HTMLAttributes,
 } from 'react'
 import { Theme, makeStyles } from '@material-ui/core'
 import { LayoutContext } from './Root'
@@ -12,9 +12,9 @@ const useStyles = makeStyles<Theme>(({ transitions }) => ({
     flexGrow: 1,
     transition: transitions.create(['margin'], {
       easing: transitions.easing.sharp,
-      duration: transitions.duration.leavingScreen
-    })
-  }
+      duration: transitions.duration.leavingScreen,
+    }),
+  },
 }))
 
 export interface ContentProps {
@@ -40,7 +40,7 @@ const Content = ({
     collapsedWidth,
     open,
     navAnchor,
-    squeezed
+    squeezed,
   } = ctx
   const getMargin = () => {
     if (navAnchor !== 'left') return 0
@@ -78,7 +78,7 @@ const Content = ({
       style={{
         ...style,
         marginLeft: getMargin(),
-        width: getWidth()
+        width: getWidth(),
       }}
     />
   )

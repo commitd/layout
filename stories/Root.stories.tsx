@@ -9,7 +9,7 @@ import {
   Container,
   makeStyles,
   Theme,
-  List
+  List,
 } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { withKnobs, boolean, number, select } from '@storybook/addon-knobs'
@@ -21,29 +21,29 @@ import Menu from '@material-ui/icons/Menu'
 
 export default {
   title: 'Root',
-  decorators: [withKnobs]
+  decorators: [withKnobs],
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
-    background: theme.palette.background.default
+    background: theme.palette.background.default,
   },
   menuItemText: {
     display: 'inline-block',
     overflow: 'hidden',
-    whiteSpace: 'nowrap'
-  }
+    whiteSpace: 'nowrap',
+  },
 }))
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
     max: 8,
-    min: 4
+    min: 4,
   },
   wordsPerSentence: {
     max: 32,
-    min: 8
-  }
+    min: 8,
+  },
 })
 
 export const Default = () => {
@@ -55,7 +55,7 @@ export const Default = () => {
           range: true,
           min: 0,
           max: 512,
-          step: 1
+          step: 1,
         }),
         collapsible: boolean('collapsible', true),
         footerShrink: boolean('footerShrink', true),
@@ -66,7 +66,7 @@ export const Default = () => {
             relative: 'relative',
             sticky: 'sticky',
             fixed: 'fixed',
-            absolute: 'absolute'
+            absolute: 'absolute',
           },
           'relative'
         ) as Position,
@@ -74,7 +74,7 @@ export const Default = () => {
           'navAnchor',
           {
             left: 'left',
-            right: 'right'
+            right: 'right',
           },
           'left'
         ) as Orientation,
@@ -83,7 +83,7 @@ export const Default = () => {
           {
             permanent: 'permanent',
             temporary: 'temporary',
-            persistent: 'persistent'
+            persistent: 'persistent',
           },
           'permanent'
         ) as Variant,
@@ -91,9 +91,9 @@ export const Default = () => {
           range: true,
           min: 0,
           max: 512,
-          step: 1
+          step: 1,
         }),
-        squeezed: false
+        squeezed: false,
       }}
       content={
         <Typography variant="body1">
@@ -112,20 +112,20 @@ export const Breakpointed = () => {
           xs: 'temporary',
           sm: 'temporary',
           lg: 'permanent',
-          xl: 'permanent'
+          xl: 'permanent',
         },
         navWidth: {
           xs: 256,
           sm: 512,
           lg: 256,
-          xl: 356
+          xl: 356,
         },
         collapsible: {
           xs: false,
           sm: false,
           lg: true,
-          xl: true
-        }
+          xl: true,
+        },
       }}
       content={
         <Typography variant="body1">
@@ -139,7 +139,7 @@ export const Breakpointed = () => {
 
 const Example: FC<{ config: Partial<LayoutConfig>; content: ReactNode }> = ({
   config,
-  content
+  content,
 }) => {
   const classes = useStyles()
   return (
@@ -158,7 +158,7 @@ const Example: FC<{ config: Partial<LayoutConfig>; content: ReactNode }> = ({
           header={
             // you can provide fixed header inside nav
             // change null to some react element
-            ctx => null
+            (ctx) => null
           }
         >
           <List>
@@ -175,7 +175,7 @@ const Example: FC<{ config: Partial<LayoutConfig>; content: ReactNode }> = ({
               </Box>
               {content}
               <Box mt={3}>
-                {new Array(20).fill(null).map(i => (
+                {new Array(20).fill(null).map((i) => (
                   <Box mb={1}>
                     <Typography variant="body2" color="textSecondary">
                       {lorem.generateParagraphs(1)}

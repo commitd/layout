@@ -8,7 +8,7 @@ import {
   NavListItem,
   Content,
   Footer,
-  LayoutConfig
+  LayoutConfig,
 } from '../.'
 import {
   ThemeProvider,
@@ -19,7 +19,7 @@ import {
   List,
   Container,
   makeStyles,
-  Theme
+  Theme,
 } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { LoremIpsum } from 'lorem-ipsum'
@@ -30,23 +30,23 @@ import Menu from '@material-ui/icons/Menu'
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
     max: 8,
-    min: 4
+    min: 4,
   },
   wordsPerSentence: {
     max: 32,
-    min: 8
-  }
+    min: 8,
+  },
 })
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
-    background: theme.palette.background.default
+    background: theme.palette.background.default,
   },
   menuItemText: {
     display: 'inline-block',
     overflow: 'hidden',
-    whiteSpace: 'nowrap'
-  }
+    whiteSpace: 'nowrap',
+  },
 }))
 
 const config: Partial<LayoutConfig> = {
@@ -54,8 +54,8 @@ const config: Partial<LayoutConfig> = {
     xs: 'temporary',
     sm: 'temporary',
     lg: 'permanent',
-    xl: 'permanent'
-  }
+    xl: 'permanent',
+  },
 }
 
 const theme = createMuiTheme()
@@ -76,7 +76,7 @@ const App = () => {
           header={
             // you can provide fixed header inside nav
             // change null to some react element
-            ctx => null
+            (ctx) => null
           }
           chevronLeftIcon={<ChevronLeft />}
           chevronRightIcon={<ChevronRight />}
@@ -94,7 +94,7 @@ const App = () => {
                 <Typography variant="h4">@committed/layout</Typography>
               </Box>
               <Box mt={3}>
-                {new Array(20).fill(null).map(i => (
+                {new Array(20).fill(null).map((i) => (
                   <Box mb={1}>
                     <Typography variant="body2" color="textSecondary">
                       {lorem.generateParagraphs(1)}

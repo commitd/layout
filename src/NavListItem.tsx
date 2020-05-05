@@ -3,7 +3,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core'
 import { LayoutContext } from './Root'
 
@@ -19,8 +19,8 @@ const useStyles = makeStyles({
   menuItemText: {
     display: 'inline-block',
     overflow: 'hidden',
-    whiteSpace: 'nowrap'
-  }
+    whiteSpace: 'nowrap',
+  },
 })
 
 const NavListItem: React.FC<NavListItemProps> = ({
@@ -36,7 +36,7 @@ const NavListItem: React.FC<NavListItemProps> = ({
   return (
     <ListItem
       button
-      onClick={e => {
+      onClick={(e) => {
         setOpen(false)
         if (onClick != null) {
           onClick(e)

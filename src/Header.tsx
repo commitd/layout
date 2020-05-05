@@ -6,7 +6,7 @@ import {
   IconButton,
   Theme,
   makeStyles,
-  useTheme
+  useTheme,
 } from '@material-ui/core'
 import { LayoutContext } from './Root'
 import { Layout, Position } from './types'
@@ -27,13 +27,13 @@ const useStyles = makeStyles<Theme>(({ transitions }) => ({
   root: {
     transition: transitions.create(['margin', 'width'], {
       easing: transitions.easing.sharp,
-      duration: transitions.duration.leavingScreen
-    })
+      duration: transitions.duration.leavingScreen,
+    }),
   },
   menuButton: {
     marginLeft: -8,
-    marginRight: 8
-  }
+    marginRight: 8,
+  },
 }))
 
 const createGet = (
@@ -44,7 +44,7 @@ const createGet = (
     collapsed,
     open,
     squeezed,
-    navAnchor
+    navAnchor,
   }: Layout,
   normal: string | number,
   shrink: string | number,
@@ -79,7 +79,7 @@ const Header = ({
   color = 'primary',
   children,
   toolbarProps = {},
-  menuButtonProps = {}
+  menuButtonProps = {},
 }: HeaderProps) => {
   const theme = useTheme<Theme>()
   const classes = useStyles()
@@ -91,7 +91,7 @@ const Header = ({
     navVariant,
     headerPosition,
     open,
-    setOpen
+    setOpen,
   } = ctx
   const getWidth = createGet(
     ctx,
@@ -114,7 +114,7 @@ const Header = ({
         ...style,
         zIndex: clipped ? theme.zIndex.drawer + 1 : theme.zIndex.appBar,
         width: getWidth(),
-        marginLeft: getMargin()
+        marginLeft: getMargin(),
       }}
     >
       <Toolbar {...toolbarProps}>

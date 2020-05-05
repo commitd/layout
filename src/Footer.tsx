@@ -3,7 +3,7 @@ import React, {
   ReactNode,
   ElementType,
   HTMLAttributes,
-  CSSProperties
+  CSSProperties,
 } from 'react'
 import { LayoutContext } from './Root'
 import { Theme, makeStyles } from '@material-ui/core'
@@ -23,9 +23,9 @@ const useStyles = makeStyles<Theme>(({ palette, transitions }) => ({
     color: palette.grey[50],
     transition: transitions.create(['margin'], {
       easing: transitions.easing.sharp,
-      duration: transitions.duration.leavingScreen
-    })
-  }
+      duration: transitions.duration.leavingScreen,
+    }),
+  },
 }))
 
 const Footer = ({
@@ -44,7 +44,7 @@ const Footer = ({
     collapsedWidth,
     footerShrink,
     open,
-    navAnchor
+    navAnchor,
   } = ctx
   const getMargin = () => {
     if (navAnchor !== 'left' || !footerShrink) return 0
@@ -69,7 +69,7 @@ const Footer = ({
       className={`${className} ${classes.root}`}
       style={{
         ...style,
-        marginLeft: getMargin()
+        marginLeft: getMargin(),
       }}
     />
   )
