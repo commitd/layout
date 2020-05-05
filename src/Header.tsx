@@ -9,7 +9,7 @@ import {
   useTheme
 } from '@material-ui/core'
 import { LayoutContext } from './Root'
-import { Layout, Position } from './util'
+import { Layout, Position } from './types'
 
 export type HeaderProps = {
   className?: string

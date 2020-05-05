@@ -7,10 +7,10 @@ import React, {
   ReactNode,
   ElementType
 } from 'react'
-import presets, { LayoutConfig, getScreenValue } from './util'
+import presets, { getScreenValue } from './util'
 import { makeStyles, CssBaseline } from '@material-ui/core'
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints'
 import { useWidth } from './useWidth'
+import { LayoutConfig, Layout, Breakpoint } from './types'
 
 export interface RootProps {
   className?: string
@@ -20,8 +20,27 @@ export interface RootProps {
   children?: ReactNode
 }
 
+function defaultContext(): Layout {
+  return {
+    clipped: false,
+    collapsible: true,
+    collapsedWidth: 64,
+    collapsed: false,
+    footerShrink: true,
+    navAnchor: 'left',
+    navVariant: 'permanent',
+    open: true,
+    navWidth: 256,
+    headerPosition: 'relative',
+    squeezed: true,
+    screen: 'xl',
+    setCollapsed: () => null,
+    setOpen: () => null
+  }
+}
+
 const initialConfig = presets.createDefaultLayout()
-export const LayoutContext = createContext(presets.defaultContext())
+export const LayoutContext = createContext(defaultContext())
 
 const useStyles = makeStyles({
   root: {
@@ -37,7 +56,7 @@ const createNewContext = (
   collapsed: boolean,
   setOpen: (val: boolean) => any,
   setCollapsed: (val: boolean) => any
-) => {
+): Layout => {
   const {
     clipped,
     collapsible,
