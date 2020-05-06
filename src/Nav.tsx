@@ -11,12 +11,12 @@ import {
   Drawer,
   Button,
   IconButton,
-  Theme,
+  Icons,
   makeStyles,
-} from '@material-ui/core'
+} from '@committed/components'
 import { LayoutContext } from './Root'
 
-const useStyles = makeStyles<Theme>(
+const useStyles = makeStyles(
   ({ breakpoints, transitions, palette, spacing, zIndex, shadows }) => ({
     root: {},
     container: {
@@ -65,16 +65,16 @@ export interface NavProps {
   children?: ReactNode
   header?: ReactNode
   closeButtonProps?: any
-  chevronLeftIcon: ReactNode
-  chevronRightIcon: ReactNode
+  collapseIcon: ReactNode
+  expandIcon: ReactNode
 }
 
 const Nav = ({
   className = '',
   component: Component = 'div',
   header = null,
-  chevronLeftIcon,
-  chevronRightIcon,
+  collapseIcon = <Icons.ChevronLeft />,
+  expandIcon = <Icons.ChevronRight />,
   children,
   closeButtonProps = {},
   ...props
@@ -119,7 +119,7 @@ const Nav = ({
               fullWidth
               onClick={setCollapsed}
             >
-              {collapsed ? chevronRightIcon : chevronLeftIcon}
+              {collapsed ? expandIcon : collapseIcon}
             </Button>
           )}
         </Component>
@@ -131,7 +131,7 @@ const Nav = ({
           onClick={setOpen}
           {...closeButtonProps}
         >
-          {chevronLeftIcon}
+          {collapseIcon}
         </IconButton>
       </Grow>
     </Fragment>

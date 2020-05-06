@@ -35,32 +35,25 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from '@committed/components'
 import { Root, Header, Nav, NavListItem, Content, Footer, LayoutConfig } from '@committed/layout'
-import ChevronRight from '@material-ui/icons/ChevronRight'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-import Menu from '@material-ui/icons/Menu'
 
 const config: Partial<LayoutConfig> = {
   // Only permanently show nav drawer at higher resolutions
   navVariant: {
-    xs: 'temporary',
     sm: 'temporary',
     lg: 'permanent',
-    xl: 'permanent'
   }
 }
 
 const App = () => (
    <ThemeProvider theme={theme}>
       <Root style={{ minHeight: '100vh' }} config={config}>
-        <Header chevronLeftIcon={<ChevronLeft />} menuIcon={<Menu />}>
+        <Header>
           <Typography variant="h5">Application Name</Typography>
         </Header>
         <Nav
           header={
             ctx => null
           }
-          chevronLeftIcon={<ChevronLeft />}
-          chevronRightIcon={<ChevronRight />}
         >
           <List>
             <NavListItem text="Menu Item 1" icon={<AccountCircle />} />
@@ -107,15 +100,15 @@ const config = {
 
 |Prop|Type|Description|Default Value|
 |-|-|-|-|
-|clipped|boolean \| ScreenProps\<boolean>|Clipped moves the header over the top of the navigation drawer, unclipped makes navigation full height|false
-|collapsible|boolean \| ScreenProps\<boolean>|Can the navigation be collapsed to a smaller form|true|
-|collapsedWidth|number \| ScreenProps\<number>|Width of the collapsed navigation|64|
-|footerShrink|boolean \| ScreenProps\<boolean>|Footer to adjust the size to fit when nav expanded,set false to keep the same width and overflow the screen.|true|
-|navAnchor|Orientation \| ScreenProps\<Orientation>|Which side of the screen to show the nav panel|left|
-|navVariant|Variant \| ScreenProps\<Variant>|**Permanent**: stays all the time. **Persistent**: remains open but can be hidden with button. **Temporary**: hides on click away (and selection).|permanent|
-|navWidth|number \| ScreenProps\<number>|Width of the navigation drawer|256|
-|headerPosition|Position \| ScreenProps\<Position>|Position applied to the AppBar header. one of 'static', 'relative', 'sticky', 'fixed', 'absolute' See https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning|relative|
-|squeezed|boolean \| ScreenProps\<>|Both header and content adjust the size to fit when nav expanded, set false to keep the same width and overflow the screen.|boolean|
+|clipped|boolean \| ScreenProps\<boolean\>|Clipped moves the header over the top of the navigation drawer, unclipped makes navigation full height|false
+|collapsible|boolean \| ScreenProps\<boolean\>|Can the navigation be collapsed to a smaller form|true|
+|collapsedWidth|number \| ScreenProps\<number\>|Width of the collapsed navigation|64|
+|footerShrink|boolean \| ScreenProps\<boolean\>|Footer to adjust the size to fit when nav expanded,set false to keep the same width and overflow the screen.|true|
+|navAnchor|Orientation \| ScreenProps\<Orientation\>|Which side of the screen to show the nav panel|left|
+|navVariant|Variant \| ScreenProps\<Variant\>|**Permanent**: stays all the time. **Persistent**: remains open but can be hidden with button. **Temporary**: hides on click away (and selection).|permanent|
+|navWidth|number \| ScreenProps\<number\>|Width of the navigation drawer|256|
+|headerPosition|Position \| ScreenProps\<Position\>|Position applied to the AppBar header. one of 'static', 'relative', 'sticky', 'fixed', 'absolute' See https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning|relative|
+|squeezed|boolean \| ScreenProps\<\>|Both header and content adjust the size to fit when nav expanded, set false to keep the same width and overflow the screen.|boolean|
 
 ### Root.component
 
@@ -124,16 +117,16 @@ const config = {
 `ReactNode`
 ### Nav.closeButtonProps
 Props to pass to the underlying Close Button. `IconButtonProps`
-## Nav.chevronLeftIcon
+## Nav.collapseIcon
 Icon to collapse the menu drawer.
-## Nav.chevronRightIcon
+## Nav.expandIcon
 Icon to expand the menu drawer.
 ### NavListItem
-See @material/ui ListItem Props. In Addition, see below:
+See @committed/components ListItem Props. In Addition, see below:
 ## NavListItem.listItemIconProps
-See @material/ui ListItemIcon Props
+See @committed/components ListItemIcon Props
 ## NavListItem.listItemTextProps
-See @material/ui ListItemText Props
+See @committed/components ListItemText Props
 
 ### Content.component
 
@@ -143,9 +136,9 @@ One of 'static', 'relative', 'sticky', 'fixed', 'absolute'. See `Root.headerPosi
 Props to pass to the underlying Toolbar. `commitd/components ToolbarProps`
 ### Header.menuButtonProps
 Props to pass to the underlying Menu Button. `IconButtonProps`
-### Header.chevronLeftIcon
+### Header.closeMenuIcon
 Icon to close the menu drawer.
-### Header.menuIcon
+### Header.openMenuIcon
 Icon to open the menu drawer.
 ### Header.color
 

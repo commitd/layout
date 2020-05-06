@@ -8,8 +8,7 @@ import React, {
   ElementType,
 } from 'react'
 import presets, { getScreenValue } from './util'
-import { makeStyles, CssBaseline } from '@material-ui/core'
-import { useWidth } from './useWidth'
+import { useWidth, makeStyles } from '@committed/components'
 import { LayoutConfig, Layout, Breakpoint } from './types'
 
 export interface RootProps {
@@ -123,7 +122,6 @@ const Root = ({
 
   return (
     <LayoutContext.Provider value={value}>
-      <CssBaseline />
       <Component className={`${className} ${classes.root}`} {...props}>
         {typeof children === 'function' ? children(value) : children}
       </Component>

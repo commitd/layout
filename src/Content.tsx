@@ -4,10 +4,10 @@ import React, {
   ElementType,
   HTMLAttributes,
 } from 'react'
-import { Theme, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@committed/components'
 import { LayoutContext } from './Root'
 
-const useStyles = makeStyles<Theme>(({ transitions }) => ({
+const useStyles = makeStyles(({ transitions }) => ({
   root: {
     flexGrow: 1,
     transition: transitions.create(['margin'], {

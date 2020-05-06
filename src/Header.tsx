@@ -4,10 +4,10 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Theme,
+  Icons,
   makeStyles,
   useTheme,
-} from '@material-ui/core'
+} from '@committed/components'
 import { LayoutContext } from './Root'
 import { Layout, Position } from './types'
 
@@ -18,12 +18,12 @@ export type HeaderProps = {
   children?: ReactNode
   toolbarProps?: any
   menuButtonProps?: any
-  chevronLeftIcon: ReactNode
-  menuIcon: ReactNode
+  closeMenuIcon: ReactNode
+  openMenuIcon: ReactNode
   color?: PropTypes.Color
 }
 
-const useStyles = makeStyles<Theme>(({ transitions }) => ({
+const useStyles = makeStyles(({ transitions }) => ({
   root: {
     transition: transitions.create(['margin', 'width'], {
       easing: transitions.easing.sharp,
@@ -73,15 +73,15 @@ const createGet = (
 
 const Header = ({
   className = '',
-  chevronLeftIcon,
-  menuIcon,
+  closeMenuIcon = <Icons.ChevronLeft />,
+  openMenuIcon = <Icons.Menu />,
   style = {},
   color = 'primary',
   children,
   toolbarProps = {},
   menuButtonProps = {},
 }: HeaderProps) => {
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const classes = useStyles()
   const ctx = useContext(LayoutContext)
   const {
@@ -101,7 +101,7 @@ const Header = ({
     '100%'
   )
   const getMargin = createGet(ctx, 0, collapsedWidth, navWidth, navWidth)
-  const shouldRenderMenu = navVariant !== 'permanent' && !!menuIcon
+  const shouldRenderMenu = navVariant !== 'permanent' && !!closeMenuIcon
   return (
     <AppBar
       color={color}
@@ -125,7 +125,7 @@ const Header = ({
             className={classes.menuButton}
             {...menuButtonProps}
           >
-            {open ? chevronLeftIcon : menuIcon || chevronLeftIcon}
+            {open ? closeMenuIcon : openMenuIcon || closeMenuIcon}
           </IconButton>
         )}
         {typeof children === 'function' ? children(ctx) : children}

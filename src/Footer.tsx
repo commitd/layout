@@ -6,7 +6,7 @@ import React, {
   CSSProperties,
 } from 'react'
 import { LayoutContext } from './Root'
-import { Theme, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@committed/components'
 
 export interface FooterProps {
   className?: string
@@ -15,7 +15,7 @@ export interface FooterProps {
   children?: ReactNode
 }
 
-const useStyles = makeStyles<Theme>(({ palette, transitions }) => ({
+const useStyles = makeStyles(({ palette, transitions }) => ({
   root: {
     borderTop: '1px solid',
     borderColor: palette.grey[200],

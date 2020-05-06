@@ -4,7 +4,7 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-} from '@material-ui/core'
+} from '@committed/components'
 import { LayoutContext } from './Root'
 
 interface NavListItemProps

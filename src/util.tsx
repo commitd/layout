@@ -20,22 +20,14 @@ const presets = {
       squeezed: true,
     }
   },
-  createFixedLayout: (config: LayoutConfig): LayoutConfig => ({
+  createFixedLayout: (config?: LayoutConfig): LayoutConfig => ({
     ...presets.createDefaultLayout(),
-    navVariant: {
-      xs: 'temporary',
-      md: 'permanent',
-    },
-    collapsible: {
-      xs: false,
-      md: true,
-    },
     clipped: true,
     squeezed: true,
     headerPosition: 'sticky',
     ...config,
   }),
-  createContentBasedLayout: (config: LayoutConfig): LayoutConfig => ({
+  createContentBasedLayout: (config?: LayoutConfig): LayoutConfig => ({
     ...presets.createDefaultLayout(),
     navWidth: {
       sm: 200,
@@ -48,7 +40,7 @@ const presets = {
     collapsible: false,
     ...config,
   }),
-  createCozyLayout: (config: LayoutConfig): LayoutConfig => ({
+  createCozyLayout: (config?: LayoutConfig): LayoutConfig => ({
     ...presets.createDefaultLayout(),
     navVariant: {
       xs: 'persistent',
@@ -59,22 +51,7 @@ const presets = {
       md: 256,
       xs: 64,
     },
-    collapsible: {
-      xs: false,
-      sm: true,
-    },
     clipped: false,
-    ...config,
-  }),
-  createMuiTreasuryLayout: (config: LayoutConfig): LayoutConfig => ({
-    ...presets.createDefaultLayout(),
-    navWidth: 200,
-    navVariant: {
-      xs: 'temporary',
-      md: 'permanent',
-    },
-    clipped: true,
-    collapsible: false,
     ...config,
   }),
 }
