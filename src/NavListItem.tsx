@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 })
 
-const NavListItem: React.FC<NavListItemProps> = ({
+export const NavListItem: React.FC<NavListItemProps> = ({
   icon,
   text,
   onClick,
@@ -53,5 +53,3 @@ const NavListItem: React.FC<NavListItemProps> = ({
     </ListItem>
   )
 }
-
-export default NavListItem

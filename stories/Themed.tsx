@@ -51,10 +51,7 @@ export const Themed: FC<{
   const component = componentMounted ? (
     <ThemeProvider choice={themeChoice}>
       <Root style={{ minHeight: '100vh' }} config={config}>
-        <Header
-          closeMenuIcon={closeMenuIcon}
-          openMenuIcon={openMenuIcon}
-        >
+        <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
           <IconButton color="inherit">

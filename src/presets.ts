@@ -1,6 +1,6 @@
-import { Breakpoint, LayoutConfig, ScreenProps } from './types'
+import { LayoutConfig } from './types'
 
-const presets = {
+export const presets = {
   createDefaultLayout(): LayoutConfig {
     return {
       clipped: false,
@@ -55,42 +55,3 @@ const presets = {
     ...config,
   }),
 }
-
-const keys: Array<Breakpoint> = ['xs', 'sm', 'md', 'lg', 'xl']
-
-export function getScreenValue<S>(
-  currentScreen: Breakpoint,
-  config: S | ScreenProps<S> | undefined,
-  defaultValue: S | ScreenProps<S>
-): S {
-  let val = config
-  if (val === null || val === undefined) {
-    val = defaultValue
-  }
-  if (typeof val !== 'object') {
-    return val
-  }
-
-  // track down to next smallest set
-  const screenMap: ScreenProps<S> = val
-  let index = keys.indexOf(currentScreen)
-  while (index >= 0) {
-    if (screenMap[keys[index]] !== undefined) {
-      return screenMap[keys[index]] as S
-    }
-    index -= 1
-  }
-
-  // else track up to next largest set
-  index = keys.indexOf(currentScreen)
-  while (index < keys.length) {
-    if (screenMap[keys[index]] !== undefined) {
-      return screenMap[keys[index]] as S
-    }
-    index += 1
-  }
-
-  throw Error('Config not valid')
-}
-
-export default presets

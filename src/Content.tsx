@@ -24,7 +24,7 @@ export interface ContentProps {
   children?: ReactNode
 }
 
-const Content = ({
+export const Content = ({
   className = '',
   component: Component = 'main',
   style = {},
@@ -83,5 +83,3 @@ const Content = ({
     />
   )
 }
-
-export default Content

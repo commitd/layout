@@ -71,7 +71,7 @@ const createGet = (
   return normal
 }
 
-const Header = ({
+export const Header = ({
   className = '',
   closeMenuIcon = <Icons.ChevronLeft />,
   openMenuIcon = <Icons.Menu />,
@@ -133,5 +133,3 @@ const Header = ({
     </AppBar>
   )
 }
-
-export default Header

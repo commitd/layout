@@ -69,7 +69,7 @@ export interface NavProps {
   expandIcon: ReactNode
 }
 
-const Nav = ({
+export const Nav = ({
   className = '',
   component: Component = 'div',
   header = null,
@@ -137,5 +137,3 @@ const Nav = ({
     </Fragment>
   )
 }
-
-export default Nav

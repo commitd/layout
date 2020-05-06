@@ -7,9 +7,9 @@ import React, {
   ReactNode,
   ElementType,
 } from 'react'
-import presets, { getScreenValue } from './util'
+import { presets } from './presets'
 import { useWidth, makeStyles } from '@committed/components'
-import { LayoutConfig, Layout, Breakpoint } from './types'
+import { LayoutConfig, Layout, Breakpoint, ScreenProps } from './types'
 
 export interface RootProps {
   className?: string
@@ -36,6 +36,43 @@ function defaultContext(): Layout {
     setCollapsed: () => null,
     setOpen: () => null,
   }
+}
+
+const keys: Array<Breakpoint> = ['xs', 'sm', 'md', 'lg', 'xl']
+
+function getScreenValue<S>(
+  currentScreen: Breakpoint,
+  config: S | ScreenProps<S> | undefined,
+  defaultValue: S | ScreenProps<S>
+): S {
+  let val = config
+  if (val === null || val === undefined) {
+    val = defaultValue
+  }
+  if (typeof val !== 'object') {
+    return val
+  }
+
+  // track down to next smallest set
+  const screenMap: ScreenProps<S> = val
+  let index = keys.indexOf(currentScreen)
+  while (index >= 0) {
+    if (screenMap[keys[index]] !== undefined) {
+      return screenMap[keys[index]] as S
+    }
+    index -= 1
+  }
+
+  // else track up to next largest set
+  index = keys.indexOf(currentScreen)
+  while (index < keys.length) {
+    if (screenMap[keys[index]] !== undefined) {
+      return screenMap[keys[index]] as S
+    }
+    index += 1
+  }
+
+  throw Error('Config not valid')
 }
 
 const initialConfig = presets.createDefaultLayout()
@@ -101,7 +138,7 @@ const createNewContext = (
   }
 }
 
-const Root = ({
+export const Root = ({
   className = '',
   component = 'div',
   config = initialConfig,
@@ -129,4 +166,3 @@ const Root = ({
   )
 }
 
-export default Root

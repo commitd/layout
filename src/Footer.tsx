@@ -28,7 +28,7 @@ const useStyles = makeStyles(({ palette, transitions }) => ({
   },
 }))
 
-const Footer = ({
+export const Footer = ({
   className = '',
   component: Component = 'footer',
   style = {},
@@ -74,5 +74,3 @@ const Footer = ({
     />
   )
 }
-
-export default Footer
