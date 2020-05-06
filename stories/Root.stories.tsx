@@ -1,52 +1,30 @@
 import React, { FC, ReactNode } from 'react'
-import { Root, Header, Nav, Content, Footer, NavListItem } from '../src'
-import {
-  ThemeProvider,
-  createMuiTheme,
-  Typography,
-  IconButton,
-  Box,
-  Container,
-  makeStyles,
-  Theme,
-  List,
-} from '@material-ui/core'
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import { Position, Variant, Orientation } from '../src'
+import { Typography } from '@committed/components'
 import { withKnobs, boolean, number, select } from '@storybook/addon-knobs'
-import { Position, Variant, Orientation, LayoutConfig } from '../src/util'
-import { LoremIpsum } from 'lorem-ipsum'
-import ChevronRight from '@material-ui/icons/ChevronRight'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-import Menu from '@material-ui/icons/Menu'
+import { Example } from './Example'
 
 export default {
   title: 'Root',
   decorators: [withKnobs],
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  content: {
-    background: theme.palette.background.default,
-  },
-  menuItemText: {
-    display: 'inline-block',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-}))
-
-const lorem = new LoremIpsum({
-  sentencesPerParagraph: {
-    max: 8,
-    min: 4,
-  },
-  wordsPerSentence: {
-    max: 32,
-    min: 8,
-  },
-})
-
 export const Default = () => {
+  return (
+    <Example
+      config={{}}
+      content={
+        <Typography variant="body2" color="textPrimary">
+          This example is the default layout preset. In addition to defaults,
+          it's clipped, squeezed and sticky. Try changing the size of your
+          window.
+        </Typography>
+      }
+    />
+  )
+}
+
+export const WithKnobs = () => {
   return (
     <Example
       config={{
@@ -96,13 +74,15 @@ export const Default = () => {
         squeezed: false,
       }}
       content={
-        <Typography variant="body1">
+        <Typography variant="body2" color="textPrimary">
           Use the knobs tab below to try out different props!
         </Typography>
       }
     />
   )
 }
+
+WithKnobs.decorators = [withKnobs]
 
 export const Breakpointed = () => {
   return (
@@ -128,7 +108,7 @@ export const Breakpointed = () => {
         },
       }}
       content={
-        <Typography variant="body1">
+        <Typography variant="body2" color="textPrimary">
           This example uses breakpoints to change props as the window size
           changes. Try changing the size of your window.
         </Typography>
@@ -137,61 +117,30 @@ export const Breakpointed = () => {
   )
 }
 
-const Example: FC<{ config: Partial<LayoutConfig>; content: ReactNode }> = ({
-  config,
-  content,
-}) => {
-  const classes = useStyles()
+export const PartialBreakpointed = () => {
   return (
-    <ThemeProvider theme={createMuiTheme()}>
-      <Root style={{ minHeight: '100vh' }} config={config}>
-        <Header chevronLeftIcon={<ChevronLeft />} menuIcon={<Menu />}>
-          <Typography variant="h5">Application Name</Typography>
-          <Box flexGrow={1} />
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-        </Header>
-        <Nav
-          chevronLeftIcon={<ChevronLeft />}
-          chevronRightIcon={<ChevronRight />}
-          header={
-            // you can provide fixed header inside nav
-            // change null to some react element
-            (ctx) => null
-          }
-        >
-          <List>
-            <NavListItem text="Menu Item 1" icon={<AccountCircle />} />
-            <NavListItem text="Menu Item 2" icon={<AccountCircle />} />
-            <NavListItem text="Menu Item 3" icon={<AccountCircle />} />
-          </List>
-        </Nav>
-        <Content className={classes.content}>
-          <Container maxWidth="lg">
-            <Box pt={2}>
-              <Box mb={2}>
-                <Typography variant="h4">@committed/layout</Typography>
-              </Box>
-              {content}
-              <Box mt={3}>
-                {new Array(20).fill(null).map((i) => (
-                  <Box mb={1}>
-                    <Typography variant="body2" color="textSecondary">
-                      {lorem.generateParagraphs(1)}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-          </Container>
-        </Content>
-        <Footer>
-          <Box p={2}>
-            <Typography>Footer</Typography>
-          </Box>
-        </Footer>
-      </Root>
-    </ThemeProvider>
+    <Example
+      config={{
+        navVariant: {
+          sm: 'temporary',
+          lg: 'permanent',
+        },
+        navWidth: {
+          lg: 256,
+          xl: 356,
+        },
+        collapsible: {
+          sm: false,
+          md: true,
+        },
+      }}
+      content={
+        <Typography variant="body2" color="textPrimary">
+          This example uses only specifies where the behaviours change. Above
+          and below should behave as the the closed set value. Try changing the
+          size of your window.
+        </Typography>
+      }
+    />
   )
 }

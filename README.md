@@ -12,7 +12,7 @@ but using `@committed/components` as its base.
 
 ## 🔗 Live Demo
 
-Here's a [live demo](https://committed.software/docs)
+Here's a [live demo](https://committed.software/docs) using layout and the [storybook](https://committed.software/layout)
 
 ## 🚀 Quickstart
 
