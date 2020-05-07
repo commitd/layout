@@ -9,7 +9,7 @@ export const SuppliedIcons = () => {
       content={
         <Typography variant="body2" color="textPrimary">
           The icons used can be replaces by supplying the icons as props. In
-          fact, any react node can be supplied but aditional styling may be
+          fact, any react node can be supplied but additional styling may be
           required Try changing the size of your window.
         </Typography>
       }

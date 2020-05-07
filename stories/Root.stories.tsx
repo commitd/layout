@@ -75,7 +75,7 @@ export const WithKnobs = () => {
       }}
       content={
         <Typography variant="body2" color="textPrimary">
-          Use the knobs tab below to try out different props!
+          In canvas view, use the knobs tab below to try out different props!
         </Typography>
       }
     />

@@ -47,7 +47,7 @@ export const Example: FC<{
 }) => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '100vh' }} config={config}>
+      <Root style={{ minHeight: '50vh' }} config={config}>
         <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
@@ -71,7 +71,7 @@ export const Example: FC<{
           </List>
         </Nav>
         <Content>
-          <Container maxWidth="lg" bgcolor="background.default">
+          <Container maxWidth="lg">
             <Box pt={2}>
               <Box mb={2}>
                 <Typography variant="h4">@committed/layout</Typography>

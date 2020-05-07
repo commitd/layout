@@ -7,6 +7,7 @@ import {
   Footer,
   NavListItem,
   LayoutConfig,
+  useLayout,
 } from '../src'
 import {
   ThemeSwitch,
@@ -16,6 +17,7 @@ import {
   Box,
   Icons,
   Container,
+  Heading,
   List,
   useThemeChoice,
 } from '@committed/components'
@@ -50,7 +52,7 @@ export const Themed: FC<{
   const [themeChoice, toggleThemeChoice, componentMounted] = useThemeChoice()
   const component = componentMounted ? (
     <ThemeProvider choice={themeChoice}>
-      <Root style={{ minHeight: '100vh' }} config={config}>
+      <Root style={{ minHeight: '50vh' }} config={config}>
         <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
@@ -66,11 +68,12 @@ export const Themed: FC<{
         <Nav
           collapseIcon={collapseIcon}
           expandIcon={expandIcon}
-          header={
-            // you can provide fixed header inside nav
-            // change null to some react element
-            (ctx) => null
-          }
+          header={React.createElement(() => {
+            const { collapsed } = useLayout()
+            return (
+              <Heading.h2 align="center">{collapsed ? 'M' : 'Menu'}</Heading.h2>
+            )
+          })}
         >
           <List>
             <NavListItem text="Menu Item 1" icon={<Icons.AccountCircle />} />
@@ -79,7 +82,7 @@ export const Themed: FC<{
           </List>
         </Nav>
         <Content>
-          <Container maxWidth="lg" bgcolor="background.default">
+          <Container maxWidth="lg">
             <Box pt={2}>
               <Box mb={2}>
                 <Typography variant="h4">@committed/layout</Typography>

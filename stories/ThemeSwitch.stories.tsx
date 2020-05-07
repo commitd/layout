@@ -8,7 +8,7 @@ export const ThemeSwitch = () => {
       config={{}}
       content={
         <Typography variant="body2" color="textPrimary">
-          Adds a theme swith so you can see the layout in both light and dark
+          Adds a theme switch so you can see the layout in both light and dark
           themes.
         </Typography>
       }
