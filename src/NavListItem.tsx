@@ -5,7 +5,7 @@ import {
   ListItemText,
   makeStyles,
 } from '@committed/components'
-import { LayoutContext } from './Root'
+import { useLayout } from './Root'
 
 interface NavListItemProps
   extends Omit<ComponentProps<typeof ListItem>, 'button'> {
@@ -32,7 +32,7 @@ export const NavListItem: React.FC<NavListItemProps> = ({
   ...listItemProps
 }) => {
   const classes = useStyles()
-  const { setOpen } = React.useContext(LayoutContext)
+  const { setOpen } = useLayout()
   return (
     <ListItem
       button

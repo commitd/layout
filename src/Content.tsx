@@ -1,11 +1,6 @@
-import React, {
-  useContext,
-  ReactNode,
-  ElementType,
-  HTMLAttributes,
-} from 'react'
+import React, { ReactNode, ElementType, HTMLAttributes } from 'react'
 import { makeStyles } from '@committed/components'
-import { LayoutContext } from './Root'
+import { useLayout } from './Root'
 
 const useStyles = makeStyles(({ transitions }) => ({
   root: {
@@ -31,7 +26,6 @@ export const Content = ({
   ...props
 }: ContentProps) => {
   const classes = useStyles()
-  const ctx = useContext(LayoutContext)
   const {
     navVariant,
     navWidth,
@@ -41,7 +35,7 @@ export const Content = ({
     open,
     navAnchor,
     squeezed,
-  } = ctx
+  } = useLayout()
   const getMargin = () => {
     if (navAnchor !== 'left') return 0
     if (navVariant === 'persistent' && open) {

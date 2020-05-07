@@ -1,11 +1,10 @@
 import React, {
-  useContext,
   ReactNode,
   ElementType,
   HTMLAttributes,
   CSSProperties,
 } from 'react'
-import { LayoutContext } from './Root'
+import { useLayout } from './Root'
 import { makeStyles } from '@committed/components'
 
 export interface FooterProps {
@@ -35,7 +34,6 @@ export const Footer = ({
   ...props
 }: FooterProps) => {
   const classes = useStyles()
-  const ctx = useContext(LayoutContext)
   const {
     navVariant,
     navWidth,
@@ -45,7 +43,7 @@ export const Footer = ({
     footerShrink,
     open,
     navAnchor,
-  } = ctx
+  } = useLayout()
   const getMargin = () => {
     if (navAnchor !== 'left' || !footerShrink) return 0
     if (navVariant === 'persistent' && open) {

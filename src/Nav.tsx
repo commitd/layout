@@ -1,5 +1,4 @@
 import React, {
-  useContext,
   useRef,
   ReactNode,
   ElementType,
@@ -14,7 +13,7 @@ import {
   Icons,
   makeStyles,
 } from '@committed/components'
-import { LayoutContext } from './Root'
+import { useLayout } from './Root'
 
 const useStyles = makeStyles(
   ({ breakpoints, transitions, palette, spacing, zIndex, shadows }) => ({
@@ -80,7 +79,6 @@ export const Nav = ({
   ...props
 }: NavProps) => {
   const classes = useStyles()
-  const ctx = useContext(LayoutContext)
   const {
     open,
     setOpen,
@@ -91,7 +89,7 @@ export const Nav = ({
     collapsible,
     collapsed,
     setCollapsed,
-  } = ctx
+  } = useLayout()
   const getWidth = () => {
     if (collapsible && collapsed) return collapsedWidth
     return navWidth
@@ -109,9 +107,9 @@ export const Nav = ({
         anchor={navAnchor}
       >
         <Component className={classes.container} style={{ width: getWidth() }}>
-          {typeof header === 'function' ? header(ctx) : header}
+          {header}
           <div ref={contentRef} className={classes.content}>
-            {typeof children === 'function' ? children(ctx) : children}
+            {children}
           </div>
           {shouldRenderButton && (
             <Button

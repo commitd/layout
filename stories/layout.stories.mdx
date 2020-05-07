@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import { Meta, Props } from '@storybook/addon-docs/blocks'
 import { Root } from '../src'
 
 <Meta title="Layout" component={Root} />
@@ -55,7 +55,7 @@ const App = () => (
       <Header>
         <Typography variant="h5">Application Name</Typography>
       </Header>
-      <Nav header={(ctx) => null}>
+      <Nav>
         <List>
           <NavListItem text="Menu Item 1" icon={<Icons.AccountCircle />} />
         </List>

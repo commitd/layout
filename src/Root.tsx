@@ -76,7 +76,7 @@ function getScreenValue<S>(
 }
 
 const initialConfig = presets.createDefaultLayout()
-export const LayoutContext = createContext(defaultContext())
+const LayoutContext = createContext(defaultContext())
 
 const useStyles = makeStyles({
   root: {
@@ -166,3 +166,4 @@ export const Root = ({
   )
 }
 
+export const useLayout = () => React.useContext(LayoutContext)

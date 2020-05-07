@@ -1,4 +1,4 @@
-import React, { useContext, ReactNode, CSSProperties } from 'react'
+import React, { ReactNode, CSSProperties } from 'react'
 import { PropTypes } from '@material-ui/core'
 import {
   AppBar,
@@ -8,7 +8,7 @@ import {
   makeStyles,
   useTheme,
 } from '@committed/components'
-import { LayoutContext } from './Root'
+import { useLayout } from './Root'
 import { Layout, Position } from './types'
 
 export type HeaderProps = {
@@ -83,7 +83,7 @@ export const Header = ({
 }: HeaderProps) => {
   const theme = useTheme()
   const classes = useStyles()
-  const ctx = useContext(LayoutContext)
+  const ctx = useLayout()
   const {
     clipped,
     collapsedWidth,

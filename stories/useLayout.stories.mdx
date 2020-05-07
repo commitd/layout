@@ -1,0 +1,28 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Monospace } from '@committed/components'
+import { useLayout } from '../src'
+import { LayoutDocs } from './useLayout.docs'
+import { Example } from './Example'
+
+<Meta title="useLayout" />
+
+# `useLayout`
+
+If you need to adjust any of your own layout according to the properties of the current committed layout you can use the
+`useLayout()` react hook to obtain all the details of the current (size dependent) layout.
+
+This is particularly useful for children of layout components.
+
+<Preview>
+  <Story name="default">
+    <Example
+      config={{}}
+      content={React.createElement(() => {
+        const layout = useLayout()
+        return <Monospace>{JSON.stringify(layout, null, 2)}</Monospace>
+      })}
+    />
+  </Story>
+</Preview>
+
+<Props of={LayoutDocs} />
