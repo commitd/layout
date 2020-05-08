@@ -43,6 +43,11 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
   },
+  collapsedSize: {
+    minWidth: '32px',
+    minHeight: '32px',
+    alignItems: 'center',
+  },
 })
 
 /**
@@ -62,7 +67,7 @@ export const NavListItem = ({
   ...listItemProps
 }: NavListItemProps) => {
   const classes = useStyles()
-  const { setOpen } = useLayout()
+  const { setOpen, collapsed, collapsedWidth } = useLayout()
   return (
     <ListItem
       button
@@ -72,14 +77,26 @@ export const NavListItem = ({
           onClick(e)
         }
       }}
+      style={collapsed ? { width: collapsedWidth } : undefined}
+      title={collapsed ? text : undefined}
       {...listItemProps}
     >
-      <ListItemIcon {...listItemIconProps}>{icon}</ListItemIcon>
-      <ListItemText
-        primary={text}
-        className={classes.menuItemText}
-        {...listItemTextProps}
-      />
+      {icon && (
+        <ListItemIcon
+          className={collapsed ? classes.collapsedSize : undefined}
+          {...listItemIconProps}
+        >
+          {icon}
+        </ListItemIcon>
+      )}
+      {collapsed && icon ? null : (
+        <ListItemText
+          primary={text}
+          primaryTypographyProps={{ noWrap: true }}
+          className={classes.menuItemText}
+          {...listItemTextProps}
+        />
+      )}
     </ListItem>
   )
 }
