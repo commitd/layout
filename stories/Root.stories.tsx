@@ -1,12 +1,12 @@
 import React, { FC, ReactNode } from 'react'
-import { Position, Variant, Orientation } from '../src'
+import { Position, Variant, Orientation, Root } from '../src'
 import { Typography } from '@committed/components'
 import { withKnobs, boolean, number, select } from '@storybook/addon-knobs'
 import { Example } from './Example'
 
 export default {
-  title: 'Root',
-  decorators: [withKnobs],
+  title: 'Components|Root',
+  component: Root,
 }
 
 export const Default = () => {

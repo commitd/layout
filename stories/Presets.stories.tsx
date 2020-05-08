@@ -1,65 +1,64 @@
 import React from 'react'
-import { presets } from '../src'
-import { Typography } from '@committed/components'
+import { presets, LayoutConfig } from '../src'
+import { Typography, Monospace, Heading } from '@committed/components'
 import { Example } from './Example'
 
 export default {
-  title: 'Presets',
+  title: 'Examples|Presets',
+  component: presets,
 }
 
-export const PresetDefaultFixedLayout = () => {
-  return (
-    <Example
-      config={presets.createDefaultLayout()}
-      content={
+const Preset = ({
+  config,
+  text,
+}: {
+  config: Partial<LayoutConfig>
+  text: string
+}) => (
+  <Example
+    config={config}
+    content={
+      <>
         <Typography variant="body2" color="textPrimary">
-          This example the default layout preset. (No need to supply as used if
-          nothing supplied. Try changing the size of your window.
+          {text}
         </Typography>
-      }
-    />
-  )
-}
+        <Heading.h3 pt={2}>Config</Heading.h3>
+        <Monospace>{JSON.stringify(config, null, 2)}</Monospace>
+      </>
+    }
+  />
+)
 
-export const PresetFixedLayout = () => {
-  return (
-    <Example
-      config={presets.createFixedLayout()}
-      content={
-        <Typography variant="body2" color="textPrimary">
-          This example the fixed layout preset. In addition to defaults, it's
-          clipped, squeezed and sticky. Try changing the size of your window.
-        </Typography>
-      }
-    />
-  )
-}
+export const PresetDefaultFixedLayout = () => (
+  <Preset
+    config={presets.createDefaultLayout()}
+    text="This example the default layout preset. (No need to supply as used
+            if nothing supplied. Try changing the size of your window."
+  />
+)
 
-export const PresetContentBasedLayout = () => {
-  return (
-    <Example
-      config={presets.createContentBasedLayout()}
-      content={
-        <Typography variant="body2" color="textPrimary">
-          This example the content layout preset. Nav is not collapsible, but
-          temporary for xs. Try changing the size of your window.
-        </Typography>
-      }
-    />
-  )
-}
+export const PresetFixedLayout = () => (
+  <Preset
+    config={presets.createFixedLayout()}
+    text="This example the fixed layout preset. In addition to defaults, it's
+          clipped, squeezed and sticky. Try changing the size of your window."
+  />
+)
 
-export const PresetCozyLayout = () => {
-  return (
-    <Example
-      config={presets.createCozyLayout()}
-      content={
-        <Typography variant="body2" color="textPrimary">
+export const PresetContentBasedLayout = () => (
+  <Preset
+    config={presets.createContentBasedLayout()}
+    text="This example the content layout preset. Nav is not collapsible, but
+          temporary for xs. Try changing the size of your window."
+  />
+)
+
+export const PresetCozyLayout = () => (
+  <Preset
+    config={presets.createCozyLayout()}
+    text="
           This example the cozy layout preset. Nav is permanent and collapsible
           generally, persistent and not collapsible when xs. Width variesTry
-          changing the size of your window.
-        </Typography>
-      }
-    />
-  )
-}
+          changing the size of your window."
+  />
+)

@@ -55,19 +55,23 @@ export const Example: FC<{
             <Icons.AccountCircle />
           </IconButton>
         </Header>
-        <Nav
-          collapseIcon={collapseIcon}
-          expandIcon={expandIcon}
-          header={
-            // you can provide fixed header inside nav
-            // change null to some react element
-            (ctx) => null
-          }
-        >
+        <Nav collapseIcon={collapseIcon} expandIcon={expandIcon}>
           <List>
-            <NavListItem text="Menu Item 1" icon={<Icons.AccountCircle />} />
-            <NavListItem text="Menu Item 2" icon={<Icons.AccountCircle />} />
-            <NavListItem text="Menu Item 3" icon={<Icons.AccountCircle />} />
+            <NavListItem
+              key="1"
+              text="Menu Item 1"
+              icon={<Icons.AccountCircle />}
+            />
+            <NavListItem
+              key="2"
+              text="Menu Item 2"
+              icon={<Icons.AccountCircle />}
+            />
+            <NavListItem
+              key="3"
+              text="Menu Item 3"
+              icon={<Icons.AccountCircle />}
+            />
           </List>
         </Nav>
         <Content>
@@ -78,8 +82,8 @@ export const Example: FC<{
               </Box>
               {content}
               <Box mt={3}>
-                {new Array(10).fill(null).map((i) => (
-                  <Box mb={1}>
+                {new Array(10).fill(null).map((_, index) => (
+                  <Box key={'lorem' + index} mb={1}>
                     <Typography variant="body1" color="textSecondary">
                       {lorem.generateParagraphs(1)}
                     </Typography>
