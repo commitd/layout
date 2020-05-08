@@ -23,13 +23,15 @@ export interface Layout {
    */
   screen: Breakpoint
   /**
-   * Function that can be called to toggle the collapsed state
+   * Function to control the collapsed state.
+   * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
-  setCollapsed: (val: any) => any
+  setCollapsed: (val: boolean | object) => any
   /**
-   * Function that can be called to toggle the open state
+   * Function to control the open state.
+   * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
-  setOpen: (val: any) => any
+  setOpen: (val: boolean | object) => any
 
   // The below is the LayoutConfig for the current screen size
 

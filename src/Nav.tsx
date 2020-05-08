@@ -10,6 +10,7 @@ import {
   Drawer,
   Button,
   IconButton,
+  IconButtonProps,
   Icons,
   makeStyles,
 } from '@committed/components'
@@ -33,7 +34,8 @@ const useStyles = makeStyles(
       overflow: 'auto',
     },
     collapseButton: {
-      backgroundColor: palette.grey[50],
+      backgroundColor: palette.background.paper,
+      color: palette.text.primary,
       textAlign: 'center',
       borderRadius: 0,
       borderTop: '1px solid',
@@ -46,26 +48,45 @@ const useStyles = makeStyles(
       position: 'absolute',
       bottom: spacing(2),
       zIndex: zIndex.modal + 1,
-      background: palette.common.white,
-      boxShadow: shadows[2],
+      background: palette.background.paper,
+      boxShadow: shadows[3],
       '@media (hover: none)': {
-        backgroundColor: palette.grey[300],
+        backgroundColor: palette.background.paper,
       },
       '&:hover': {
-        backgroundColor: '#e5e5e5',
+        backgroundColor: palette.background.paper,
       },
     },
   })
 )
 
 export interface NavProps {
+  /**
+   * Add a class name to the component, can be used for additional styling
+   */
   className?: string
+  /**
+   * Change the component type used (nested in the draw)
+   * @default div
+   */
   component?: ElementType<HTMLAttributes<HTMLElement>>
-  children?: ReactNode
+  /**
+   * Supply optional navigation header
+   */
   header?: ReactNode
-  closeButtonProps?: any
-  collapseIcon: ReactNode
-  expandIcon: ReactNode
+  /**
+   * Supply additional close button props
+   */
+  closeButtonProps?: IconButtonProps
+  /**
+   * Supply a different  collapse icon
+   */
+  collapseIcon?: ReactNode
+  /**
+   * Supply a different expand icon
+   */
+  expandIcon?: ReactNode
+  children?: ReactNode
 }
 
 export const Nav = ({

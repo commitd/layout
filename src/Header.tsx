@@ -7,20 +7,47 @@ import {
   Icons,
   makeStyles,
   useTheme,
+  ToolbarProps,
+  IconButtonProps,
 } from '@committed/components'
 import { useLayout } from './Root'
-import { Layout, Position } from './types'
+import { Layout } from './types'
 
 export type HeaderProps = {
+  /**
+   * Add a class name to the component, can be used for additional styling
+   */
   className?: string
+  /**
+   * To add styling to the component
+   */
   style?: CSSProperties
-  position?: Position
+  /**
+   * Use to supply additional props to the the toolbar component
+   * See https://committed.software/components/?path=/docs/components-toolbar--app-bar
+   */
+  toolbarProps?: ToolbarProps
+  /**
+   * Use to supply additional props to the the menuButton component
+   * See https://committed.software/components/?path=/docs/components-iconbutton--default-story
+   */
+  menuButtonProps?: Omit<IconButtonProps, 'onClick' | 'color'>
+  /**
+   * Will replace the default close menu icon
+   * @default ChevronLeft
+   */
+  closeMenuIcon?: ReactNode
+  /**
+   * Will replace the default open menu icon
+   * @default Menu
+   */
+
+  openMenuIcon?: ReactNode
+  /**
+   * The color property for the AppBar
+   */
+  color?: PropTypes.Color | 'transparent'
   children?: ReactNode
-  toolbarProps?: any
-  menuButtonProps?: any
-  closeMenuIcon: ReactNode
-  openMenuIcon: ReactNode
-  color?: PropTypes.Color
 }
 
 const useStyles = makeStyles(({ transitions }) => ({
@@ -73,9 +100,9 @@ const createGet = (
 
 export const Header = ({
   className = '',
+  style = {},
   closeMenuIcon = <Icons.ChevronLeft />,
   openMenuIcon = <Icons.Menu />,
-  style = {},
   color = 'primary',
   children,
   toolbarProps = {},
@@ -109,8 +136,6 @@ export const Header = ({
       className={`${className} ${classes.root}`}
       position={headerPosition}
       style={{
-        background: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
         ...style,
         zIndex: clipped ? theme.zIndex.drawer + 1 : theme.zIndex.appBar,
         width: getWidth(),

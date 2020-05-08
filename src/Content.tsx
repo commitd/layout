@@ -1,4 +1,9 @@
-import React, { ReactNode, ElementType, HTMLAttributes } from 'react'
+import React, {
+  ReactNode,
+  ElementType,
+  HTMLAttributes,
+  CSSProperties,
+} from 'react'
 import { makeStyles } from '@committed/components'
 import { useLayout } from './Root'
 
@@ -13,12 +18,27 @@ const useStyles = makeStyles(({ transitions }) => ({
 }))
 
 export interface ContentProps {
+  /**
+   * Add a class name to the component, can be used for additional styling
+   */
   className?: string
-  style?: any
+  /**
+   * To add styling to the component
+   */
+  style?: CSSProperties
+  /**
+   * Change the component type used
+   * @default main
+   */
   component?: ElementType<HTMLAttributes<HTMLElement>>
   children?: ReactNode
 }
 
+/**
+ * To contain the main content of the page.
+ *
+ * Always visible, grows to fill the vertical space
+ */
 export const Content = ({
   className = '',
   component: Component = 'main',

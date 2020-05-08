@@ -12,10 +12,25 @@ import { useWidth, makeStyles } from '@committed/components'
 import { LayoutConfig, Layout, Breakpoint, ScreenProps } from './types'
 
 export interface RootProps {
+  /**
+   * Add a class name to the component, can be used for additional styling
+   */
   className?: string
-  component?: ElementType<HTMLAttributes<HTMLElement>>
-  config?: Partial<LayoutConfig>
+  /**
+   * To add styling to the component
+   */
   style?: CSSProperties
+  /**
+   * Change the component type used
+   * @default footer
+   */
+  component?: ElementType<HTMLAttributes<HTMLElement>>
+  /**
+   * The configuration of the layout, see Layout Config.
+   * When providing a config it is merged on to the default so only changes from the default need to be specified.
+   * See LayoutConfig in types.
+   */
+  config?: Partial<LayoutConfig>
   children?: ReactNode
 }
 
@@ -138,6 +153,14 @@ const createNewContext = (
   }
 }
 
+/**
+ * The Root component establishes the context for all the layout components.
+ * All other layout out must be done inside the Root.
+ *
+ * Within the root any component can use the `useLayout` hook to respond to layout changes or access the functions to force layout changes.
+ *
+ * When providing a config it is merged on to the default so only changes from the default need to be specified.
+ */
 export const Root = ({
   className = '',
   component = 'div',

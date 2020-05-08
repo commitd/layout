@@ -1,5 +1,9 @@
 import { LayoutConfig } from './types'
 
+/**
+ * A set of preset layouts for the most common scenarios.
+ * When providing a config it is merged on to the default so only changes from the default need to be specified.
+ */
 export const presets = {
   createDefaultLayout(): LayoutConfig {
     return {
