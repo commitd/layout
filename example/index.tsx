@@ -9,23 +9,21 @@ import {
   Content,
   Footer,
   LayoutConfig,
-} from '../.'
+  useLayout,
+} from '../dist'
 import {
   ThemeProvider,
-  createMuiTheme,
   Typography,
   Box,
   IconButton,
+  Monospace,
   List,
   Container,
-  makeStyles,
-  Theme,
-} from '@material-ui/core'
+  ThemeSwitch,
+  useThemeChoice,
+} from '@committed/components'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { LoremIpsum } from 'lorem-ipsum'
-import ChevronRight from '@material-ui/icons/ChevronRight'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-import Menu from '@material-ui/icons/Menu'
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -38,61 +36,69 @@ const lorem = new LoremIpsum({
   },
 })
 
-const useStyles = makeStyles((theme: Theme) => ({
-  content: {
-    background: theme.palette.background.default,
-  },
-  menuItemText: {
-    display: 'inline-block',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-}))
-
 const config: Partial<LayoutConfig> = {
   navVariant: {
-    xs: 'temporary',
     sm: 'temporary',
+    md: 'persistent',
     lg: 'permanent',
-    xl: 'permanent',
+  },
+  headerPosition: {
+    sm: 'relative',
+    md: 'sticky',
+  },
+  collapsible: {
+    md: true,
+    lg: false,
   },
 }
-
-const theme = createMuiTheme()
+const Layout = () => {
+  const layout = useLayout()
+  return <Monospace>{JSON.stringify(layout, null, 2)}</Monospace>
+}
 
 const App = () => {
-  const classes = useStyles()
-  return (
-    <ThemeProvider theme={theme}>
+  const [themeChoice, toggleThemeChoice, componentMounted] = useThemeChoice()
+  const component = componentMounted ? (
+    <ThemeProvider choice={themeChoice}>
       <Root style={{ minHeight: '100vh' }} config={config}>
-        <Header chevronLeftIcon={<ChevronLeft />} menuIcon={<Menu />}>
+        <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
           <IconButton color="inherit">
             <AccountCircle />
           </IconButton>
+          <ThemeSwitch
+            themeChoice={themeChoice}
+            toggleThemeChoice={toggleThemeChoice}
+            variant="celestial"
+          />
         </Header>
-        <Nav
-          header={
-            // you can provide fixed header inside nav
-            // change null to some react element
-            (ctx) => null
-          }
-          chevronLeftIcon={<ChevronLeft />}
-          chevronRightIcon={<ChevronRight />}
-        >
+        <Nav>
           <List>
-            <NavListItem text="Menu Item 1" icon={<AccountCircle />} />
-            <NavListItem text="Menu Item 2" icon={<AccountCircle />} />
-            <NavListItem text="Menu Item 3" icon={<AccountCircle />} />
+            <NavListItem
+              key="item1"
+              text="Menu Item 1"
+              icon={<AccountCircle />}
+            />
+            <NavListItem
+              key="item2"
+              text="Menu Item 2"
+              icon={<AccountCircle />}
+            />
+            <NavListItem
+              key="item3"
+              text="Menu Item 3"
+              icon={<AccountCircle />}
+            />
           </List>
         </Nav>
-        <Content className={classes.content}>
+        <Content>
           <Container maxWidth="lg">
             <Box pt={2}>
               <Box mb={2}>
                 <Typography variant="h4">@committed/layout</Typography>
               </Box>
+              <Layout />
               <Box mt={3}>
                 {new Array(20).fill(null).map((i) => (
                   <Box mb={1}>
@@ -112,7 +118,8 @@ const App = () => {
         </Footer>
       </Root>
     </ThemeProvider>
-  )
+  ) : null
+  return component
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
