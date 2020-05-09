@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React from 'react'
 import { Position, Variant, Orientation, Root } from '../src'
 import { Typography } from '@committed/components'
 import { withKnobs, boolean, number, select } from '@storybook/addon-knobs'
@@ -7,6 +7,7 @@ import { Example } from './Example'
 export default {
   title: 'Components|Root',
   component: Root,
+  decorators: [withKnobs],
 }
 
 export const Default = () => {
@@ -71,7 +72,7 @@ export const WithKnobs = () => {
           max: 512,
           step: 1,
         }),
-        squeezed: false,
+        squeezed: boolean('squeezed', false),
       }}
       content={
         <Typography variant="body2" color="textPrimary">
@@ -81,8 +82,6 @@ export const WithKnobs = () => {
     />
   )
 }
-
-WithKnobs.decorators = [withKnobs]
 
 export const Breakpointed = () => {
   return (
