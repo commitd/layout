@@ -41,6 +41,11 @@ const useStyles = makeStyles(({ transitions }) => ({
   },
 }))
 
+interface DumbProps {
+  marginLeft: number
+  marginRight: number
+}
+
 /**
  * Footer with no layout knowledge
  */
@@ -51,8 +56,9 @@ export const DumbFooter = ({
   bgcolor,
   style,
   marginLeft,
+  marginRight,
   ...props
-}: FooterProps & { marginLeft: number }) => {
+}: FooterProps & DumbProps) => {
   const classes = useStyles()
   return (
     <Component
@@ -60,6 +66,7 @@ export const DumbFooter = ({
       style={{
         ...style,
         marginLeft,
+        marginRight,
       }}
     >
       <Box color={color} bgcolor={bgcolor} {...props} />
@@ -80,12 +87,9 @@ export const Footer = ({
 }: FooterProps) => {
   const { currentNavWidth, footerShrink, navAnchor } = useLayout()
 
-  const getMargin = () => {
-    if (navAnchor !== 'left' || !footerShrink) {
-      return 0
-    }
-    return currentNavWidth
-  }
+  const margin = footerShrink ? currentNavWidth : 0
+  const marginLeft = navAnchor === 'left' ? margin : 0
+  const marginRight = navAnchor === 'right' ? margin : 0
 
   return (
     <DumbFooter
@@ -95,7 +99,8 @@ export const Footer = ({
       color={color}
       bgcolor={bgcolor}
       style={style}
-      marginLeft={getMargin()}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
     />
   )
 }
