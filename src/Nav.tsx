@@ -184,7 +184,9 @@ export const DumbNav = ({
       <Grow in={open && navVariant === 'temporary'}>
         <IconButton
           className={classes.closeButton}
-          style={{ left: width + 16 }}
+          style={
+            navAnchor === 'left' ? { left: width + 16 } : { right: width + 16 }
+          }
           onClick={setOpen}
           {...closeButtonProps}
         >
