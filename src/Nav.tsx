@@ -13,6 +13,7 @@ import {
   IconButtonProps,
   Icons,
   makeStyles,
+  Toolbar,
 } from '@committed/components'
 import { Layout } from './types'
 import { useLayout } from './Root'
@@ -107,6 +108,7 @@ interface DumbProps
     | 'navAnchor'
     | 'setCollapsed'
     | 'collapsed'
+    | 'clipped'
   > {
   showCollapseButton: boolean
   width: number
@@ -126,6 +128,7 @@ export const DumbNav = ({
   navAnchor,
   collapsed,
   setCollapsed,
+  clipped,
   width,
   children,
   ...props
@@ -146,6 +149,8 @@ export const DumbNav = ({
         variant={navVariant}
         anchor={navAnchor}
       >
+        {/* Just for spacing */}
+        {clipped ? <Toolbar /> : null}
         <Component className={classes.container} style={{ width }}>
           {header}
           <div ref={contentRef} className={contentClasses}>
@@ -187,6 +192,7 @@ export const Nav = ({
   const {
     open,
     setOpen,
+    clipped,
     navVariant,
     navAnchor,
     collapsible,
@@ -205,6 +211,7 @@ export const Nav = ({
       showCollapseButton={showCollapseButton}
       open={open}
       setOpen={setOpen}
+      clipped={clipped}
       navVariant={navVariant}
       navAnchor={navAnchor}
       collapsed={collapsed}
