@@ -139,6 +139,20 @@ export const DumbNav = ({
     collapsed ? classes.collapsed : ''
   }`
   const contentClasses = collapsed ? classes.contentCollapsed : classes.content
+
+  collapseIcon =
+    collapseIcon || navAnchor === 'left' ? (
+      <Icons.ChevronLeft />
+    ) : (
+      <Icons.ChevronRight />
+    )
+  expandIcon =
+    expandIcon || navAnchor === 'left' ? (
+      <Icons.ChevronRight />
+    ) : (
+      <Icons.ChevronLeft />
+    )
+
   return (
     <Fragment>
       <Drawer
@@ -184,8 +198,6 @@ export const DumbNav = ({
 export const Nav = ({
   className = '',
   component = 'div',
-  collapseIcon = <Icons.ChevronLeft />,
-  expandIcon = <Icons.ChevronRight />,
   closeButtonProps = {},
   ...props
 }: NavProps) => {
@@ -205,8 +217,6 @@ export const Nav = ({
     <DumbNav
       component={component}
       className={className}
-      collapseIcon={collapseIcon}
-      expandIcon={expandIcon}
       closeButtonProps={closeButtonProps}
       showCollapseButton={showCollapseButton}
       open={open}
