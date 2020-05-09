@@ -23,6 +23,10 @@ export interface Layout {
    */
   screen: Breakpoint
   /**
+   * Current nav width
+   */
+  currentNavWidth: number
+  /**
    * Function to control the collapsed state.
    * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
@@ -47,11 +51,10 @@ export interface Layout {
    */
   collapsible: boolean
   /**
-   * Width of the collapsed navigation
+   * Width of the collapsed navigation (px)
    * @default 64
    */
   collapsedWidth: number
-
   /**
    * Should the Footer adjust the size to fit when nav expanded,
    * set false to keep the same width and overflow the screen.
@@ -72,7 +75,7 @@ export interface Layout {
    */
   navVariant: Variant
   /**
-   * Width of the navigation drawer
+   * Width of the navigation drawer (px)
    * @default 256
    */
   navWidth: number

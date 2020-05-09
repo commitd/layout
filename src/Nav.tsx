@@ -14,51 +14,8 @@ import {
   Icons,
   makeStyles,
 } from '@committed/components'
+import { Layout } from './types'
 import { useLayout } from './Root'
-
-const useStyles = makeStyles(
-  ({ breakpoints, transitions, palette, spacing, zIndex, shadows }) => ({
-    root: {},
-    container: {
-      overflow: 'hidden',
-      display: 'flex',
-      flexGrow: 1,
-      flexDirection: 'column',
-      transition: transitions.create(['width'], {
-        easing: transitions.easing.sharp,
-        duration: transitions.duration.leavingScreen,
-      }),
-    },
-    content: {
-      flexGrow: 1,
-      overflow: 'auto',
-    },
-    collapseButton: {
-      backgroundColor: palette.background.paper,
-      color: palette.text.primary,
-      textAlign: 'center',
-      borderRadius: 0,
-      borderTop: '1px solid',
-      borderColor: 'rgba(0,0,0,0.12)',
-      [breakpoints.up('sm')]: {
-        minHeight: 40,
-      },
-    },
-    closeButton: {
-      position: 'absolute',
-      bottom: spacing(2),
-      zIndex: zIndex.modal + 1,
-      background: palette.background.paper,
-      boxShadow: shadows[3],
-      '@media (hover: none)': {
-        backgroundColor: palette.background.paper,
-      },
-      '&:hover': {
-        backgroundColor: palette.background.paper,
-      },
-    },
-  })
-)
 
 export interface NavProps {
   /**
@@ -89,50 +46,112 @@ export interface NavProps {
   children?: ReactNode
 }
 
-export const Nav = ({
-  className = '',
+const useStyles = makeStyles(
+  ({ breakpoints, transitions, palette, spacing, zIndex, shadows }) => ({
+    root: {},
+    container: {
+      overflow: 'hidden',
+      display: 'flex',
+      flexGrow: 1,
+      flexDirection: 'column',
+      transition: transitions.create(['width'], {
+        easing: transitions.easing.sharp,
+        duration: transitions.duration.leavingScreen,
+      }),
+    },
+    collapsed: {
+      overflowX: 'hidden',
+    },
+    content: {
+      flexGrow: 1,
+      overflow: 'auto',
+    },
+    contentCollapsed: {
+      flexGrow: 1,
+      overflowY: 'auto',
+      overflowX: 'hidden',
+    },
+    collapseButton: {
+      backgroundColor: palette.background.paper,
+      color: palette.text.primary,
+      textAlign: 'center',
+      borderRadius: 0,
+      borderTop: '1px solid',
+      borderColor: 'rgba(0,0,0,0.12)',
+      [breakpoints.up('sm')]: {
+        minHeight: 40,
+      },
+    },
+    closeButton: {
+      position: 'absolute',
+      bottom: spacing(2),
+      zIndex: zIndex.modal + 1,
+      background: palette.background.paper,
+      boxShadow: shadows[3],
+      '@media (hover: none)': {
+        backgroundColor: palette.background.paper,
+      },
+      '&:hover': {
+        backgroundColor: palette.background.paper,
+      },
+    },
+  })
+)
+
+interface DumbProps
+  extends Pick<
+    Layout,
+    | 'open'
+    | 'setOpen'
+    | 'navVariant'
+    | 'navAnchor'
+    | 'setCollapsed'
+    | 'collapsed'
+  > {
+  showCollapseButton: boolean
+  width: number
+}
+
+export const DumbNav = ({
   component: Component = 'div',
+  className,
   header = null,
-  collapseIcon = <Icons.ChevronLeft />,
-  expandIcon = <Icons.ChevronRight />,
+  collapseIcon,
+  expandIcon,
+  closeButtonProps,
+  showCollapseButton,
+  open,
+  setOpen,
+  navVariant,
+  navAnchor,
+  collapsed,
+  setCollapsed,
+  width,
   children,
-  closeButtonProps = {},
   ...props
-}: NavProps) => {
+}: NavProps & DumbProps) => {
   const classes = useStyles()
-  const {
-    open,
-    setOpen,
-    navVariant,
-    navAnchor,
-    navWidth,
-    collapsedWidth,
-    collapsible,
-    collapsed,
-    setCollapsed,
-  } = useLayout()
-  const getWidth = () => {
-    if (collapsible && collapsed) return collapsedWidth
-    return navWidth
-  }
-  const shouldRenderButton = collapsible
   const contentRef = useRef(null)
+  const drawerClasses = `${className} ${classes.root} ${
+    collapsed ? classes.collapsed : ''
+  }`
+  const contentClasses = collapsed ? classes.contentCollapsed : classes.content
   return (
     <Fragment>
       <Drawer
         {...props}
-        className={`${className} ${classes.root}`}
+        className={drawerClasses}
         open={open}
         onClose={setOpen}
         variant={navVariant}
         anchor={navAnchor}
       >
-        <Component className={classes.container} style={{ width: getWidth() }}>
+        <Component className={classes.container} style={{ width }}>
           {header}
-          <div ref={contentRef} className={classes.content}>
+          <div ref={contentRef} className={contentClasses}>
             {children}
           </div>
-          {shouldRenderButton && (
+          {showCollapseButton && (
             <Button
               className={classes.collapseButton}
               fullWidth
@@ -146,7 +165,7 @@ export const Nav = ({
       <Grow in={open && navVariant === 'temporary'}>
         <IconButton
           className={classes.closeButton}
-          style={{ left: navWidth + 16 }}
+          style={{ left: width + 16 }}
           onClick={setOpen}
           {...closeButtonProps}
         >
@@ -154,5 +173,44 @@ export const Nav = ({
         </IconButton>
       </Grow>
     </Fragment>
+  )
+}
+
+export const Nav = ({
+  className = '',
+  component = 'div',
+  collapseIcon = <Icons.ChevronLeft />,
+  expandIcon = <Icons.ChevronRight />,
+  closeButtonProps = {},
+  ...props
+}: NavProps) => {
+  const {
+    open,
+    setOpen,
+    navVariant,
+    navAnchor,
+    collapsible,
+    collapsed,
+    setCollapsed,
+    currentNavWidth,
+  } = useLayout()
+  const showCollapseButton = collapsible
+  return (
+    <DumbNav
+      component={component}
+      className={className}
+      collapseIcon={collapseIcon}
+      expandIcon={expandIcon}
+      closeButtonProps={closeButtonProps}
+      showCollapseButton={showCollapseButton}
+      open={open}
+      setOpen={setOpen}
+      navVariant={navVariant}
+      navAnchor={navAnchor}
+      collapsed={collapsed}
+      setCollapsed={setCollapsed}
+      width={currentNavWidth}
+      {...props}
+    />
   )
 }

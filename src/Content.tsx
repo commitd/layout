@@ -7,16 +7,6 @@ import React, {
 import { makeStyles } from '@committed/components'
 import { useLayout } from './Root'
 
-const useStyles = makeStyles(({ transitions }) => ({
-  root: {
-    flexGrow: 1,
-    transition: transitions.create(['margin'], {
-      easing: transitions.easing.sharp,
-      duration: transitions.duration.leavingScreen,
-    }),
-  },
-}))
-
 export interface ContentProps {
   /**
    * Add a class name to the component, can be used for additional styling
@@ -34,6 +24,41 @@ export interface ContentProps {
   children?: ReactNode
 }
 
+const useStyles = makeStyles(({ transitions }) => ({
+  root: {
+    flexGrow: 1,
+    transition: transitions.create(['margin'], {
+      easing: transitions.easing.sharp,
+      duration: transitions.duration.leavingScreen,
+    }),
+  },
+}))
+
+/*
+ * Content with no layout knowledge
+ */
+export const DumbContent = ({
+  component: Component = 'main',
+  className,
+  style,
+  marginLeft,
+  width,
+  ...props
+}: ContentProps & { marginLeft: number; width: string }) => {
+  const classes = useStyles()
+  return (
+    <Component
+      {...props}
+      className={`${className} ${classes.root}`}
+      style={{
+        ...style,
+        marginLeft,
+        width,
+      }}
+    />
+  )
+}
+
 /**
  * To contain the main content of the page.
  *
@@ -41,37 +66,17 @@ export interface ContentProps {
  */
 export const Content = ({
   className = '',
-  component: Component = 'main',
+  component = 'main',
   style = {},
   ...props
 }: ContentProps) => {
-  const classes = useStyles()
-  const {
-    navVariant,
-    navWidth,
-    collapsible,
-    collapsed,
-    collapsedWidth,
-    open,
-    navAnchor,
-    squeezed,
-  } = useLayout()
+  const { navVariant, currentNavWidth, open, navAnchor, squeezed } = useLayout()
   const getMargin = () => {
-    if (navAnchor !== 'left') return 0
-    if (navVariant === 'persistent' && open) {
-      // open is effect only when
-      // navVariant === 'persistent' ||
-      // navVariant === 'temporary'
-      return navWidth
+    if (navAnchor === 'left') {
+      return currentNavWidth
+    } else {
+      return 0
     }
-    if (navVariant === 'permanent') {
-      if (collapsible) {
-        if (collapsed) return collapsedWidth
-        return navWidth
-      }
-      return navWidth
-    }
-    return 0
   }
   const getWidth = () => {
     if (navVariant === 'persistent' && open) {
@@ -86,14 +91,13 @@ export const Content = ({
     return 'auto'
   }
   return (
-    <Component
+    <DumbContent
       {...props}
-      className={`${className} ${classes.root}`}
-      style={{
-        ...style,
-        marginLeft: getMargin(),
-        width: getWidth(),
-      }}
+      className={className}
+      component={component}
+      style={style}
+      marginLeft={getMargin()}
+      width={getWidth()}
     />
   )
 }

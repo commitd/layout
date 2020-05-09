@@ -42,53 +42,60 @@ const useStyles = makeStyles(({ transitions }) => ({
 }))
 
 /**
- * The footer is to be used after the Content and will grow and shrink according to the current state of the Navigation
+ * Footer with no layout knowledge
  */
-export const Footer = ({
-  className = '',
+export const DumbFooter = ({
   component: Component = 'footer',
-  color = 'primary.contrastText',
-  bgcolor = 'primary.main',
-  style = {},
+  className,
+  color,
+  bgcolor,
+  style,
+  marginLeft,
   ...props
-}: FooterProps) => {
+}: FooterProps & { marginLeft: number }) => {
   const classes = useStyles()
-  const {
-    navVariant,
-    navWidth,
-    collapsible,
-    collapsed,
-    collapsedWidth,
-    footerShrink,
-    open,
-    navAnchor,
-  } = useLayout()
-  const getMargin = () => {
-    if (navAnchor !== 'left' || !footerShrink) return 0
-    if (navVariant === 'persistent' && open) {
-      // open is effect only when
-      // navVariant === 'persistent' ||
-      // navVariant === 'temporary'
-      return navWidth
-    }
-    if (navVariant === 'permanent') {
-      if (collapsible) {
-        if (collapsed) return collapsedWidth
-        return navWidth
-      }
-      return navWidth
-    }
-    return 0
-  }
   return (
     <Component
       className={`${className} ${classes.root}`}
       style={{
         ...style,
-        marginLeft: getMargin(),
+        marginLeft,
       }}
     >
       <Box color={color} bgcolor={bgcolor} {...props} />
     </Component>
+  )
+}
+
+/**
+ * The footer is to be used after the Content and will grow and shrink according to the current state of the Navigation
+ */
+export const Footer = ({
+  className = '',
+  component = 'footer',
+  color = 'primary.contrastText',
+  bgcolor = 'primary.main',
+  style = {},
+  ...props
+}: FooterProps) => {
+  const { currentNavWidth, footerShrink, navAnchor } = useLayout()
+
+  const getMargin = () => {
+    if (navAnchor !== 'left' || !footerShrink) {
+      return 0
+    }
+    return currentNavWidth
+  }
+
+  return (
+    <DumbFooter
+      {...props}
+      className={className}
+      component={component}
+      color={color}
+      bgcolor={bgcolor}
+      style={style}
+      marginLeft={getMargin()}
+    />
   )
 }

@@ -11,9 +11,9 @@ import {
   IconButtonProps,
 } from '@committed/components'
 import { useLayout } from './Root'
-import { Layout } from './types'
+import { Layout, Position } from './types'
 
-export type HeaderProps = {
+export interface HeaderProps {
   /**
    * Add a class name to the component, can be used for additional styling
    */
@@ -63,72 +63,33 @@ const useStyles = makeStyles(({ transitions }) => ({
   },
 }))
 
-const createGet = (
-  {
-    clipped,
-    navVariant,
-    collapsible,
-    collapsed,
-    open,
-    squeezed,
-    navAnchor,
-  }: Layout,
-  normal: string | number,
-  shrink: string | number,
-  pushed: string | number,
-  unsqueeze: string | number
-) => () => {
-  if (clipped || navAnchor !== 'left') return normal
-  if (navVariant === 'persistent' && open) {
-    // open is effect only when
-    // navVariant === 'persistent' ||
-    // navVariant === 'temporary'
-    if (squeezed) {
-      return pushed
-    }
-    return unsqueeze
-  }
-  if (navVariant === 'permanent') {
-    if (collapsible) {
-      if (collapsed) return shrink
-      return pushed
-    }
-    return pushed
-  }
-  return normal
+interface DumbProps extends Pick<Layout, 'open' | 'setOpen'> {
+  zIndex: number
+  headerPosition: Position
+  width: string
+  marginLeft: number
+  shouldRenderMenu: boolean
 }
 
-export const Header = ({
-  className = '',
-  style = {},
-  closeMenuIcon = <Icons.ChevronLeft />,
-  openMenuIcon = <Icons.Menu />,
-  color = 'primary',
+export const DumbHeader = ({
+  className,
+  style,
+  closeMenuIcon,
+  openMenuIcon,
+  color,
   children,
-  toolbarProps = {},
-  menuButtonProps = {},
-}: HeaderProps) => {
-  const theme = useTheme()
+  toolbarProps,
+  menuButtonProps,
+  zIndex,
+  headerPosition,
+  width,
+  marginLeft,
+  open,
+  setOpen,
+  shouldRenderMenu,
+}: HeaderProps & DumbProps) => {
   const classes = useStyles()
-  const ctx = useLayout()
-  const {
-    clipped,
-    collapsedWidth,
-    navWidth,
-    navVariant,
-    headerPosition,
-    open,
-    setOpen,
-  } = ctx
-  const getWidth = createGet(
-    ctx,
-    '100%',
-    `calc(100% - ${collapsedWidth}px)`,
-    `calc(100% - ${navWidth}px)`,
-    '100%'
-  )
-  const getMargin = createGet(ctx, 0, collapsedWidth, navWidth, navWidth)
-  const shouldRenderMenu = navVariant !== 'permanent' && !!closeMenuIcon
+
   return (
     <AppBar
       color={color}
@@ -137,9 +98,9 @@ export const Header = ({
       position={headerPosition}
       style={{
         ...style,
-        zIndex: clipped ? theme.zIndex.drawer + 1 : theme.zIndex.appBar,
-        width: getWidth(),
-        marginLeft: getMargin(),
+        zIndex,
+        width,
+        marginLeft,
       }}
     >
       <Toolbar {...toolbarProps}>
@@ -153,8 +114,68 @@ export const Header = ({
             {open ? closeMenuIcon : openMenuIcon || closeMenuIcon}
           </IconButton>
         )}
-        {typeof children === 'function' ? children(ctx) : children}
+        {children}
       </Toolbar>
     </AppBar>
+  )
+}
+
+function selectState<T extends string | number>(
+  { clipped, squeezed, navAnchor }: Layout,
+  normal: T,
+  shrink: T
+) {
+  if (clipped || navAnchor !== 'left' || !squeezed) {
+    return normal
+  } else {
+    return shrink
+  }
+}
+
+export const Header = ({
+  className = '',
+  style = {},
+  closeMenuIcon = <Icons.ChevronLeft />,
+  openMenuIcon = <Icons.Menu />,
+  color = 'primary',
+  children,
+  toolbarProps = {},
+  menuButtonProps = {},
+}: HeaderProps) => {
+  const theme = useTheme()
+  const ctx = useLayout()
+  const {
+    clipped,
+    currentNavWidth,
+    navVariant,
+    headerPosition,
+    open,
+    setOpen,
+  } = ctx
+  const width = selectState<string>(
+    ctx,
+    '100%',
+    `calc(100% - ${currentNavWidth}px)`
+  )
+  const marginLeft = selectState<number>(ctx, 0, currentNavWidth)
+  const shouldRenderMenu = navVariant !== 'permanent' && !!closeMenuIcon
+  return (
+    <DumbHeader
+      className={className}
+      style={style}
+      closeMenuIcon={closeMenuIcon}
+      openMenuIcon={openMenuIcon}
+      color={color}
+      children={children}
+      toolbarProps={toolbarProps}
+      menuButtonProps={menuButtonProps}
+      zIndex={clipped ? theme.zIndex.drawer + 1 : theme.zIndex.appBar}
+      headerPosition={headerPosition}
+      width={width}
+      marginLeft={marginLeft}
+      open={open}
+      setOpen={setOpen}
+      shouldRenderMenu={shouldRenderMenu}
+    />
   )
 }

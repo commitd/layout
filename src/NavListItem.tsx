@@ -8,6 +8,7 @@ import {
   ListItemTextProps,
 } from '@committed/components'
 import { useLayout } from './Root'
+import { Layout } from './types'
 
 export interface NavListItemProps
   extends Omit<React.ComponentProps<typeof ListItem>, 'button' | 'onClick'> {
@@ -43,31 +44,21 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
   },
-  collapsedSize: {
-    minWidth: '32px',
-    minHeight: '32px',
-    alignItems: 'center',
-  },
 })
 
-/**
- * This is a ListItem that is aware of the layout.
- * In particular, it will close the navigation panel when in the temporary nav variant.
- *
- * This is a convenience component, and designed for use inside the Root > Nav > List.
- * If further functionality is required you can use the hook useLayout to achieve similar results.
- * Just call `setOpen(false)` on navigation, it is safe to do even if not in `temporary` mode.
- */
-export const NavListItem = ({
+interface DumbProps extends Pick<Layout, 'setOpen' | 'collapsed'> {}
+
+export const DumbNavListItem = ({
   icon,
   text,
   onClick,
   listItemIconProps,
   listItemTextProps,
+  setOpen,
+  collapsed,
   ...listItemProps
-}: NavListItemProps) => {
+}: NavListItemProps & DumbProps) => {
   const classes = useStyles()
-  const { setOpen, collapsed, collapsedWidth } = useLayout()
   return (
     <ListItem
       button
@@ -77,26 +68,29 @@ export const NavListItem = ({
           onClick(e)
         }
       }}
-      style={collapsed ? { width: collapsedWidth } : undefined}
       title={collapsed ? text : undefined}
       {...listItemProps}
     >
-      {icon && (
-        <ListItemIcon
-          className={collapsed ? classes.collapsedSize : undefined}
-          {...listItemIconProps}
-        >
-          {icon}
-        </ListItemIcon>
-      )}
-      {collapsed && icon ? null : (
-        <ListItemText
-          primary={text}
-          primaryTypographyProps={{ noWrap: true }}
-          className={classes.menuItemText}
-          {...listItemTextProps}
-        />
-      )}
+      {icon && <ListItemIcon {...listItemIconProps}>{icon}</ListItemIcon>}
+      <ListItemText
+        primary={text}
+        primaryTypographyProps={{ noWrap: true }}
+        className={classes.menuItemText}
+        {...listItemTextProps}
+      />
     </ListItem>
   )
+}
+
+/**
+ * This is a ListItem that is aware of the layout.
+ * In particular, it will close the navigation panel when in the temporary nav variant.
+ *
+ * This is a convenience component, and designed for use inside the Root > Nav > List.
+ * If further functionality is required you can use the hook useLayout to achieve similar results.
+ * Just call `setOpen(false)` on navigation, it is safe to do even if not in `temporary` mode.
+ */
+export const NavListItem = (props: NavListItemProps) => {
+  const { setOpen, collapsed } = useLayout()
+  return <DumbNavListItem setOpen={setOpen} collapsed={collapsed} {...props} />
 }
