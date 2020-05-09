@@ -164,7 +164,7 @@ export const DumbNav = ({
         anchor={navAnchor}
       >
         {/* Just for spacing */}
-        {clipped ? <Toolbar /> : null}
+        {clipped && navVariant !== 'temporary' ? <Toolbar /> : null}
         <Component className={classes.container} style={{ width }}>
           {header}
           <div ref={contentRef} className={contentClasses}>
