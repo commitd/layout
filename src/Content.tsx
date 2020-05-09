@@ -72,7 +72,7 @@ export const Content = ({
 }: ContentProps) => {
   const { navVariant, currentNavWidth, open, navAnchor, squeezed } = useLayout()
   const getMargin = () => {
-    if (navAnchor === 'left') {
+    if (navAnchor === 'left' && navVariant !== 'temporary') {
       return currentNavWidth
     } else {
       return 0
