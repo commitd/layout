@@ -20,6 +20,7 @@ steps:
     image: node:latest
     commands:
       - npm publish --access public
+      - yarn deploy-storybook --ci
     when:
       ref:
         - refs/tags/v*
