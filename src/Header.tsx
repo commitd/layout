@@ -47,6 +47,10 @@ export interface HeaderProps {
    * The color property for the AppBar
    */
   color?: PropTypes.Color | 'transparent'
+  /**
+   * Should the menu icon be shown in the
+   */
+  showMenuIcon?: boolean
   children?: ReactNode
 }
 
@@ -68,7 +72,9 @@ interface DumbProps extends Pick<Layout, 'open' | 'setOpen'> {
   headerPosition: Position
   width: string
   marginLeft: number
-  shouldRenderMenu: boolean
+  marginRight: number
+  showMenuLeft: boolean
+  showMenuRight: boolean
 }
 
 export const DumbHeader = ({
@@ -84,11 +90,24 @@ export const DumbHeader = ({
   headerPosition,
   width,
   marginLeft,
+  marginRight,
   open,
   setOpen,
-  shouldRenderMenu,
+  showMenuLeft,
+  showMenuRight,
 }: HeaderProps & DumbProps) => {
   const classes = useStyles()
+
+  const icon = (
+    <IconButton
+      color="inherit"
+      onClick={setOpen}
+      className={classes.menuButton}
+      {...menuButtonProps}
+    >
+      {open ? closeMenuIcon : openMenuIcon || closeMenuIcon}
+    </IconButton>
+  )
 
   return (
     <AppBar
@@ -101,46 +120,43 @@ export const DumbHeader = ({
         zIndex,
         width,
         marginLeft,
+        marginRight,
       }}
     >
       <Toolbar {...toolbarProps}>
-        {shouldRenderMenu && (
-          <IconButton
-            color="inherit"
-            onClick={setOpen}
-            className={classes.menuButton}
-            {...menuButtonProps}
-          >
-            {open ? closeMenuIcon : openMenuIcon || closeMenuIcon}
-          </IconButton>
-        )}
+        {showMenuLeft && icon}
         {children}
+        {showMenuRight && icon}
       </Toolbar>
     </AppBar>
   )
 }
 
 function selectState<T extends string | number>(
-  { clipped, squeezed, navAnchor }: Layout,
+  { clipped, squeezed }: Layout,
   normal: T,
-  shrink: T
+  shrink: T,
+  pushed: T
 ) {
-  if (clipped || navAnchor !== 'left' || !squeezed) {
+  if (clipped) {
     return normal
-  } else {
+  } else if (squeezed) {
     return shrink
+  } else {
+    return pushed
   }
 }
 
 export const Header = ({
   className = '',
   style = {},
-  closeMenuIcon = <Icons.ChevronLeft />,
+  closeMenuIcon,
   openMenuIcon = <Icons.Menu />,
   color = 'primary',
   children,
   toolbarProps = {},
   menuButtonProps = {},
+  showMenuIcon = true,
 }: HeaderProps) => {
   const theme = useTheme()
   const ctx = useLayout()
@@ -148,6 +164,7 @@ export const Header = ({
     clipped,
     currentNavWidth,
     navVariant,
+    navAnchor,
     headerPosition,
     open,
     setOpen,
@@ -155,10 +172,24 @@ export const Header = ({
   const width = selectState<string>(
     ctx,
     '100%',
-    `calc(100% - ${currentNavWidth}px)`
+    `calc(100% - ${currentNavWidth}px)`,
+    '100%'
   )
-  const marginLeft = selectState<number>(ctx, 0, currentNavWidth)
-  const shouldRenderMenu = navVariant !== 'permanent' && !!closeMenuIcon
+
+  closeMenuIcon =
+    closeMenuIcon || navAnchor === 'left' ? (
+      <Icons.ChevronLeft />
+    ) : (
+      <Icons.ChevronRight />
+    )
+  const shouldRenderMenu = navVariant !== 'permanent' && showMenuIcon
+  const showMenuLeft = shouldRenderMenu && navAnchor === 'left'
+  const showMenuRight = shouldRenderMenu && navAnchor === 'right'
+
+  const margin = selectState<number>(ctx, 0, currentNavWidth, currentNavWidth)
+  const marginLeft = navAnchor === 'left' ? margin : 0
+  const marginRight = navAnchor === 'right' ? margin : 0
+
   return (
     <DumbHeader
       className={className}
@@ -173,9 +204,11 @@ export const Header = ({
       headerPosition={headerPosition}
       width={width}
       marginLeft={marginLeft}
+      marginRight={marginRight}
       open={open}
       setOpen={setOpen}
-      shouldRenderMenu={shouldRenderMenu}
+      showMenuLeft={showMenuLeft}
+      showMenuRight={showMenuRight}
     />
   )
 }
