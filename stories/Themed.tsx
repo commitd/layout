@@ -1,27 +1,28 @@
-import React, { FC, ReactNode } from 'react'
 import {
-  Root,
-  Header,
-  Nav,
-  Content,
-  Footer,
-  NavListItem,
-  LayoutConfig,
-  useLayout,
-} from '../src'
-import {
-  ThemeSwitch,
-  ThemeProvider,
-  Typography,
-  IconButton,
   Box,
-  Icons,
+  Card,
   Container,
   Heading,
+  IconButton,
+  Icons,
   List,
+  ThemeProvider,
+  ThemeSwitch,
+  Typography,
   useThemeChoice,
 } from '@committed/components'
 import { LoremIpsum } from 'lorem-ipsum'
+import React, { FC, ReactNode } from 'react'
+import {
+  Content,
+  Footer,
+  Header,
+  LayoutConfig,
+  Nav,
+  NavListItem,
+  Root,
+  useLayout,
+} from '../src'
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -52,7 +53,7 @@ export const Themed: FC<{
   const [themeChoice, toggleThemeChoice, componentMounted] = useThemeChoice()
   const component = componentMounted ? (
     <ThemeProvider choice={themeChoice}>
-      <Root style={{ minHeight: '50vh' }} config={config}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={config}>
         <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
@@ -99,7 +100,7 @@ export const Themed: FC<{
               <Box mb={2}>
                 <Typography variant="h4">@committed/layout</Typography>
               </Box>
-              {content}
+              <Card p={3}>{content}</Card>
               <Box mt={3}>
                 {[...Array(10).keys()].map((i) => (
                   <Box key={'lorem' + i} mb={1}>

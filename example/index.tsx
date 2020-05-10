@@ -72,7 +72,7 @@ const App = () => {
   const [themeChoice, toggleThemeChoice, componentMounted] = useThemeChoice()
   const component = componentMounted ? (
     <ThemeProvider choice={themeChoice}>
-      <Root style={{ minHeight: '100vh' }} config={config}>
+      <Root config={config}>
         <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />

@@ -1,23 +1,24 @@
-import React, { FC, ReactNode } from 'react'
 import {
-  Root,
-  Header,
-  Nav,
-  Content,
-  Footer,
-  NavListItem,
-  LayoutConfig,
-} from '../src'
-import {
+  Box,
+  Card,
+  Container,
+  IconButton,
+  Icons,
+  List,
   ThemeProvider,
   Typography,
-  IconButton,
-  Box,
-  Icons,
-  Container,
-  List,
 } from '@committed/components'
 import { LoremIpsum } from 'lorem-ipsum'
+import React, { FC, ReactNode } from 'react'
+import {
+  Content,
+  Footer,
+  Header,
+  LayoutConfig,
+  Nav,
+  NavListItem,
+  Root,
+} from '../src'
 
 export const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -47,7 +48,7 @@ export const Example: FC<{
 }) => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }} config={config}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={config}>
         <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
@@ -80,7 +81,7 @@ export const Example: FC<{
               <Box mb={2}>
                 <Typography variant="h4">@committed/layout</Typography>
               </Box>
-              {content}
+              <Card p={3}>{content}</Card>
               <Box mt={3}>
                 {new Array(10).fill(null).map((_, index) => (
                   <Box key={'lorem' + index} mb={1}>

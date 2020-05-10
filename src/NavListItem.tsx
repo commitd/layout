@@ -8,7 +8,7 @@ import {
   ListItemTextProps,
 } from '@committed/components'
 import { useLayout } from './Root'
-import { Layout } from './types'
+import { Variant } from './types'
 
 export interface NavListItemProps
   extends Omit<React.ComponentProps<typeof ListItem>, 'button' | 'onClick'> {
@@ -33,6 +33,10 @@ export interface NavListItemProps
    */
   onClick?: React.MouseEventHandler<HTMLDivElement>
   /**
+   *
+   */
+  closeFor?: Array<Variant>
+  /**
    * To mark as selected
    */
   selected?: boolean
@@ -46,31 +50,17 @@ const useStyles = makeStyles({
   },
 })
 
-interface DumbProps extends Pick<Layout, 'setOpen' | 'collapsed'> {}
-
 export const DumbNavListItem = ({
   icon,
   text,
   onClick,
   listItemIconProps,
   listItemTextProps,
-  setOpen,
-  collapsed,
   ...listItemProps
-}: NavListItemProps & DumbProps) => {
+}: NavListItemProps) => {
   const classes = useStyles()
   return (
-    <ListItem
-      button
-      onClick={(e) => {
-        setOpen(false)
-        if (onClick != null) {
-          onClick(e)
-        }
-      }}
-      title={collapsed ? text : undefined}
-      {...listItemProps}
-    >
+    <ListItem button onClick={onClick} {...listItemProps}>
       {icon && <ListItemIcon {...listItemIconProps}>{icon}</ListItemIcon>}
       <ListItemText
         primary={text}
@@ -84,13 +74,39 @@ export const DumbNavListItem = ({
 
 /**
  * This is a ListItem that is aware of the layout.
- * In particular, it will close the navigation panel when in the temporary nav variant.
+ * In particular, it will close the navigation panel depending on the nav variant.
  *
  * This is a convenience component, and designed for use inside the Root > Nav > List.
  * If further functionality is required you can use the hook useLayout to achieve similar results.
- * Just call `setOpen(false)` on navigation, it is safe to do even if not in `temporary` mode.
+ * Just call `setOpen(false)` on navigation when you wan tto close the nav..
  */
-export const NavListItem = (props: NavListItemProps) => {
-  const { setOpen, collapsed } = useLayout()
-  return <DumbNavListItem setOpen={setOpen} collapsed={collapsed} {...props} />
+export const NavListItem = ({
+  closeFor = ['temporary'],
+  onClick,
+  text,
+  ...props
+}: NavListItemProps) => {
+  const { setOpen, collapsed, navVariant } = useLayout()
+  var action:
+    | undefined
+    | ((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) = undefined
+  if (closeFor.includes(navVariant)) {
+    action = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      setOpen(false)
+      if (onClick != null) {
+        onClick(e)
+      }
+    }
+  } else {
+    action = onClick
+  }
+
+  return (
+    <DumbNavListItem
+      onClick={action}
+      title={collapsed ? text : undefined}
+      text={text}
+      {...props}
+    />
+  )
 }

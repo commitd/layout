@@ -55,7 +55,7 @@ const config: Partial<LayoutConfig> = {
 
 const App = () => (
   <ThemeProvider theme={theme}>
-    <Root style={{ minHeight: '100vh' }} config={config}>
+    <Root config={config}>
       <Header>
         <Typography variant="h5">Application Name</Typography>
       </Header>

@@ -11,7 +11,7 @@ import {
 export const Use = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
         <Nav>
           <Typography>This is the Nav</Typography>
         </Nav>
@@ -28,7 +28,7 @@ export default {
 export const CustomIcons = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
         <Nav collapseIcon={<Icons.Clear />} expandIcon={<Icons.Forward />}>
           <Typography>This is the Nav</Typography>
         </Nav>
@@ -74,7 +74,7 @@ export const WithContent = () => {
   ]
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
             {list.map(({ primaryText, icon }, i) => (

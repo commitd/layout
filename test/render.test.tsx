@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 import { Root, Header, Nav, Content, Footer, NavListItem } from '../src'
 import {
   ThemeProvider,
@@ -27,7 +26,7 @@ const lorem = new LoremIpsum({
 export const Example = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
         <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />

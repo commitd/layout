@@ -5,7 +5,7 @@ import { ThemeProvider, Typography } from '@committed/components'
 export const Use = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
         <Content>
           <Typography>This is the content</Typography>
         </Content>

@@ -18,7 +18,7 @@ export default {
 export const NoHeader = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }} config={{}}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={{}}>
         <Nav>
           <List>
             <NavListItem
@@ -72,7 +72,11 @@ export const NoHeader = () => {
 export const NoNav = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }} config={{ navWidth: 0 }}>
+      <Root
+        fullscreen={false}
+        style={{ minHeight: '50vh' }}
+        config={{ navWidth: 0 }}
+      >
         <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
@@ -116,7 +120,7 @@ export const NoNav = () => {
 export const NoFooter = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }} config={{}}>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={{}}>
         <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
