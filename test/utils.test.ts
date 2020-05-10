@@ -1,14 +1,12 @@
 import { Layout } from '../src/types'
 import { defaultContext, getNavWidth, getScreenValue } from '../src/utils'
 
-const initialContext = defaultContext()
-
 describe('getNavWidth', () => {
   describe('variant permanent', () => {
     let config: Omit<Layout, 'currentNavWidth'>
 
     beforeEach(() => {
-      config = Object.assign({}, initialContext, {
+      config = Object.assign({}, defaultContext, {
         navVariant: 'permanent',
       })
     })
@@ -16,25 +14,25 @@ describe('getNavWidth', () => {
     it('returns navWidth when not collapsed and open', () => {
       config.collapsed = false
       config.open = true
-      expect(getNavWidth(config)).toBe(initialContext.navWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
     })
 
     it('returns navWidth when not collapsed and closed', () => {
       config.collapsed = false
       config.open = false
-      expect(getNavWidth(config)).toBe(initialContext.navWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
     })
 
     it('returns collapsedWidth when collapsed and open', () => {
       config.collapsed = true
       config.open = true
-      expect(getNavWidth(config)).toBe(initialContext.collapsedWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
     })
 
     it('returns collapsedWidth when collapsed and closed', () => {
       config.collapsed = true
       config.open = false
-      expect(getNavWidth(config)).toBe(initialContext.collapsedWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
     })
   })
 
@@ -42,7 +40,7 @@ describe('getNavWidth', () => {
     let config: Omit<Layout, 'currentNavWidth'>
 
     beforeEach(() => {
-      config = Object.assign({}, initialContext, {
+      config = Object.assign({}, defaultContext, {
         navVariant: 'persistent',
       })
     })
@@ -50,7 +48,7 @@ describe('getNavWidth', () => {
     it('returns navWidth when not collapsed and open', () => {
       config.collapsed = false
       config.open = true
-      expect(getNavWidth(config)).toBe(initialContext.navWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
     })
 
     it('returns 0 when not collapsed and closed', () => {
@@ -62,7 +60,7 @@ describe('getNavWidth', () => {
     it('returns collapsedWidth when collapsed and open', () => {
       config.collapsed = true
       config.open = true
-      expect(getNavWidth(config)).toBe(initialContext.collapsedWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
     })
 
     it('returns 0 when collapsed and closed', () => {
@@ -76,7 +74,7 @@ describe('getNavWidth', () => {
     let config: Omit<Layout, 'currentNavWidth'>
 
     beforeEach(() => {
-      config = Object.assign({}, initialContext, {
+      config = Object.assign({}, defaultContext, {
         navVariant: 'temporary',
       })
     })
@@ -84,7 +82,7 @@ describe('getNavWidth', () => {
     it('returns navWidth when not collapsed and open', () => {
       config.collapsed = false
       config.open = true
-      expect(getNavWidth(config)).toBe(initialContext.navWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
     })
 
     it('returns 0 when not collapsed and closed', () => {
@@ -96,7 +94,7 @@ describe('getNavWidth', () => {
     it('returns collapsedWidth when collapsed and open', () => {
       config.collapsed = true
       config.open = true
-      expect(getNavWidth(config)).toBe(initialContext.collapsedWidth)
+      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
     })
 
     it('returns 0 when collapsed and closed', () => {
