@@ -1,72 +1,121 @@
-import React, { useContext, ReactNode } from 'react'
-import { LayoutContext } from './Root'
-import { Theme, makeStyles } from '@committed/components'
+import React, {
+  ReactNode,
+  ElementType,
+  HTMLAttributes,
+  CSSProperties,
+} from 'react'
+import { useLayout } from './Root'
+import { makeStyles, Box } from '@committed/components'
 
 export interface FooterProps {
+  /**
+   * Add a class name to the component, can be used for additional styling
+   */
   className?: string
-  component?: React.ElementType<React.HTMLAttributes<HTMLElement>>
-  style?: React.CSSProperties
+  /**
+   * To add styling to the component
+   */
+  style?: CSSProperties
+  /**
+   * Change the component type used
+   * @default footer
+   */
+  component?: ElementType<HTMLAttributes<HTMLElement>>
+  /**
+   * The color used in the footer, can be keyed from the palette
+   */
+  color?: string
+  /**
+   * The background color used in the footer, can be keyed from the palette
+   */
+  bgcolor?: string
   children?: ReactNode
 }
 
-const useStyles = makeStyles<Theme>(({ palette, transitions }) => ({
+const useStyles = makeStyles(({ transitions }) => ({
   root: {
-    borderTop: '1px solid',
-    borderColor: palette.grey[200],
-    background: palette.primary.main,
-    color: palette.grey[50],
     transition: transitions.create(['margin'], {
       easing: transitions.easing.sharp,
-      duration: transitions.duration.leavingScreen
-    })
-  }
+      duration: transitions.duration.leavingScreen,
+    }),
+  },
 }))
 
-const Footer = ({
-  className = '',
+interface DumbProps {
+  width: string
+  marginLeft: number
+  marginRight: number
+}
+
+/**
+ * Footer with no layout knowledge
+ */
+export const DumbFooter = ({
   component: Component = 'footer',
-  style = {},
+  className,
+  color,
+  bgcolor,
+  style,
+  width,
+  marginLeft,
+  marginRight,
   ...props
-}: FooterProps) => {
+}: FooterProps & DumbProps) => {
   const classes = useStyles()
-  const ctx = useContext(LayoutContext)
-  const {
-    navVariant,
-    navWidth,
-    collapsible,
-    collapsed,
-    collapsedWidth,
-    footerShrink,
-    open,
-    navAnchor
-  } = ctx
-  const getMargin = () => {
-    if (navAnchor !== 'left' || !footerShrink) return 0
-    if (navVariant === 'persistent' && open) {
-      // open is effect only when
-      // navVariant === 'persistent' ||
-      // navVariant === 'temporary'
-      return navWidth
-    }
-    if (navVariant === 'permanent') {
-      if (collapsible) {
-        if (collapsed) return collapsedWidth
-        return navWidth
-      }
-      return navWidth
-    }
-    return 0
-  }
   return (
     <Component
-      {...props}
       className={`${className} ${classes.root}`}
       style={{
+        width,
+        marginLeft,
+        marginRight,
         ...style,
-        marginLeft: getMargin()
       }}
-    />
+    >
+      <Box color={color} bgcolor={bgcolor} {...props} />
+    </Component>
   )
 }
 
-export default Footer
+/**
+ * The footer is to be used after the Content and will grow and shrink according to the current state of the Navigation
+ */
+export const Footer = ({
+  className = '',
+  component = 'footer',
+  color = 'primary.contrastText',
+  bgcolor = 'primary.main',
+  style = {},
+  ...props
+}: FooterProps) => {
+  const { currentNavWidth, footerResponse, navAnchor } = useLayout()
+
+  const margin = {
+    static: 0,
+    squeezed: currentNavWidth,
+    pushed: currentNavWidth,
+  }[footerResponse]
+
+  const marginLeft = navAnchor === 'left' ? margin : 0
+  const marginRight = navAnchor === 'right' ? margin : 0
+
+  const width = {
+    static: '100%',
+    squeezed: `calc(100% - ${currentNavWidth}px)`,
+    pushed: '100%',
+  }[footerResponse]
+
+  return (
+    <DumbFooter
+      {...props}
+      className={className}
+      component={component}
+      color={color}
+      bgcolor={bgcolor}
+      style={style}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
+      width={width}
+    />
+  )
+}

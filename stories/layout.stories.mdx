@@ -1,19 +1,15 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { Root } from '../src'
+
+<Meta title="Introduction|Layout" />
+
 # Committed Components Layout
 
 [![Committed Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fcommitted.software%2Fbadge)](https://committed.io)
 [![Build Status](https://drone.committed.software/api/badges/commitd/layout/status.svg)](https://drone.committed.software/commitd/layout)
-[![Storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://committed.software/layout)
 
 This is a simple layout for standard looking material based apps, based on [Mui Layout](https://mui-treasury.com/components/layout)
-but using `@committed/components` as its base.
-
-<p align="center">
-  <img src="images/layout.png" style="width: 600px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/>
-</p>
-
-## 🔗 Live Demo
-
-Here's a [live demo](https://committed.software/docs) using layout and the [storybook](https://committed.software/layout)
+but using `@committed/components` as its base. Explore the stories to see the different possibilities.
 
 ## 🚀 Quickstart
 
@@ -34,7 +30,7 @@ yarn add @committed/components @material-ui/core @material-ui/icons react react-
 ```tsx
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ThemeProvider } from '@committed/components'
+import { ThemeProvider, Icons } from '@committed/components'
 import {
   Root,
   Header,
@@ -59,9 +55,9 @@ const App = () => (
       <Header>
         <Typography variant="h5">Application Name</Typography>
       </Header>
-      <Nav header={(ctx) => null}>
+      <Nav>
         <List>
-          <NavListItem text="Menu Item 1" icon={<AccountCircle />} />
+          <NavListItem text="Menu Item 1" icon={<Icons.AccountCircle />} />
         </List>
       </Nav>
       <Content>Content</Content>
@@ -78,33 +74,6 @@ If your own components need to respond to the layout use the `useLayout` hook to
 ## 📱 Responsive
 
 The layout adjusts for small screen sizes.
-
-<p align="center">
-  <img src="images/mobile.png" style="width: 200px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/>
-</p>
-
-## 📝 Config
-
-For each config parameter a single value or an object with breakpoint keys (`'xs' | 'sm' | 'md' | 'lg' | 'xl'`) can be supplied, e.g.
-
-```javascript
-const config = {
-  clipped: false,
-  collapsible: {
-    // fully specified
-    xs: true,
-    sm: false,
-    md: true,
-    lg: false,
-    xl: true,
-  }
-  navWidth: {
-    // partial specified, other use closest
-    sm: 200, // smDown and in sm
-    md: 256, // mdUp
-  },
-}
-```
 
 ## 📝 Config
 
@@ -152,13 +121,13 @@ How the elements respond to the navigation position changes is configured using 
 
 ### Props
 
-For component props, see the [storybook](https://committed.software/layout)
+For props of components see Component section.
 
 ## 💻 Development
 
 On first use run `yarn install` in both the root folder and the example folder.
 
-The main build is performed using:
+The main build is currently performed using:
 
 ```bash
 yarn build
@@ -170,11 +139,7 @@ For development use
 yarn start
 ```
 
-the same command can be run in the example folder to run a usage example.
-
-## 🤖 CI
-
-Pull requests go through CI checks using GitHub actions.
+the same commands can be run in the example folder to run a usage example.
 
 ## 👏 Credit
 
@@ -183,4 +148,4 @@ for further reference see https://github.com/siriwatknp/mui-layout.
 
 ## ©️ License
 
-[MIT](/LICENSE) - © Committed Software 2019 <https://committed.io>
+[MIT](/LICENSE) - © Committed Software 2019 https://committed.io

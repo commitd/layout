@@ -1,83 +1,64 @@
-import 'react-app-polyfill/ie11'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import {
-  Root,
-  Header,
-  Nav,
-  NavListItem,
-  Content,
-  Footer,
-  LayoutConfig,
-  useLayout,
-} from '../dist'
-import {
-  ThemeProvider,
-  Typography,
   Box,
-  IconButton,
-  Monospace,
-  List,
+  Card,
   Container,
+  Heading,
+  IconButton,
+  Icons,
+  List,
+  ThemeProvider,
   ThemeSwitch,
+  Typography,
   useThemeChoice,
 } from '@committed/components'
-import AccountCircle from '@material-ui/icons/AccountCircle'
 import { LoremIpsum } from 'lorem-ipsum'
+import React, { FC, ReactNode } from 'react'
+import {
+  Content,
+  Footer,
+  Header,
+  LayoutConfig,
+  Nav,
+  NavListItem,
+  Root,
+  useLayout,
+} from '../src'
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
-    max: 8,
-    min: 4,
+    max: 3,
+    min: 1,
   },
   wordsPerSentence: {
-    max: 32,
+    max: 16,
     min: 8,
   },
 })
 
-const config: Partial<LayoutConfig> = {
-  navVariant: {
-    sm: 'temporary',
-    md: 'persistent',
-    lg: 'permanent',
-  },
-  headerPosition: {
-    sm: 'relative',
-    md: 'sticky',
-  },
-  collapsible: {
-    md: true,
-    lg: false,
-  },
-  headerResponse: {
-    sm: 'static',
-    md: 'squeezed',
-  },
-  contentResponse: {
-    sm: 'static',
-    md: 'squeezed',
-  },
-  footerResponse: {
-    sm: 'static',
-    md: 'squeezed',
-  },
-}
-const Layout = () => {
-  const layout = useLayout()
-  return <Monospace>{JSON.stringify(layout, null, 2)}</Monospace>
-}
-
-const App = () => {
+export const Themed: FC<{
+  config?: Partial<LayoutConfig>
+  content: ReactNode
+  closeMenuIcon?: ReactNode
+  openMenuIcon?: ReactNode
+  collapseIcon?: ReactNode
+  expandIcon?: ReactNode
+}> = ({
+  config,
+  content,
+  closeMenuIcon,
+  openMenuIcon,
+  collapseIcon,
+  expandIcon,
+}) => {
   const [themeChoice, toggleThemeChoice, componentMounted] = useThemeChoice()
   const component = componentMounted ? (
     <ThemeProvider choice={themeChoice}>
-      <Root config={config}>
-        <Header>
+      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={config}>
+        <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
           <IconButton color="inherit">
-            <AccountCircle />
+            <Icons.AccountCircle />
           </IconButton>
           <ThemeSwitch
             themeChoice={themeChoice}
@@ -85,22 +66,31 @@ const App = () => {
             variant="celestial"
           />
         </Header>
-        <Nav>
+        <Nav
+          collapseIcon={collapseIcon}
+          expandIcon={expandIcon}
+          header={React.createElement(() => {
+            const { collapsed } = useLayout()
+            return (
+              <Heading.h2 align="center">{collapsed ? 'M' : 'Menu'}</Heading.h2>
+            )
+          })}
+        >
           <List>
             <NavListItem
-              key="item1"
+              key="1"
               text="Menu Item 1"
-              icon={<AccountCircle />}
+              icon={<Icons.AccountCircle />}
             />
             <NavListItem
-              key="item2"
+              key="2"
               text="Menu Item 2"
-              icon={<AccountCircle />}
+              icon={<Icons.AccountCircle />}
             />
             <NavListItem
-              key="item3"
+              key="3"
               text="Menu Item 3"
-              icon={<AccountCircle />}
+              icon={<Icons.AccountCircle />}
             />
           </List>
         </Nav>
@@ -110,11 +100,11 @@ const App = () => {
               <Box mb={2}>
                 <Typography variant="h4">@committed/layout</Typography>
               </Box>
-              <Layout />
+              <Card p={3}>{content}</Card>
               <Box mt={3}>
-                {new Array(20).fill(null).map((i) => (
-                  <Box mb={1}>
-                    <Typography variant="body2" color="textSecondary">
+                {[...Array(10).keys()].map((i) => (
+                  <Box key={'lorem' + i} mb={1}>
+                    <Typography variant="body1" color="textSecondary">
                       {lorem.generateParagraphs(1)}
                     </Typography>
                   </Box>
@@ -131,7 +121,6 @@ const App = () => {
       </Root>
     </ThemeProvider>
   ) : null
+
   return component
 }
-
-ReactDOM.render(<App />, document.getElementById('root'))

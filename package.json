@@ -1,6 +1,6 @@
 {
   "name": "@committed/layout",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Committed layout library",
   "author": "Committed",
   "license": "MIT",
@@ -11,20 +11,27 @@
     "registry": "https://registry.npmjs.org/"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test --env=jsdom",
-    "fix": "yarn lint --fix",
-    "lint": "tsdx lint src test example/index.tsx"
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint src test example/index.tsx",
+    "format": "prettier --write '**/{src,test,stories}/**/{*.js,*.ts,*.tsx,*.json,*.md,*.mdx}' example/index.tsx",
+    "prepare": "tsdx build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "peerDependencies": {
-    "@committed/components": "^1.0.0",
-    "@material-ui/icons": "^4.2.1",
-    "react": ">=16",
-    "react-dom": "^15.0.0 || ^16.0.0"
+    "@committed/components": ">=3.0.2",
+    "@material-ui/core": "4.x",
+    "react": ">=16"
   },
   "husky": {
     "hooks": {
@@ -36,17 +43,30 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "@committed/components": "^1.0.0",
-    "@material-ui/core": "^4.4.2",
-    "@material-ui/icons": "^4.2.1",
-    "@types/jest": "^24.0.18",
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0",
-    "husky": "^3.0.9",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "tsdx": "^0.9.2",
-    "tslib": "^1.10.0",
-    "typescript": "^3.6.3"
+    "@babel/core": "^7.9.6",
+    "@committed/components": "^3.0.2",
+    "@material-ui/core": "4.9.10",
+    "@material-ui/icons": "^4.9.1",
+    "@storybook/addon-docs": "^5.3.18",
+    "@storybook/addon-info": "^5.3.18",
+    "@storybook/addon-knobs": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/preset-typescript": "^3.0.0",
+    "@storybook/react": "^5.3.18",
+    "@storybook/storybook-deployer": "^2.8.5",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "babel-loader": "^8.1.0",
+    "husky": "^4.2.5",
+    "lorem-ipsum": "^2.0.3",
+    "prettier": "^2.0.5",
+    "react": "^16.13.1",
+    "react-docgen-typescript-loader": "^3.7.2",
+    "react-dom": "^16.13.1",
+    "react-is": "^16.13.1",
+    "ts-loader": "^7.0.2",
+    "tsdx": "^0.13.2",
+    "tslib": "^1.11.1",
+    "typescript": "^3.8.3"
   }
 }

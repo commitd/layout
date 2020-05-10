@@ -1,82 +1,109 @@
-import React, { useContext, ReactNode } from 'react'
-import { Theme, makeStyles } from '@committed/components'
-import { LayoutContext } from './Root'
+import React, {
+  ReactNode,
+  ElementType,
+  HTMLAttributes,
+  CSSProperties,
+} from 'react'
+import { makeStyles } from '@committed/components'
+import { useLayout } from './Root'
 
-const useStyles = makeStyles<Theme>(({ transitions }) => ({
+export interface ContentProps {
+  /**
+   * Add a class name to the component, can be used for additional styling
+   */
+  className?: string
+  /**
+   * To add styling to the component
+   */
+  style?: CSSProperties
+  /**
+   * Change the component type used
+   * @default main
+   */
+  component?: ElementType<HTMLAttributes<HTMLElement>>
+  children?: ReactNode
+}
+
+const useStyles = makeStyles(({ transitions }) => ({
   root: {
     flexGrow: 1,
     transition: transitions.create(['margin'], {
       easing: transitions.easing.sharp,
-      duration: transitions.duration.leavingScreen
-    })
-  }
+      duration: transitions.duration.leavingScreen,
+    }),
+  },
 }))
 
-export interface ContentProps {
-  className?: string
-  style?: any
-  component?: React.ElementType<React.HTMLAttributes<HTMLElement>>
-  children?: ReactNode
+interface DumbProps {
+  marginLeft: number
+  marginRight: number
+  width: string
 }
 
-const Content = ({
-  className = '',
+/*
+ * Content with no layout knowledge
+ */
+export const DumbContent = ({
   component: Component = 'main',
-  style = {},
+  className,
+  style,
+  marginLeft,
+  marginRight,
+  width,
   ...props
-}: ContentProps) => {
+}: ContentProps & DumbProps) => {
   const classes = useStyles()
-  const ctx = useContext(LayoutContext)
-  const {
-    navVariant,
-    navWidth,
-    collapsible,
-    collapsed,
-    collapsedWidth,
-    open,
-    navAnchor,
-    squeezed
-  } = ctx
-  const getMargin = () => {
-    if (navAnchor !== 'left') return 0
-    if (navVariant === 'persistent' && open) {
-      // open is effect only when
-      // navVariant === 'persistent' ||
-      // navVariant === 'temporary'
-      return navWidth
-    }
-    if (navVariant === 'permanent') {
-      if (collapsible) {
-        if (collapsed) return collapsedWidth
-        return navWidth
-      }
-      return navWidth
-    }
-    return 0
-  }
-  const getWidth = () => {
-    if (navVariant === 'persistent' && open) {
-      // open is effect only when
-      // navVariant === 'persistent' ||
-      // navVariant === 'temporary'
-      if (squeezed) {
-        return 'auto'
-      }
-      return '100%'
-    }
-    return 'auto'
-  }
   return (
     <Component
       {...props}
       className={`${className} ${classes.root}`}
       style={{
+        marginLeft,
+        marginRight,
+        width,
         ...style,
-        marginLeft: getMargin(),
-        width: getWidth()
       }}
     />
   )
 }
 
-export default Content
+/**
+ * To contain the main content of the page.
+ *
+ * Always visible, grows to fill the vertical space
+ */
+export const Content = ({
+  className = '',
+  component = 'main',
+  style = {},
+  ...props
+}: ContentProps) => {
+  const { currentNavWidth, navAnchor, contentResponse } = useLayout()
+
+  const margin = {
+    static: 0,
+    squeezed: currentNavWidth,
+    pushed: currentNavWidth,
+  }[contentResponse]
+
+  const marginLeft = navAnchor === 'left' ? margin : 0
+  const marginRight = navAnchor === 'right' ? margin : 0
+
+  const width = {
+    static: '100%',
+    squeezed: `calc(100% - ${currentNavWidth}px)`,
+    pushed: '100%',
+  }[contentResponse]
+
+  return (
+    <DumbContent
+      {...props}
+      className={className}
+      component={component}
+      style={style}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
+      width={width}
+    />
+  )
+}

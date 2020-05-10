@@ -1,83 +1,70 @@
-import React, { useState, useMemo, CSSProperties } from 'react'
-import presets, { LayoutConfig, getScreenValue } from './util'
+import React, {
+  useState,
+  useMemo,
+  CSSProperties,
+  createContext,
+  HTMLAttributes,
+  ReactNode,
+  ElementType,
+} from 'react'
 import { useWidth, makeStyles } from '@committed/components'
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints'
+import { LayoutConfig } from './types'
+import { defaultContext, createNewContext, getNavWidth } from './utils'
+import { presets } from './presets'
 
 export interface RootProps {
+  /**
+   * Add a class name to the component, can be used for additional styling
+   */
   className?: string
-  component?: React.ElementType<React.HTMLAttributes<HTMLElement>>
-  config?: Partial<LayoutConfig>
+  /**
+   * To add styling to the component
+   */
   style?: CSSProperties
-  children?: React.ReactNode
+  /**
+   * Change the component type used
+   * @default div
+   */
+  component?: ElementType<HTMLAttributes<HTMLElement>>
+  /**
+   * The configuration of the layout, see Layout Config.
+   * When providing a config it is merged on to the default so only changes from the default need to be specified.
+   * See LayoutConfig in types.
+   */
+  config?: Partial<LayoutConfig>
+  /**
+   * Set false to remove the full screen setting and control the size yourself
+   * @default true
+   */
+  fullscreen?: boolean
+  children?: ReactNode
 }
 
-const initialConfig = presets.createDefaultLayout()
-export const LayoutContext = React.createContext(presets.defaultContext())
+const LayoutContext = createContext(defaultContext)
 
 const useStyles = makeStyles({
   root: {
     display: 'flex',
-    flexDirection: 'column'
-  }
+    flexDirection: 'column',
+  },
+  fullscreen: {
+    height: '100vh',
+  },
 })
 
-const createContext = (
-  config: Partial<LayoutConfig>,
-  width: Breakpoint,
-  open: boolean,
-  collapsed: boolean,
-  setOpen: (val: boolean) => any,
-  setCollapsed: (val: boolean) => any
-) => {
-  const {
-    clipped,
-    collapsible,
-    collapsedWidth,
-    navVariant,
-    navWidth,
-    navAnchor,
-    headerPosition,
-    squeezed,
-    footerShrink
-  } = config
-
-  return {
-    open,
-    collapsed,
-    clipped: getScreenValue(width, clipped, initialConfig.clipped),
-    collapsible: getScreenValue(width, collapsible, initialConfig.collapsible),
-    collapsedWidth: getScreenValue(
-      width,
-      collapsedWidth,
-      initialConfig.collapsedWidth
-    ),
-    navVariant: getScreenValue(width, navVariant, initialConfig.navVariant),
-    navWidth: getScreenValue(width, navWidth, initialConfig.navWidth),
-    navAnchor: getScreenValue(width, navAnchor, initialConfig.navAnchor),
-    headerPosition: getScreenValue(
-      width,
-      headerPosition,
-
-      initialConfig.headerPosition
-    ),
-    squeezed: getScreenValue(width, squeezed, initialConfig.squeezed),
-    footerShrink: getScreenValue(
-      width,
-      footerShrink,
-      initialConfig.footerShrink
-    ),
-    screen: width,
-    setOpen: (val: boolean | object) =>
-      setOpen(typeof val === 'object' ? !open : val),
-    setCollapsed: (val: boolean | object) =>
-      setCollapsed(typeof val === 'object' ? !collapsed : val)
-  }
-}
-
-const Root = ({
+/**
+ * The Root component establishes the context for all the layout components.
+ * All other layout out must be done inside the Root.
+ *
+ * Within the root any component can use the `useLayout` hook to respond to layout changes or access the functions to force layout changes.
+ *
+ * When providing a config it is merged on to the default so only changes from the default need to be specified.
+ */
+export const Root = ({
   className = '',
   component = 'div',
-  config = initialConfig,
+  config = presets.createDefaultLayout(),
+  fullscreen = true,
   children,
   ...props
 }: RootProps) => {
@@ -87,18 +74,31 @@ const Root = ({
   const [collapsed, setCollapsed] = useState(false)
   const [open, setOpen] = useState(false)
 
-  const value = useMemo(
-    () => createContext(config, width, open, collapsed, setOpen, setCollapsed),
-    [config, width, open, collapsed]
-  )
+  const value = useMemo(() => {
+    const layout = createNewContext(
+      config,
+      width,
+      open,
+      collapsed,
+      setOpen,
+      setCollapsed
+    )
+    const currentNavWidth = getNavWidth(layout)
+    return { currentNavWidth, ...layout }
+  }, [config, width, open, collapsed])
 
   return (
     <LayoutContext.Provider value={value}>
-      <Component className={`${className} ${classes.root}`} {...props}>
-        {typeof children === 'function' ? children(value) : children}
+      <Component
+        className={`${className} ${classes.root} ${
+          fullscreen ? classes.fullscreen : ''
+        }`}
+        {...props}
+      >
+        {children}
       </Component>
     </LayoutContext.Provider>
   )
 }
 
-export default Root
+export const useLayout = () => React.useContext(LayoutContext)
