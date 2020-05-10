@@ -14,7 +14,6 @@ import { Example } from './Example'
 export default {
   title: 'Components|Root',
   component: Root,
-  decorators: [withKnobs],
 }
 
 export const Default = () => {
@@ -25,89 +24,6 @@ export const Default = () => {
           This example is the default layout preset. In addition to defaults,
           it's clipped, squeezed and sticky. Try changing the size of your
           window.
-        </Typography>
-      }
-    />
-  )
-}
-
-export const WithKnobs = () => {
-  return (
-    <Example
-      config={{
-        collapsedWidth: number('collapsedWidth', 64, {
-          range: true,
-          min: 0,
-          max: 512,
-          step: 1,
-        }),
-        collapsible: boolean('collapsible', true),
-        headerPosition: select(
-          'headerPosition',
-          {
-            static: 'static',
-            relative: 'relative',
-            sticky: 'sticky',
-            fixed: 'fixed',
-            absolute: 'absolute',
-          },
-          'relative'
-        ) as Position,
-        navAnchor: select(
-          'navAnchor',
-          {
-            left: 'left',
-            right: 'right',
-          },
-          'left'
-        ) as Orientation,
-        navVariant: select(
-          'navVariant',
-          {
-            permanent: 'permanent',
-            temporary: 'temporary',
-            persistent: 'persistent',
-          },
-          'permanent'
-        ) as Variant,
-        navWidth: number('navWidth', 256, {
-          range: true,
-          min: 0,
-          max: 512,
-          step: 1,
-        }),
-        headerResponse: select(
-          'headerResponse',
-          {
-            clipped: 'clipped',
-            static: 'static',
-            squeezed: 'squeezed',
-            pushed: 'pushed',
-          },
-          'squeezed'
-        ) as HeaderResponse,
-        contentResponse: select(
-          'contentResponse',
-          {
-            static: 'static',
-            squeezed: 'squeezed',
-            pushed: 'pushed',
-          },
-          'squeezed'
-        ) as Response,
-        footerResponse: select(
-          'footerResponse',
-          {
-            static: 'static',
-            squeezed: 'squeezed',
-            pushed: 'pushed',
-          },
-          'squeezed'
-        ) as Response,
-      }}
-      content={
-        <Typography variant="body2" color="textPrimary">
-          In canvas view, use the knobs tab below to try out different props!
         </Typography>
       }
     />
