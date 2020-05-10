@@ -19,7 +19,7 @@ import {
 } from '@committed/components'
 import { LoremIpsum } from 'lorem-ipsum'
 
-const lorem = new LoremIpsum({
+export const lorem = new LoremIpsum({
   sentencesPerParagraph: {
     max: 3,
     min: 1,
