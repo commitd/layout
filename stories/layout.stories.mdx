@@ -98,17 +98,26 @@ const config = {
 }
 ```
 
-| Config parameter | Type                                      | Description                                                                                                                                                                     | Default Value |
-| ---------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| clipped          | boolean \| ScreenProps\<boolean\>         | Clipped moves the header over the top of the navigation drawer, unclipped makes navigation full height                                                                          | false         |
-| collapsible      | boolean \| ScreenProps\<boolean\>         | Can the navigation be collapsed to a smaller form                                                                                                                               | true          |
-| collapsedWidth   | number \| ScreenProps\<number\>           | Width of the collapsed navigation                                                                                                                                               | 64            |
-| footerShrink     | boolean \| ScreenProps\<boolean\>         | Footer to adjust the size to fit when nav expanded,set false to keep the same width and overflow the screen.                                                                    | true          |
-| navAnchor        | Orientation \| ScreenProps\<Orientation\> | Which side of the screen to show the nav panel                                                                                                                                  | left          |
-| navVariant       | Variant \| ScreenProps\<Variant\>         | **Permanent**: stays all the time. **Persistent**: remains open but can be hidden with button. **Temporary**: hides on click away (and selection).                              | permanent     |
-| navWidth         | number \| ScreenProps\<number\>           | Width of the navigation drawer                                                                                                                                                  | 256           |
-| headerPosition   | Position \| ScreenProps\<Position\>       | Position applied to the AppBar header. one of 'static', 'relative', 'sticky', 'fixed', 'absolute' See https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning | relative      |
-| squeezed         | boolean \| ScreenProps\<\>                | Both header and content adjust the size to fit when nav expanded, set false to keep the same width and overflow the screen.                                                     | boolean       |
+| Config parameter | Type                                            | Description                                                                                                                                                                     | Default Value |
+| ---------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| collapsible      | boolean \| ScreenProps\<boolean\>               | Can the navigation be collapsed to a smaller form                                                                                                                               | true          |
+| collapsedWidth   | number \| ScreenProps\<number\>                 | Width of the collapsed navigation                                                                                                                                               | 64            |
+| navAnchor        | Orientation \| ScreenProps\<Orientation\>       | Which side of the screen to show the nav panel                                                                                                                                  | left          |
+| navVariant       | Variant \| ScreenProps\<Variant\>               | **Permanent**: stays all the time. **Persistent**: remains open but can be hidden with button. **Temporary**: hides on click away (and selection).                              | permanent     |
+| navWidth         | number \| ScreenProps\<number\>                 | Width of the navigation drawer                                                                                                                                                  | 256           |
+| headerPosition   | Position \| ScreenProps\<Position\>             | Position applied to the AppBar header. one of 'static', 'relative', 'sticky', 'fixed', 'absolute' See https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning | relative      |
+| headerResponse   | HeaderResponse \| ScreenProps\<HeaderResponse\> | How should the Header adjust its size and position when navigation expanded . One of 'clipped', 'static', 'squeezed', 'pushed'.                                                 | 'squeezed'    |
+| contentResponse  | Response \| ScreenProps\<Response\>             | How should the Content adjust its size and position when navigation expanded. One of 'static', 'squeezed', 'pushed'.                                                            | 'squeezed'    |
+| footerResponse   | Response \| ScreenProps\<Response\>             | How should the Footer adjust its size and position when navigation expanded. One of 'static', 'squeezed', 'pushed'.                                                             | 'squeezed'    |
+
+### Response
+
+How the elements respond to the navigation position changes is configured using the `xxxResponse` parameters. The values are:
+
+- **static**: does not move for the navigation drawer, which sits on top
+- **squeezed**: size is reduced to allow for the navigation draw
+- **pushed**: the size remains the same but is moved over to allow for the drawer, only effective for navAnchor `left`
+- **clipped**: (Header only) moves the header over the top of the navigation drawer
 
 ### Props
 

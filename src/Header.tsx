@@ -116,11 +116,11 @@ export const DumbHeader = ({
       className={`${className} ${classes.root}`}
       position={headerPosition}
       style={{
-        ...style,
         zIndex,
         width,
         marginLeft,
         marginRight,
+        ...style,
       }}
     >
       <Toolbar {...toolbarProps}>
@@ -130,21 +130,6 @@ export const DumbHeader = ({
       </Toolbar>
     </AppBar>
   )
-}
-
-function selectState<T extends string | number>(
-  { clipped, squeezed }: Layout,
-  normal: T,
-  shrink: T,
-  pushed: T
-) {
-  if (clipped) {
-    return normal
-  } else if (squeezed) {
-    return shrink
-  } else {
-    return pushed
-  }
 }
 
 export const Header = ({
@@ -161,20 +146,14 @@ export const Header = ({
   const theme = useTheme()
   const layout = useLayout()
   const {
-    clipped,
     currentNavWidth,
     navVariant,
     navAnchor,
     headerPosition,
+    headerResponse,
     open,
     setOpen,
   } = layout
-  const width = selectState<string>(
-    layout,
-    '100%',
-    `calc(100% - ${currentNavWidth}px)`,
-    '100%'
-  )
 
   closeMenuIcon =
     closeMenuIcon || navAnchor === 'left' ? (
@@ -186,14 +165,22 @@ export const Header = ({
   const showMenuLeft = shouldRenderMenu && navAnchor === 'left'
   const showMenuRight = shouldRenderMenu && navAnchor === 'right'
 
-  const margin = selectState<number>(
-    layout,
-    0,
-    currentNavWidth,
-    currentNavWidth
-  )
+  const margin = {
+    clipped: 0,
+    static: 0,
+    squeezed: currentNavWidth,
+    pushed: currentNavWidth,
+  }[headerResponse]
+
   const marginLeft = navAnchor === 'left' ? margin : 0
   const marginRight = navAnchor === 'right' ? margin : 0
+
+  const width = {
+    clipped: '100%',
+    static: '100%',
+    squeezed: `calc(100% - ${currentNavWidth}px)`,
+    pushed: '100%',
+  }[headerResponse]
 
   return (
     <DumbHeader
@@ -205,7 +192,11 @@ export const Header = ({
       children={children}
       toolbarProps={toolbarProps}
       menuButtonProps={menuButtonProps}
-      zIndex={clipped ? theme.zIndex.drawer + 1 : theme.zIndex.appBar}
+      zIndex={
+        headerResponse === 'clipped'
+          ? theme.zIndex.drawer + 1
+          : theme.zIndex.appBar
+      }
       headerPosition={headerPosition}
       width={width}
       marginLeft={marginLeft}

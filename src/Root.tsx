@@ -10,6 +10,7 @@ import React, {
 import { useWidth, makeStyles } from '@committed/components'
 import { LayoutConfig } from './types'
 import { defaultContext, createNewContext, getNavWidth } from './utils'
+import { presets } from './presets'
 
 export interface RootProps {
   /**
@@ -34,7 +35,7 @@ export interface RootProps {
   children?: ReactNode
 }
 
-const LayoutContext = createContext(defaultContext())
+const LayoutContext = createContext(defaultContext)
 
 const useStyles = makeStyles({
   root: {
@@ -54,7 +55,7 @@ const useStyles = makeStyles({
 export const Root = ({
   className = '',
   component = 'div',
-  config = {},
+  config = presets.createDefaultLayout(),
   children,
   ...props
 }: RootProps) => {

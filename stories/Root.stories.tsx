@@ -1,5 +1,12 @@
 import React from 'react'
-import { Position, Variant, Orientation, Root } from '../src'
+import {
+  Position,
+  Variant,
+  Orientation,
+  HeaderResponse,
+  Response,
+  Root,
+} from '../src'
 import { Typography } from '@committed/components'
 import { withKnobs, boolean, number, select } from '@storybook/addon-knobs'
 import { Example } from './Example'
@@ -13,7 +20,6 @@ export default {
 export const Default = () => {
   return (
     <Example
-      config={{}}
       content={
         <Typography variant="body2" color="textPrimary">
           This example is the default layout preset. In addition to defaults,
@@ -29,7 +35,6 @@ export const WithKnobs = () => {
   return (
     <Example
       config={{
-        clipped: boolean('clipped', false),
         collapsedWidth: number('collapsedWidth', 64, {
           range: true,
           min: 0,
@@ -37,7 +42,6 @@ export const WithKnobs = () => {
           step: 1,
         }),
         collapsible: boolean('collapsible', true),
-        footerShrink: boolean('footerShrink', true),
         headerPosition: select(
           'headerPosition',
           {
@@ -72,7 +76,34 @@ export const WithKnobs = () => {
           max: 512,
           step: 1,
         }),
-        squeezed: boolean('squeezed', false),
+        headerResponse: select(
+          'headerResponse',
+          {
+            clipped: 'clipped',
+            static: 'static',
+            squeezed: 'squeezed',
+            pushed: 'pushed',
+          },
+          'squeezed'
+        ) as HeaderResponse,
+        contentResponse: select(
+          'contentResponse',
+          {
+            static: 'static',
+            squeezed: 'squeezed',
+            pushed: 'pushed',
+          },
+          'squeezed'
+        ) as Response,
+        footerResponse: select(
+          'footerResponse',
+          {
+            static: 'static',
+            squeezed: 'squeezed',
+            pushed: 'pushed',
+          },
+          'squeezed'
+        ) as Response,
       }}
       content={
         <Typography variant="body2" color="textPrimary">

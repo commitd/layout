@@ -5,7 +5,6 @@ import { Example } from './Example'
 export const SuppliedIcons = () => {
   return (
     <Example
-      config={{}}
       content={
         <Typography variant="body2" color="textPrimary">
           The icons used can be replaces by supplying the icons as props. In

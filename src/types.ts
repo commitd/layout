@@ -6,6 +6,16 @@ export type Variant = 'permanent' | 'persistent' | 'temporary'
 export type Position = 'static' | 'relative' | 'sticky' | 'fixed' | 'absolute'
 
 export type Orientation = 'left' | 'right'
+/**
+ *  - static: does not move for the navigation drawer, which sits on top
+ *  - squeezed: size is reduced to allow for the navigation draw
+ *  - pushed: the size remains the same but is moved over to allow for the drawer.
+ */
+export type Response = 'static' | 'squeezed' | 'pushed'
+/**
+ *  - clipped: moves the header over the top of the navigation drawer
+ */
+export type HeaderResponse = 'clipped' | Response
 
 export type ScreenProps<P> = Partial<Record<Breakpoint, P>>
 
@@ -40,12 +50,6 @@ export interface Layout {
   // The below is the LayoutConfig for the current screen size
 
   /**
-   * clipped, moves the header over the top of the navigation drawer
-   * unclipped makes navigation full height
-   * @default false
-   */
-  clipped: boolean
-  /**
    * Can the navigation be collapsed to a smaller form
    * @default true
    */
@@ -55,12 +59,6 @@ export interface Layout {
    * @default 64
    */
   collapsedWidth: number
-  /**
-   * Should the Footer adjust the size to fit when nav expanded,
-   * set false to keep the same width and overflow the screen.
-   * @default true
-   */
-  footerShrink: boolean
   /**
    * Which side of the screen to show the navigation panel
    * @default left
@@ -87,20 +85,39 @@ export interface Layout {
    */
   headerPosition: Position
   /**
-   * Both header and content adjust the size to fit when nav expanded,
-   * set false to keep the same width and overflow the screen.
-   * @default true
+   * How should the header and content adjust the size and position to fit when nav expanded
+   *
+   *  - static: does not move for the navigation drawer, which sits on top
+   *  - squeezed: size is reduced to allow for the navigation draw
+   *  - pushed: the size remains the same but is moved over to allow for the drawer.
+   *  - clipped: moves the header over the top of the navigation drawer
+   *
+   * @default squeezed
    */
-  squeezed: boolean
+  headerResponse: HeaderResponse
+  /**
+   * How should the header and content adjust the size and position to fit when nav expanded
+   *
+   *  - static: does not move for the navigation drawer, which sits on top
+   *  - squeezed: size is reduced to allow for the navigation draw
+   *  - pushed: the size remains the same but is moved over to allow for the drawer.
+   *
+   * @default squeezed
+   */
+  contentResponse: Response
+  /**
+   * How should the Footer adjust its size and position when nav expanded
+   *
+   *  - static: does not move for the navigation drawer, which sits on top
+   *  - squeezed: size is reduced to allow for the navigation draw
+   *  - pushed: the size remains the same but is moved over to allow for the drawer.
+   *
+   * @default squeezed
+   */
+  footerResponse: Response
 }
 
 export interface LayoutConfig {
-  /**
-   * clipped, moves the header over the top of the navigation drawer
-   * unclipped makes navigation full height
-   * @default false
-   */
-  clipped: boolean | ScreenProps<boolean>
   /**
    * Can the navigation be collapsed to a smaller form
    * @default true
@@ -111,12 +128,6 @@ export interface LayoutConfig {
    * @default 64
    */
   collapsedWidth: number | ScreenProps<number>
-  /**
-   * Footer to adjust the size to fit when nav expanded,
-   * set false to keep the same width and overflow the screen.
-   * @default true
-   */
-  footerShrink: boolean | ScreenProps<boolean>
   /**
    * Which side of the screen to show the nav panel
    * @default left
@@ -143,9 +154,34 @@ export interface LayoutConfig {
    */
   headerPosition: Position | ScreenProps<Position>
   /**
-   * Both header and content adjust the size to fit when nav expanded,
-   * set false to keep the same width and overflow the screen.
-   * @default true
+   * How should the Header adjust its size and position when navigation expanded
+   *
+   *  - static: does not move for the navigation drawer, which sits on top
+   *  - squeezed: size is reduced to allow for the navigation draw
+   *  - pushed: the size remains the same but is moved over to allow for the drawer.
+   *  - clipped: moves the header over the top of the navigation drawer, only effective for navAnchor `left`
+   *
+   * @default squeezed
    */
-  squeezed: boolean | ScreenProps<boolean>
+  headerResponse: HeaderResponse | ScreenProps<HeaderResponse>
+  /**
+   * How should the Content adjust its size and position when navigation expanded
+   *
+   *  - static: does not move for the navigation drawer, which sits on top
+   *  - squeezed: size is reduced to allow for the navigation draw
+   *  - pushed: the size remains the same but is moved over to allow for the drawer, only effective for navAnchor `left`
+   *
+   * @default squeezed
+   */
+  contentResponse: Response | ScreenProps<Response>
+  /**
+   * How should the Footer adjust its size and position when navigation expanded
+   *
+   *  - static: does not move for the navigation drawer, which sits on top
+   *  - squeezed: size is reduced to allow for the navigation draw
+   *  - pushed: the size remains the same but is moved over to allow for the drawer, only effective for navAnchor `left`
+   *
+   * @default squeezed
+   */
+  footerResponse: Response | ScreenProps<Response>
 }

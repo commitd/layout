@@ -6,7 +6,6 @@ import React, {
 } from 'react'
 import { makeStyles } from '@committed/components'
 import { useLayout } from './Root'
-import { Layout } from './types'
 
 export interface ContentProps {
   /**
@@ -59,25 +58,13 @@ export const DumbContent = ({
       {...props}
       className={`${className} ${classes.root}`}
       style={{
-        ...style,
         marginLeft,
         marginRight,
         width,
+        ...style,
       }}
     />
   )
-}
-
-function selectState<T extends string | number>(
-  { squeezed }: Layout,
-  normal: T,
-  shrink: T
-) {
-  if (squeezed) {
-    return shrink
-  } else {
-    return normal
-  }
 }
 
 /**
@@ -91,18 +78,22 @@ export const Content = ({
   style = {},
   ...props
 }: ContentProps) => {
-  const layout = useLayout()
-  const { currentNavWidth, navAnchor } = layout
+  const { currentNavWidth, navAnchor, contentResponse } = useLayout()
 
-  const margin = selectState<number>(layout, currentNavWidth, currentNavWidth)
+  const margin = {
+    static: 0,
+    squeezed: currentNavWidth,
+    pushed: currentNavWidth,
+  }[contentResponse]
+
   const marginLeft = navAnchor === 'left' ? margin : 0
   const marginRight = navAnchor === 'right' ? margin : 0
 
-  const width = selectState<string>(
-    layout,
-    '100%',
-    `calc(100% - ${currentNavWidth}px)`
-  )
+  const width = {
+    static: '100%',
+    squeezed: `calc(100% - ${currentNavWidth}px)`,
+    pushed: '100%',
+  }[contentResponse]
 
   return (
     <DumbContent

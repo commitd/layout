@@ -42,6 +42,7 @@ const useStyles = makeStyles(({ transitions }) => ({
 }))
 
 interface DumbProps {
+  width: string
   marginLeft: number
   marginRight: number
 }
@@ -55,6 +56,7 @@ export const DumbFooter = ({
   color,
   bgcolor,
   style,
+  width,
   marginLeft,
   marginRight,
   ...props
@@ -64,9 +66,10 @@ export const DumbFooter = ({
     <Component
       className={`${className} ${classes.root}`}
       style={{
-        ...style,
+        width,
         marginLeft,
         marginRight,
+        ...style,
       }}
     >
       <Box color={color} bgcolor={bgcolor} {...props} />
@@ -85,11 +88,22 @@ export const Footer = ({
   style = {},
   ...props
 }: FooterProps) => {
-  const { currentNavWidth, footerShrink, navAnchor } = useLayout()
+  const { currentNavWidth, footerResponse, navAnchor } = useLayout()
 
-  const margin = footerShrink ? currentNavWidth : 0
+  const margin = {
+    static: 0,
+    squeezed: currentNavWidth,
+    pushed: currentNavWidth,
+  }[footerResponse]
+
   const marginLeft = navAnchor === 'left' ? margin : 0
   const marginRight = navAnchor === 'right' ? margin : 0
+
+  const width = {
+    static: '100%',
+    squeezed: `calc(100% - ${currentNavWidth}px)`,
+    pushed: '100%',
+  }[footerResponse]
 
   return (
     <DumbFooter
@@ -101,6 +115,7 @@ export const Footer = ({
       style={style}
       marginLeft={marginLeft}
       marginRight={marginRight}
+      width={width}
     />
   )
 }

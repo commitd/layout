@@ -50,6 +50,18 @@ const config: Partial<LayoutConfig> = {
     md: true,
     lg: false,
   },
+  headerResponse: {
+    sm: 'static',
+    md: 'squeezed',
+  },
+  contentResponse: {
+    sm: 'static',
+    md: 'squeezed',
+  },
+  footerResponse: {
+    sm: 'static',
+    md: 'squeezed',
+  },
 }
 const Layout = () => {
   const layout = useLayout()

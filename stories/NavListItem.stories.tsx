@@ -5,7 +5,7 @@ import { ThemeProvider, Icons, List } from '@committed/components'
 export const Use = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }} config={{}}>
+      <Root style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
             <NavListItem icon={<Icons.People />} text="Shared with me" />
@@ -24,7 +24,7 @@ export default {
 export const Selected = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }} config={{}}>
+      <Root style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
             <NavListItem icon={<Icons.People />} text="Selected" selected />
@@ -39,7 +39,7 @@ export const Selected = () => {
 export const NoIcon = () => {
   return (
     <ThemeProvider>
-      <Root style={{ minHeight: '50vh' }} config={{}}>
+      <Root style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
             <NavListItem text="No icon" />

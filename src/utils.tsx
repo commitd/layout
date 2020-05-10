@@ -1,31 +1,28 @@
-import { presets } from './presets'
 import { LayoutConfig, Layout, Breakpoint, ScreenProps } from './types'
 
 const keys: Array<Breakpoint> = ['xs', 'sm', 'md', 'lg', 'xl']
-const initialConfig = presets.createDefaultLayout()
 
 /**
  * Base settings for context values.
  * These are used if none set.
  */
-export function defaultContext(): Layout {
-  return {
-    clipped: false,
-    collapsible: true,
-    collapsedWidth: 64,
-    collapsed: false,
-    footerShrink: true,
-    navAnchor: 'left',
-    navVariant: 'permanent',
-    open: true,
-    navWidth: 256,
-    currentNavWidth: 256,
-    headerPosition: 'relative',
-    squeezed: true,
-    screen: 'xl',
-    setCollapsed: () => null,
-    setOpen: () => null,
-  }
+export const defaultContext: Layout = {
+  collapsible: true,
+  collapsedWidth: 64,
+  navAnchor: 'left',
+  navVariant: 'permanent',
+  navWidth: 256,
+  headerPosition: 'relative',
+  headerResponse: 'squeezed',
+  contentResponse: 'squeezed',
+  footerResponse: 'squeezed',
+  // dynamic properties
+  open: true,
+  collapsed: false,
+  screen: 'xl',
+  currentNavWidth: 256,
+  setCollapsed: () => null,
+  setOpen: () => null,
 }
 
 /**
@@ -99,41 +96,49 @@ export const createNewContext = (
   setCollapsed: (val: boolean) => any
 ): Omit<Layout, 'currentNavWidth'> => {
   const {
-    clipped,
     collapsible,
     collapsedWidth,
     navVariant,
     navWidth,
     navAnchor,
     headerPosition,
-    squeezed,
-    footerShrink,
+    headerResponse,
+    contentResponse,
+    footerResponse,
   } = config
 
   return {
     open,
     collapsed,
-    clipped: getScreenValue(width, clipped, initialConfig.clipped),
-    collapsible: getScreenValue(width, collapsible, initialConfig.collapsible),
+    collapsible: getScreenValue(width, collapsible, defaultContext.collapsible),
     collapsedWidth: getScreenValue(
       width,
       collapsedWidth,
-      initialConfig.collapsedWidth
+      defaultContext.collapsedWidth
     ),
-    navVariant: getScreenValue(width, navVariant, initialConfig.navVariant),
-    navWidth: getScreenValue(width, navWidth, initialConfig.navWidth),
-    navAnchor: getScreenValue(width, navAnchor, initialConfig.navAnchor),
+    navVariant: getScreenValue(width, navVariant, defaultContext.navVariant),
+    navWidth: getScreenValue(width, navWidth, defaultContext.navWidth),
+    navAnchor: getScreenValue(width, navAnchor, defaultContext.navAnchor),
     headerPosition: getScreenValue(
       width,
       headerPosition,
 
-      initialConfig.headerPosition
+      defaultContext.headerPosition
     ),
-    squeezed: getScreenValue(width, squeezed, initialConfig.squeezed),
-    footerShrink: getScreenValue(
+    headerResponse: getScreenValue(
       width,
-      footerShrink,
-      initialConfig.footerShrink
+      headerResponse,
+      defaultContext.headerResponse
+    ),
+    contentResponse: getScreenValue(
+      width,
+      contentResponse,
+      defaultContext.contentResponse
+    ),
+    footerResponse: getScreenValue(
+      width,
+      footerResponse,
+      defaultContext.footerResponse
     ),
     screen: width,
     setOpen: (val: boolean | object) =>

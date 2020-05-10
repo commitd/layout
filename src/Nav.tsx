@@ -108,8 +108,8 @@ interface DumbProps
     | 'navAnchor'
     | 'setCollapsed'
     | 'collapsed'
-    | 'clipped'
   > {
+  clipped: boolean
   showCollapseButton: boolean
   width: number
 }
@@ -206,7 +206,7 @@ export const Nav = ({
   const {
     open,
     setOpen,
-    clipped,
+    headerResponse,
     navVariant,
     navAnchor,
     collapsible,
@@ -215,6 +215,7 @@ export const Nav = ({
     currentNavWidth,
   } = useLayout()
   const showCollapseButton = collapsible
+  const clipped = headerResponse === 'clipped'
   return (
     <DumbNav
       component={component}
