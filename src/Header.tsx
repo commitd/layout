@@ -10,6 +10,7 @@ import {
   ToolbarProps,
   IconButtonProps,
 } from '@committed/components'
+import useScrollTrigger from '@material-ui/core/useScrollTrigger'
 import { useLayout } from './Root'
 import { Layout, Position } from './types'
 
@@ -51,6 +52,13 @@ export interface HeaderProps {
    * Should the menu icon be shown in the
    */
   showMenuIcon?: boolean
+  /**
+   * Set to elevate the app bar using shadow.
+   * Shadow depth, corresponds to dp in the spec.
+   * It accepts values between 0 and 24 inclusive.
+   * @default 0
+   */
+  elevation: number
   children?: ReactNode
 }
 
@@ -67,8 +75,25 @@ const useStyles = makeStyles(({ transitions }) => ({
   },
 }))
 
+interface ElevationScrollProps {
+  base: number
+  children: React.ReactElement
+}
+
+const ElevationScroll = ({ children, base }: ElevationScrollProps) => {
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  })
+
+  return React.cloneElement(children, {
+    elevation: trigger ? Math.min(base + 4, 24) : base,
+  })
+}
+
 interface DumbProps extends Pick<Layout, 'open' | 'setOpen'> {
   zIndex: number
+  elevation: number
   headerPosition: Position
   width: string
   marginLeft: number
@@ -79,6 +104,7 @@ interface DumbProps extends Pick<Layout, 'open' | 'setOpen'> {
 
 export const DumbHeader = ({
   className,
+  elevation,
   style,
   closeMenuIcon,
   openMenuIcon,
@@ -112,7 +138,7 @@ export const DumbHeader = ({
   return (
     <AppBar
       color={color}
-      elevation={0}
+      elevation={elevation}
       className={`${className} ${classes.root}`}
       position={headerPosition}
       style={{
@@ -142,6 +168,7 @@ export const Header = ({
   toolbarProps = {},
   menuButtonProps = {},
   showMenuIcon = true,
+  elevation = 0,
 }: HeaderProps) => {
   const theme = useTheme()
   const layout = useLayout()
@@ -182,10 +209,11 @@ export const Header = ({
     pushed: '100%',
   }[headerResponse]
 
-  return (
+  const header = (
     <DumbHeader
       className={className}
       style={style}
+      elevation={elevation}
       closeMenuIcon={closeMenuIcon}
       openMenuIcon={openMenuIcon}
       color={color}
@@ -207,4 +235,10 @@ export const Header = ({
       showMenuRight={showMenuRight}
     />
   )
+
+  if (headerPosition === 'sticky') {
+    return <ElevationScroll base={elevation}>{header}</ElevationScroll>
+  } else {
+    return header
+  }
 }
