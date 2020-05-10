@@ -6,6 +6,7 @@ import React, {
 } from 'react'
 import { makeStyles } from '@committed/components'
 import { useLayout } from './Root'
+import { Layout } from './types'
 
 export interface ContentProps {
   /**
@@ -34,6 +35,12 @@ const useStyles = makeStyles(({ transitions }) => ({
   },
 }))
 
+interface DumbProps {
+  marginLeft: number
+  marginRight: number
+  width: string
+}
+
 /*
  * Content with no layout knowledge
  */
@@ -42,9 +49,10 @@ export const DumbContent = ({
   className,
   style,
   marginLeft,
+  marginRight,
   width,
   ...props
-}: ContentProps & { marginLeft: number; width: string }) => {
+}: ContentProps & DumbProps) => {
   const classes = useStyles()
   return (
     <Component
@@ -53,10 +61,23 @@ export const DumbContent = ({
       style={{
         ...style,
         marginLeft,
+        marginRight,
         width,
       }}
     />
   )
+}
+
+function selectState<T extends string | number>(
+  { squeezed }: Layout,
+  normal: T,
+  shrink: T
+) {
+  if (squeezed) {
+    return shrink
+  } else {
+    return normal
+  }
 }
 
 /**
@@ -70,34 +91,28 @@ export const Content = ({
   style = {},
   ...props
 }: ContentProps) => {
-  const { navVariant, currentNavWidth, open, navAnchor, squeezed } = useLayout()
-  const getMargin = () => {
-    if (navAnchor === 'left' && navVariant !== 'temporary') {
-      return currentNavWidth
-    } else {
-      return 0
-    }
-  }
-  const getWidth = () => {
-    if (navVariant === 'persistent' && open) {
-      // open is effect only when
-      // navVariant === 'persistent' ||
-      // navVariant === 'temporary'
-      if (squeezed) {
-        return 'auto'
-      }
-      return '100%'
-    }
-    return 'auto'
-  }
+  const layout = useLayout()
+  const { currentNavWidth, navAnchor } = layout
+
+  const margin = selectState<number>(layout, currentNavWidth, currentNavWidth)
+  const marginLeft = navAnchor === 'left' ? margin : 0
+  const marginRight = navAnchor === 'right' ? margin : 0
+
+  const width = selectState<string>(
+    layout,
+    '100%',
+    `calc(100% - ${currentNavWidth}px)`
+  )
+
   return (
     <DumbContent
       {...props}
       className={className}
       component={component}
       style={style}
-      marginLeft={getMargin()}
-      width={getWidth()}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
+      width={width}
     />
   )
 }

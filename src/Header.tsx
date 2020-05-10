@@ -159,7 +159,7 @@ export const Header = ({
   showMenuIcon = true,
 }: HeaderProps) => {
   const theme = useTheme()
-  const ctx = useLayout()
+  const layout = useLayout()
   const {
     clipped,
     currentNavWidth,
@@ -168,9 +168,9 @@ export const Header = ({
     headerPosition,
     open,
     setOpen,
-  } = ctx
+  } = layout
   const width = selectState<string>(
-    ctx,
+    layout,
     '100%',
     `calc(100% - ${currentNavWidth}px)`,
     '100%'
@@ -186,7 +186,12 @@ export const Header = ({
   const showMenuLeft = shouldRenderMenu && navAnchor === 'left'
   const showMenuRight = shouldRenderMenu && navAnchor === 'right'
 
-  const margin = selectState<number>(ctx, 0, currentNavWidth, currentNavWidth)
+  const margin = selectState<number>(
+    layout,
+    0,
+    currentNavWidth,
+    currentNavWidth
+  )
   const marginLeft = navAnchor === 'left' ? margin : 0
   const marginRight = navAnchor === 'right' ? margin : 0
 
