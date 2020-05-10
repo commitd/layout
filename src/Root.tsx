@@ -23,7 +23,7 @@ export interface RootProps {
   style?: CSSProperties
   /**
    * Change the component type used
-   * @default footer
+   * @default div
    */
   component?: ElementType<HTMLAttributes<HTMLElement>>
   /**
@@ -32,6 +32,11 @@ export interface RootProps {
    * See LayoutConfig in types.
    */
   config?: Partial<LayoutConfig>
+  /**
+   * Set false to remove the full screen setting and control the size yourself
+   * @default true
+   */
+  fullscreen?: boolean
   children?: ReactNode
 }
 
@@ -41,6 +46,9 @@ const useStyles = makeStyles({
   root: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  fullscreen: {
+    height: '100vh',
   },
 })
 
@@ -56,6 +64,7 @@ export const Root = ({
   className = '',
   component = 'div',
   config = presets.createDefaultLayout(),
+  fullscreen = true,
   children,
   ...props
 }: RootProps) => {
@@ -80,7 +89,12 @@ export const Root = ({
 
   return (
     <LayoutContext.Provider value={value}>
-      <Component className={`${className} ${classes.root}`} {...props}>
+      <Component
+        className={`${className} ${classes.root} ${
+          fullscreen ? classes.fullscreen : ''
+        }`}
+        {...props}
+      >
         {children}
       </Component>
     </LayoutContext.Provider>
