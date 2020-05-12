@@ -58,7 +58,7 @@ export interface HeaderProps {
    * It accepts values between 0 and 24 inclusive.
    * @default 0
    */
-  elevation: number
+  elevation?: number
   children?: ReactNode
 }
 
