@@ -20,7 +20,6 @@ import {
   List,
   Container,
   ThemeSwitch,
-  useThemeChoice,
 } from '@committed/components'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { LoremIpsum } from 'lorem-ipsum'
@@ -68,70 +67,62 @@ const Layout = () => {
   return <Monospace>{JSON.stringify(layout, null, 2)}</Monospace>
 }
 
-const App = () => {
-  const [themeChoice, toggleThemeChoice, componentMounted] = useThemeChoice()
-  const component = componentMounted ? (
-    <ThemeProvider choice={themeChoice}>
-      <Root config={config}>
-        <Header>
-          <Typography variant="h5">Application Name</Typography>
-          <Box flexGrow={1} />
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <ThemeSwitch
-            themeChoice={themeChoice}
-            toggleThemeChoice={toggleThemeChoice}
-            variant="celestial"
+const App = () => (
+  <ThemeProvider>
+    <Root config={config}>
+      <Header>
+        <Typography variant="h5">Application Name</Typography>
+        <Box flexGrow={1} />
+        <IconButton color="inherit">
+          <AccountCircle />
+        </IconButton>
+        <ThemeSwitch />
+      </Header>
+      <Nav>
+        <List>
+          <NavListItem
+            key="item1"
+            text="Menu Item 1"
+            icon={<AccountCircle />}
           />
-        </Header>
-        <Nav>
-          <List>
-            <NavListItem
-              key="item1"
-              text="Menu Item 1"
-              icon={<AccountCircle />}
-            />
-            <NavListItem
-              key="item2"
-              text="Menu Item 2"
-              icon={<AccountCircle />}
-            />
-            <NavListItem
-              key="item3"
-              text="Menu Item 3"
-              icon={<AccountCircle />}
-            />
-          </List>
-        </Nav>
-        <Content>
-          <Container maxWidth="lg">
-            <Box pt={2}>
-              <Box mb={2}>
-                <Typography variant="h4">@committed/layout</Typography>
-              </Box>
-              <Layout />
-              <Box mt={3}>
-                {new Array(20).fill(null).map((i) => (
-                  <Box mb={1}>
-                    <Typography variant="body2" color="textSecondary">
-                      {lorem.generateParagraphs(1)}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
+          <NavListItem
+            key="item2"
+            text="Menu Item 2"
+            icon={<AccountCircle />}
+          />
+          <NavListItem
+            key="item3"
+            text="Menu Item 3"
+            icon={<AccountCircle />}
+          />
+        </List>
+      </Nav>
+      <Content>
+        <Container maxWidth="lg">
+          <Box pt={2}>
+            <Box mb={2}>
+              <Typography variant="h4">@committed/layout</Typography>
             </Box>
-          </Container>
-        </Content>
-        <Footer>
-          <Box p={2}>
-            <Typography>Footer</Typography>
+            <Layout />
+            <Box mt={3}>
+              {new Array(20).fill(null).map((i) => (
+                <Box mb={1}>
+                  <Typography variant="body2" color="textSecondary">
+                    {lorem.generateParagraphs(1)}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
           </Box>
-        </Footer>
-      </Root>
-    </ThemeProvider>
-  ) : null
-  return component
-}
+        </Container>
+      </Content>
+      <Footer>
+        <Box p={2}>
+          <Typography>Footer</Typography>
+        </Box>
+      </Footer>
+    </Root>
+  </ThemeProvider>
+)
 
 ReactDOM.render(<App />, document.getElementById('root'))
