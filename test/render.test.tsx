@@ -1,16 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Root, Header, Nav, Content, Footer, NavListItem } from '../src'
 import {
+  Box,
+  Container,
+  IconButton,
+  List,
   ThemeProvider,
   Typography,
-  IconButton,
-  Box,
-  Icons,
-  Container,
-  List,
 } from '@committed/components'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import { LoremIpsum } from 'lorem-ipsum'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Content, Footer, Header, Nav, NavListItem, Root } from '../src'
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -31,27 +31,19 @@ export const Example = () => {
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
           <IconButton color="inherit">
-            <Icons.AccountCircle />
+            <AccountCircle />
           </IconButton>
         </Header>
         <Nav>
           <List>
-            <NavListItem
-              key="1"
-              text="Menu Item 1"
-              icon={<Icons.AccountCircle />}
-            />
+            <NavListItem key="1" text="Menu Item 1" icon={<AccountCircle />} />
             <NavListItem
               key="2"
               text="Menu Item 2"
-              icon={<Icons.AccountCircle />}
+              icon={<AccountCircle />}
               selected
             />
-            <NavListItem
-              key="3"
-              text="Menu Item 3"
-              icon={<Icons.AccountCircle />}
-            />
+            <NavListItem key="3" text="Menu Item 3" icon={<AccountCircle />} />
           </List>
         </Nav>
         <Content>
