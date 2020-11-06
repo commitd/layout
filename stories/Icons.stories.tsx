@@ -1,5 +1,8 @@
+import { Typography } from '@committed/components'
+import Check from '@material-ui/icons/CheckSharp'
+import FormatAlignJustify from '@material-ui/icons/FormatAlignJustifySharp'
+import KeyboardBackspace from '@material-ui/icons/KeyboardBackspaceSharp'
 import React from 'react'
-import { Typography, Icons } from '@committed/components'
 import { Example } from './Example'
 
 export const SuppliedIcons = () => {
@@ -12,9 +15,9 @@ export const SuppliedIcons = () => {
           required Try changing the size of your window.
         </Typography>
       }
-      closeMenuIcon={<Icons.KeyboardBackspace />}
-      openMenuIcon={<Icons.FormatAlignJustify />}
-      collapseIcon={<Icons.Check />}
+      closeMenuIcon={<KeyboardBackspace />}
+      openMenuIcon={<FormatAlignJustify />}
+      collapseIcon={<Check />}
       expandIcon={<Typography>></Typography>}
     />
   )

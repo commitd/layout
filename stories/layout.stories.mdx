@@ -30,7 +30,7 @@ yarn add @committed/components @material-ui/core @material-ui/icons react react-
 ```tsx
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ThemeProvider, Icons } from '@committed/components'
+import { ThemeProvider } from '@committed/components'
 import {
   Root,
   Header,
@@ -50,14 +50,14 @@ const config: Partial<LayoutConfig> = {
 }
 
 const App = () => (
-  <ThemeProvider theme={theme}>
+  <ThemeProvider>
     <Root config={config}>
       <Header>
         <Typography variant="h5">Application Name</Typography>
       </Header>
       <Nav>
         <List>
-          <NavListItem text="Menu Item 1" icon={<Icons.AccountCircle />} />
+          <NavListItem text="Menu Item 1" />
         </List>
       </Nav>
       <Content>Content</Content>

@@ -1,12 +1,17 @@
+import { Divider, List, ThemeProvider, Typography } from '@committed/components'
+import Backup from '@material-ui/icons/BackupSharp'
+import Clear from '@material-ui/icons/ClearSharp'
+import Delete from '@material-ui/icons/DeleteSharp'
+import Folder from '@material-ui/icons/FolderSharp'
+import Forward from '@material-ui/icons/ForwardSharp'
+import OfflinePin from '@material-ui/icons/OfflinePinSharp'
+import People from '@material-ui/icons/PeopleSharp'
+import Publish from '@material-ui/icons/PublishSharp'
+import Schedule from '@material-ui/icons/ScheduleSharp'
+import Settings from '@material-ui/icons/SettingsSharp'
+import Star from '@material-ui/icons/StarSharp'
 import React from 'react'
-import { Root, Nav, NavListItem } from '../src'
-import {
-  ThemeProvider,
-  Typography,
-  Icons,
-  List,
-  Divider,
-} from '@committed/components'
+import { Nav, NavListItem, Root } from '../src'
 
 export const Use = () => {
   return (
@@ -29,7 +34,7 @@ export const CustomIcons = () => {
   return (
     <ThemeProvider>
       <Root fullscreen={false} style={{ minHeight: '50vh' }}>
-        <Nav collapseIcon={<Icons.Clear />} expandIcon={<Icons.Forward />}>
+        <Nav collapseIcon={<Clear />} expandIcon={<Forward />}>
           <Typography>This is the Nav</Typography>
         </Nav>
       </Root>
@@ -41,35 +46,35 @@ export const WithContent = () => {
   const list = [
     {
       primaryText: 'My Files',
-      icon: <Icons.Folder />,
+      icon: <Folder />,
     },
     {
       primaryText: 'Shared with me',
-      icon: <Icons.People />,
+      icon: <People />,
     },
     {
       primaryText: 'Starred',
-      icon: <Icons.Star />,
+      icon: <Star />,
     },
     {
       primaryText: 'Recent',
-      icon: <Icons.Schedule />,
+      icon: <Schedule />,
     },
     {
       primaryText: 'Offline',
-      icon: <Icons.OfflinePin />,
+      icon: <OfflinePin />,
     },
     {
       primaryText: 'Uploads',
-      icon: <Icons.Publish />,
+      icon: <Publish />,
     },
     {
       primaryText: 'Backups',
-      icon: <Icons.Backup />,
+      icon: <Backup />,
     },
     {
       primaryText: 'Trash',
-      icon: <Icons.Delete />,
+      icon: <Delete />,
     },
   ]
   return (
@@ -86,10 +91,7 @@ export const WithContent = () => {
               />
             ))}
             <Divider style={{ margin: '12px 0' }} />
-            <NavListItem
-              icon={<Icons.Settings />}
-              text={'Settings & account'}
-            />
+            <NavListItem icon={<Settings />} text={'Settings & account'} />
           </List>
         </Nav>
       </Root>
