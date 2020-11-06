@@ -4,13 +4,13 @@ import {
   Container,
   Heading,
   IconButton,
-  Icons,
   List,
   ThemeProvider,
   ThemeSwitch,
   Typography,
   useThemeChoice,
 } from '@committed/components'
+import AccountCircle from '@material-ui/icons/AccountCircleSharp'
 import { LoremIpsum } from 'lorem-ipsum'
 import React, { FC, ReactNode } from 'react'
 import {
@@ -58,7 +58,7 @@ export const Themed: FC<{
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
           <IconButton color="inherit">
-            <Icons.AccountCircle />
+            <AccountCircle />
           </IconButton>
           <ThemeSwitch
             themeChoice={themeChoice}
@@ -77,21 +77,9 @@ export const Themed: FC<{
           })}
         >
           <List>
-            <NavListItem
-              key="1"
-              text="Menu Item 1"
-              icon={<Icons.AccountCircle />}
-            />
-            <NavListItem
-              key="2"
-              text="Menu Item 2"
-              icon={<Icons.AccountCircle />}
-            />
-            <NavListItem
-              key="3"
-              text="Menu Item 3"
-              icon={<Icons.AccountCircle />}
-            />
+            <NavListItem key="1" text="Menu Item 1" icon={<AccountCircle />} />
+            <NavListItem key="2" text="Menu Item 2" icon={<AccountCircle />} />
+            <NavListItem key="3" text="Menu Item 3" icon={<AccountCircle />} />
           </List>
         </Nav>
         <Content>

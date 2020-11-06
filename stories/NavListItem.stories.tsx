@@ -1,6 +1,7 @@
 import React from 'react'
 import { Root, Header, Nav, NavListItem } from '../src'
-import { ThemeProvider, Icons, List } from '@committed/components'
+import People from '@material-ui/icons/PeopleSharp'
+import { ThemeProvider, List } from '@committed/components'
 
 export const Use = () => {
   return (
@@ -8,7 +9,7 @@ export const Use = () => {
       <Root fullscreen={false} style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
-            <NavListItem icon={<Icons.People />} text="Shared with me" />
+            <NavListItem icon={<People />} text="Shared with me" />
           </List>
         </Nav>
       </Root>
@@ -27,8 +28,8 @@ export const Selected = () => {
       <Root fullscreen={false} style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
-            <NavListItem icon={<Icons.People />} text="Selected" selected />
-            <NavListItem icon={<Icons.People />} text="Unselected" />
+            <NavListItem icon={<People />} text="Selected" selected />
+            <NavListItem icon={<People />} text="Unselected" />
           </List>
         </Nav>
       </Root>
@@ -47,8 +48,8 @@ export const CloseTemporary = () => {
         <Header />
         <Nav>
           <List>
-            <NavListItem icon={<Icons.People />} text="Selected" selected />
-            <NavListItem icon={<Icons.People />} text="Unselected" />
+            <NavListItem icon={<People />} text="Selected" selected />
+            <NavListItem icon={<People />} text="Unselected" />
           </List>
         </Nav>
       </Root>
@@ -69,13 +70,13 @@ export const ClosePersistent = () => {
           <List>
             <NavListItem
               closeFor={['persistent']}
-              icon={<Icons.People />}
+              icon={<People />}
               text="Selected"
               selected
             />
             <NavListItem
               closeFor={['persistent']}
-              icon={<Icons.People />}
+              icon={<People />}
               text="Unselected"
             />
           </List>
@@ -96,8 +97,8 @@ export const LeavePersistent = () => {
         <Header />
         <Nav>
           <List>
-            <NavListItem icon={<Icons.People />} text="Selected" selected />
-            <NavListItem icon={<Icons.People />} text="Unselected" />
+            <NavListItem icon={<People />} text="Selected" selected />
+            <NavListItem icon={<People />} text="Unselected" />
           </List>
         </Nav>
       </Root>

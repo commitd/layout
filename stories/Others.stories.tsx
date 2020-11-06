@@ -1,15 +1,15 @@
-import React from 'react'
-import { Root, Header, Nav, Content, Footer, NavListItem } from '../src'
 import {
+  Box,
+  Container,
+  IconButton,
+  List,
   ThemeProvider,
   Typography,
-  IconButton,
-  Box,
-  Icons,
-  Container,
-  List,
 } from '@committed/components'
-import { Example, lorem } from './Example'
+import AccountCircle from '@material-ui/icons/AccountCircleSharp'
+import React from 'react'
+import { Content, Footer, Header, Nav, NavListItem, Root } from '../src'
+import { lorem } from './Example'
 
 export default {
   title: 'Examples|Missing',
@@ -21,21 +21,9 @@ export const NoHeader = () => {
       <Root fullscreen={false} style={{ minHeight: '50vh' }} config={{}}>
         <Nav>
           <List>
-            <NavListItem
-              key="1"
-              text="Menu Item 1"
-              icon={<Icons.AccountCircle />}
-            />
-            <NavListItem
-              key="2"
-              text="Menu Item 2"
-              icon={<Icons.AccountCircle />}
-            />
-            <NavListItem
-              key="3"
-              text="Menu Item 3"
-              icon={<Icons.AccountCircle />}
-            />
+            <NavListItem key="1" text="Menu Item 1" icon={<AccountCircle />} />
+            <NavListItem key="2" text="Menu Item 2" icon={<AccountCircle />} />
+            <NavListItem key="3" text="Menu Item 3" icon={<AccountCircle />} />
           </List>
         </Nav>
         <Content>
@@ -81,7 +69,7 @@ export const NoNav = () => {
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
           <IconButton color="inherit">
-            <Icons.AccountCircle />
+            <AccountCircle />
           </IconButton>
         </Header>
         <Content>
@@ -125,26 +113,14 @@ export const NoFooter = () => {
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />
           <IconButton color="inherit">
-            <Icons.AccountCircle />
+            <AccountCircle />
           </IconButton>
         </Header>
         <Nav>
           <List>
-            <NavListItem
-              key="1"
-              text="Menu Item 1"
-              icon={<Icons.AccountCircle />}
-            />
-            <NavListItem
-              key="2"
-              text="Menu Item 2"
-              icon={<Icons.AccountCircle />}
-            />
-            <NavListItem
-              key="3"
-              text="Menu Item 3"
-              icon={<Icons.AccountCircle />}
-            />
+            <NavListItem key="1" text="Menu Item 1" icon={<AccountCircle />} />
+            <NavListItem key="2" text="Menu Item 2" icon={<AccountCircle />} />
+            <NavListItem key="3" text="Menu Item 3" icon={<AccountCircle />} />
           </List>
         </Nav>
         <Content>

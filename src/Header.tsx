@@ -1,16 +1,16 @@
-import React, { ReactNode, CSSProperties } from 'react'
-import { PropTypes } from '@material-ui/core'
 import {
   AppBar,
-  Toolbar,
   IconButton,
-  Icons,
-  makeStyles,
-  useTheme,
-  ToolbarProps,
   IconButtonProps,
+  makeStyles,
+  Toolbar,
+  ToolbarProps,
+  useTheme,
 } from '@committed/components'
+import { PropTypes } from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
+import React, { CSSProperties, ReactNode } from 'react'
+import { Icons } from './Icons'
 import { useLayout } from './Root'
 import { Layout, Position } from './types'
 

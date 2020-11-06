@@ -1,6 +1,6 @@
 {
   "name": "@committed/layout",
-  "version": "2.1.1",
+  "version": "4.0.0",
   "description": "Committed layout library",
   "author": "Committed",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "deploy-storybook": "storybook-to-ghpages"
   },
   "peerDependencies": {
-    "@committed/components": ">=3.0.2",
+    "@committed/components": ">=4.0.0",
     "@material-ui/core": "4.x",
     "react": ">=16"
   },
