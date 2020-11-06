@@ -11,10 +11,10 @@ import {
   Button,
   IconButton,
   IconButtonProps,
-  Icons,
   makeStyles,
   Toolbar,
 } from '@committed/components'
+import { Icons } from './Icons'
 import { Layout } from './types'
 import { useLayout } from './Root'
 
