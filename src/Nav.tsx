@@ -187,6 +187,8 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
               className={classes.collapseButton}
               fullWidth
               onClick={setCollapsed}
+              title={collapsed ? 'Expand' : 'Collapse'}
+              aria-label={collapsed ? 'Expand' : 'Collapse'}
             >
               {collapsed ? expandIcon : collapseIcon}
             </Button>
@@ -200,6 +202,8 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
             navAnchor === 'left' ? { left: width + 16 } : { right: width + 16 }
           }
           onClick={setOpen}
+          title={open ? 'Close' : 'Open'}
+          aria-label={open ? 'Close' : 'Open'}
           {...closeButtonProps}
         >
           {collapseIcon}

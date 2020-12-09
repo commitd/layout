@@ -134,6 +134,7 @@ export const DumbHeader: React.FC<HeaderProps & DumbProps> = ({
       color="inherit"
       onClick={setOpen}
       className={classes.menuButton}
+      aria-label={open ? 'Close' : 'Open'}
       {...menuButtonProps}
     >
       {open ? closeMenuIcon : openMenuIcon ?? closeMenuIcon}
