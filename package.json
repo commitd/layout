@@ -1,6 +1,6 @@
 {
   "name": "@committed/layout",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Committed layout library",
   "author": "Committed",
   "license": "MIT",
@@ -11,21 +11,23 @@
     "registry": "https://registry.npmjs.org/"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "engines": {
     "node": ">=10"
   },
   "scripts": {
+    "clean": "shx rm -rf dist",
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint src test example/index.tsx",
-    "format": "prettier --write '**/{src,test,stories}/**/{*.js,*.ts,*.tsx,*.json,*.md,*.mdx}' example/index.tsx",
+    "lint": "tsdx lint src",
     "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook --no-dll",
+    "format": "prettier --write '**/{src,test,stories}/**/{*.js,*.ts,*.tsx,*.json,*.md,*.mdx}' example/index.tsx",
     "deploy-storybook": "storybook-to-ghpages"
   },
   "peerDependencies": {
@@ -36,36 +38,68 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "pretty-quick --staged --pattern '**/*.*(ts|tsx|json|md)'; yarn lint",
+      "pre-push": "yarn test && yarn build"
     }
   },
   "prettier": {
     "semi": false,
     "singleQuote": true
   },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "collectCoverage": true,
+    "testResultsProcessor": "jest-sonar-reporter",
+    "coveragePathIgnorePatterns": [
+      "setupTests.tsx",
+      ".*/index.ts",
+      ".*.test.ts",
+      ".*.stories.tsx"
+    ]
+  },
+  "size-limit": [
+    {
+      "path": "dist/layout.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/layout.esm.js",
+      "limit": "10 KB"
+    }
+  ],
   "devDependencies": {
     "@babel/core": "^7.9.6",
-    "@committed/components": "^3.2.0",
-    "@material-ui/core": "4.9.10",
-    "@material-ui/icons": "^4.9.1",
-    "@storybook/addon-docs": "^5.3.18",
-    "@storybook/addon-info": "^5.3.18",
-    "@storybook/addon-knobs": "^5.3.18",
-    "@storybook/addons": "^5.3.18",
-    "@storybook/preset-typescript": "^3.0.0",
-    "@storybook/react": "^5.3.18",
-    "@storybook/storybook-deployer": "^2.8.5",
+    "@committed/components": "^4.0.1",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@size-limit/preset-small-lib": "^4.9.1",
+    "@storybook/addon-essentials": "^6.1.10",
+    "@storybook/addon-links": "^6.1.10",
+    "@storybook/addons": "^6.1.10",
+    "@storybook/react": "^6.1.10",
+    "@storybook/storybook-deployer": "^2.8.7",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/react-hooks": "^3.7.0",
+    "@testing-library/user-event": "^12.5.0",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "babel-loader": "^8.1.0",
-    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-prettier": "^3.2.0",
+    "eslint-plugin-security": "^1.4.0",
     "husky": "^4.2.5",
+    "jest-sonar-reporter": "^2.0.0",
     "lorem-ipsum": "^2.0.3",
     "prettier": "^2.0.5",
+    "pretty-quick": "^3.1.0",
     "react": "^16.13.1",
     "react-docgen-typescript-loader": "^3.7.2",
     "react-dom": "^16.13.1",
     "react-is": "^16.13.1",
+    "shx": "^0.3.3",
+    "size-limit": "^4.9.1",
     "ts-loader": "^7.0.2",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",

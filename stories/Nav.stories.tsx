@@ -10,91 +10,93 @@ import Publish from '@material-ui/icons/PublishSharp'
 import Schedule from '@material-ui/icons/ScheduleSharp'
 import Settings from '@material-ui/icons/SettingsSharp'
 import Star from '@material-ui/icons/StarSharp'
-import React from 'react'
+import React, { useRef } from 'react'
 import { Nav, NavListItem, Root } from '../src'
 
-export const Use = () => {
-  return (
-    <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
-        <Nav>
-          <Typography>This is the Nav</Typography>
-        </Nav>
-      </Root>
-    </ThemeProvider>
-  )
-}
-
 export default {
-  title: 'Components|Nav',
+  title: 'Components/Nav',
   component: Nav,
 }
 
+// export const Use = () => {
+//   return (
+//     <ThemeProvider>
+//       <Root contained style={{ minHeight: '50vh' }}>
+//         <Nav>
+//           <Typography>This is the Nav</Typography>
+//         </Nav>
+//       </Root>
+//     </ThemeProvider>
+//   )
+// }
+
 export const CustomIcons = () => {
   return (
-    <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
-        <Nav collapseIcon={<Clear />} expandIcon={<Forward />}>
-          <Typography>This is the Nav</Typography>
-        </Nav>
-      </Root>
-    </ThemeProvider>
+    <div>
+      <ThemeProvider>
+        <Root contained style={{ minHeight: '50vh' }}>
+          <Nav collapseIcon={<Clear />} expandIcon={<Forward />}>
+            <Typography>This is the Nav</Typography>
+          </Nav>
+        </Root>
+      </ThemeProvider>
+    </div>
   )
 }
 
-export const WithContent = () => {
-  const list = [
-    {
-      primaryText: 'My Files',
-      icon: <Folder />,
-    },
-    {
-      primaryText: 'Shared with me',
-      icon: <People />,
-    },
-    {
-      primaryText: 'Starred',
-      icon: <Star />,
-    },
-    {
-      primaryText: 'Recent',
-      icon: <Schedule />,
-    },
-    {
-      primaryText: 'Offline',
-      icon: <OfflinePin />,
-    },
-    {
-      primaryText: 'Uploads',
-      icon: <Publish />,
-    },
-    {
-      primaryText: 'Backups',
-      icon: <Backup />,
-    },
-    {
-      primaryText: 'Trash',
-      icon: <Delete />,
-    },
-  ]
-  return (
-    <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
-        <Nav>
-          <List>
-            {list.map(({ primaryText, icon }, i) => (
-              <NavListItem
-                key={primaryText}
-                selected={i === 0}
-                icon={icon}
-                text={primaryText}
-              />
-            ))}
-            <Divider style={{ margin: '12px 0' }} />
-            <NavListItem icon={<Settings />} text={'Settings & account'} />
-          </List>
-        </Nav>
-      </Root>
-    </ThemeProvider>
-  )
-}
+// export const WithContent = () => {
+//   const list = [
+//     {
+//       primaryText: 'My Files',
+//       icon: <Folder />,
+//     },
+//     {
+//       primaryText: 'Shared with me',
+//       icon: <People />,
+//     },
+//     {
+//       primaryText: 'Starred',
+//       icon: <Star />,
+//     },
+//     {
+//       primaryText: 'Recent',
+//       icon: <Schedule />,
+//     },
+//     {
+//       primaryText: 'Offline',
+//       icon: <OfflinePin />,
+//     },
+//     {
+//       primaryText: 'Uploads',
+//       icon: <Publish />,
+//     },
+//     {
+//       primaryText: 'Backups',
+//       icon: <Backup />,
+//     },
+//     {
+//       primaryText: 'Trash',
+//       icon: <Delete />,
+//     },
+//   ]
+//   return (
+//     <ThemeProvider>
+//       <Root contained style={{ minHeight: '50vh' }}>
+//         <Nav>
+//           <List>
+//             {list.map(({ primaryText, icon }, i) => (
+//               <NavListItem
+//                 key={primaryText}
+//                 selected={i === 0}
+//                 icon={icon}
+//                 text={primaryText}
+//               />
+//             ))}
+//             <Divider style={{ margin: '12px 0' }} />
+//             <NavListItem icon={<Settings />} text={'Settings & account'} />
+//           </List>
+//         </Nav>
+//       </Root>
+//     </ThemeProvider>
+//   )
+// }

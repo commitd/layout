@@ -8,11 +8,10 @@ import {
   Root,
 } from '../src'
 import { Typography } from '@committed/components'
-import { withKnobs, boolean, number, select } from '@storybook/addon-knobs'
 import { Example } from './Example'
 
 export default {
-  title: 'Components|Root',
+  title: 'Components/Root',
   component: Root,
 }
 

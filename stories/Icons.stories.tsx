@@ -18,11 +18,11 @@ export const SuppliedIcons = () => {
       closeMenuIcon={<KeyboardBackspace />}
       openMenuIcon={<FormatAlignJustify />}
       collapseIcon={<Check />}
-      expandIcon={<Typography>></Typography>}
+      expandIcon={<Typography>{'>'}</Typography>}
     />
   )
 }
 
 export default {
-  title: 'Examples|Icons',
+  title: 'Examples/Icons',
 }

@@ -50,7 +50,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const DumbNavListItem = ({
+export const DumbNavListItem: React.FC<NavListItemProps> = ({
   icon,
   text,
   onClick,
@@ -61,7 +61,9 @@ export const DumbNavListItem = ({
   const classes = useStyles()
   return (
     <ListItem button onClick={onClick} {...listItemProps}>
-      {icon && <ListItemIcon {...listItemIconProps}>{icon}</ListItemIcon>}
+      {typeof icon !== 'undefined' ? (
+        <ListItemIcon {...listItemIconProps}>{icon}</ListItemIcon>
+      ) : null}
       <ListItemText
         primary={text}
         primaryTypographyProps={{ noWrap: true }}
@@ -80,18 +82,18 @@ export const DumbNavListItem = ({
  * If further functionality is required you can use the hook useLayout to achieve similar results.
  * Just call `setOpen(false)` on navigation when you wan tto close the nav..
  */
-export const NavListItem = ({
+export const NavListItem: React.FC<NavListItemProps> = ({
   closeFor = ['temporary'],
   onClick,
   text,
   ...props
 }: NavListItemProps) => {
   const { setOpen, collapsed, navVariant } = useLayout()
-  var action:
+  let action:
     | undefined
     | ((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) = undefined
   if (closeFor.includes(navVariant)) {
-    action = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    action = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
       setOpen(false)
       if (onClick != null) {
         onClick(e)

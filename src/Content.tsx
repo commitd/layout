@@ -1,10 +1,12 @@
+/* eslint-disable security/detect-object-injection */
+import { makeStyles } from '@committed/components'
+import clsx from 'clsx'
 import React, {
-  ReactNode,
+  CSSProperties,
   ElementType,
   HTMLAttributes,
-  CSSProperties,
+  ReactNode,
 } from 'react'
-import { makeStyles } from '@committed/components'
 import { useLayout } from './Root'
 
 export interface ContentProps {
@@ -43,7 +45,7 @@ interface DumbProps {
 /*
  * Content with no layout knowledge
  */
-export const DumbContent = ({
+export const DumbContent: React.FC<ContentProps & DumbProps> = ({
   component: Component = 'main',
   className,
   style,
@@ -56,7 +58,7 @@ export const DumbContent = ({
   return (
     <Component
       {...props}
-      className={`${className} ${classes.root}`}
+      className={clsx(className, classes.root)}
       style={{
         marginLeft,
         marginRight,
@@ -72,12 +74,12 @@ export const DumbContent = ({
  *
  * Always visible, grows to fill the vertical space
  */
-export const Content = ({
+export const Content: React.FC<ContentProps> = ({
   className = '',
   component = 'main',
   style = {},
   ...props
-}: ContentProps) => {
+}) => {
   const { currentNavWidth, navAnchor, contentResponse } = useLayout()
 
   const margin = {

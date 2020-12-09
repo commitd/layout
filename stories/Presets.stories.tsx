@@ -4,7 +4,7 @@ import { Typography, Monospace, Heading } from '@committed/components'
 import { Example } from './Example'
 
 export default {
-  title: 'Examples|Presets',
+  title: 'Examples/Presets',
   component: presets,
 }
 

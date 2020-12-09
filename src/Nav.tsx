@@ -8,6 +8,7 @@ import React, {
 import {
   Grow,
   Drawer,
+  DrawerProps,
   Button,
   IconButton,
   IconButtonProps,
@@ -17,8 +18,9 @@ import {
 import { Icons } from './Icons'
 import { Layout } from './types'
 import { useLayout } from './Root'
+import clsx from 'clsx'
 
-export interface NavProps {
+export interface NavProps extends DrawerProps {
   /**
    * Add a class name to the component, can be used for additional styling
    */
@@ -54,6 +56,7 @@ const useStyles = makeStyles(
       overflow: 'hidden',
       display: 'flex',
       flexGrow: 1,
+      flexShrink: 0,
       flexDirection: 'column',
       transition: transitions.create(['width'], {
         easing: transitions.easing.sharp,
@@ -62,6 +65,9 @@ const useStyles = makeStyles(
     },
     collapsed: {
       overflowX: 'hidden',
+    },
+    contained: {
+      position: 'absolute',
     },
     content: {
       flexGrow: 1,
@@ -108,14 +114,16 @@ interface DumbProps
     | 'navAnchor'
     | 'setCollapsed'
     | 'collapsed'
+    | 'contained'
   > {
   clipped: boolean
   showCollapseButton: boolean
   width: number
 }
 
-export const DumbNav = ({
+export const DumbNav: React.FC<NavProps & DumbProps> = ({
   component: Component = 'div',
+  contained = false,
   className,
   header = null,
   collapseIcon,
@@ -135,19 +143,22 @@ export const DumbNav = ({
 }: NavProps & DumbProps) => {
   const classes = useStyles()
   const contentRef = useRef(null)
-  const drawerClasses = `${className} ${classes.root} ${
-    collapsed ? classes.collapsed : ''
-  }`
+  const drawerClasses = clsx(
+    className,
+    classes.root,
+    collapsed && classes.collapsed
+  )
   const contentClasses = collapsed ? classes.contentCollapsed : classes.content
+  const paperClasses = clsx(contained && classes.contained)
 
   collapseIcon =
-    collapseIcon || navAnchor === 'left' ? (
+    typeof collapseIcon !== 'undefined' || navAnchor === 'left' ? (
       <Icons.ChevronLeft />
     ) : (
       <Icons.ChevronRight />
     )
   expandIcon =
-    expandIcon || navAnchor === 'left' ? (
+    typeof expandIcon !== 'undefined' || navAnchor === 'left' ? (
       <Icons.ChevronRight />
     ) : (
       <Icons.ChevronLeft />
@@ -162,6 +173,7 @@ export const DumbNav = ({
         onClose={setOpen}
         variant={navVariant}
         anchor={navAnchor}
+        classes={{ paper: paperClasses }}
       >
         {/* Just for spacing */}
         {clipped && navVariant !== 'temporary' ? <Toolbar /> : null}
@@ -170,15 +182,17 @@ export const DumbNav = ({
           <div ref={contentRef} className={contentClasses}>
             {children}
           </div>
-          {showCollapseButton && (
+          {showCollapseButton ? (
             <Button
               className={classes.collapseButton}
               fullWidth
               onClick={setCollapsed}
+              title={collapsed ? 'Expand' : 'Collapse'}
+              aria-label={collapsed ? 'Expand' : 'Collapse'}
             >
               {collapsed ? expandIcon : collapseIcon}
             </Button>
-          )}
+          ) : null}
         </Component>
       </Drawer>
       <Grow in={open && navVariant === 'temporary'}>
@@ -188,6 +202,8 @@ export const DumbNav = ({
             navAnchor === 'left' ? { left: width + 16 } : { right: width + 16 }
           }
           onClick={setOpen}
+          title={open ? 'Close' : 'Open'}
+          aria-label={open ? 'Close' : 'Open'}
           {...closeButtonProps}
         >
           {collapseIcon}
@@ -197,14 +213,15 @@ export const DumbNav = ({
   )
 }
 
-export const Nav = ({
+export const Nav: React.FC<NavProps> = ({
   className = '',
   component = 'div',
   closeButtonProps = {},
   ...props
-}: NavProps) => {
+}) => {
   const {
     open,
+    contained,
     setOpen,
     headerResponse,
     navVariant,
@@ -219,6 +236,7 @@ export const Nav = ({
   return (
     <DumbNav
       component={component}
+      contained={contained}
       className={className}
       closeButtonProps={closeButtonProps}
       showCollapseButton={showCollapseButton}

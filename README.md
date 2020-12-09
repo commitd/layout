@@ -1,8 +1,20 @@
-# Committed Components Layout
+<h1 align="center">Committed Layout</h1>
+<br>
+<p align="center">
+  <img src="https://committed.software/Logo.svg" width="128px" alt="Project Logo"/>
+</p>
+<p align="center">
+  Committed Layout library
+</p>
 
 [![Committed Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fcommitted.software%2Fbadge)](https://committed.io)
-[![Build Status](https://drone.committed.software/api/badges/commitd/layout/status.svg)](https://drone.committed.software/commitd/layout)
+![Build Status](https://github.com/commitd/layout/workflows/build/badge.svg?branch=main)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=commitd_layout&metric=alert_status)](https://sonarcloud.io/dashboard?id=commitd_layout)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=commitd_layout&metric=coverage)](https://sonarcloud.io/dashboard?id=commitd_layout)
+![GitHub repo size](https://img.shields.io/github/repo-size/commitd/layout)
 [![Storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://committed.software/layout)
+
+For documentation see <https://committed.software/layout>
 
 This is a simple layout for standard looking material based apps, based on [Mui Layout](https://mui-treasury.com/components/layout)
 but using `@committed/components` as its base.
