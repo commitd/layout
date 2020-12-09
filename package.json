@@ -38,7 +38,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged --pattern '**/*.*(ts|tsx|json|md)'; tsdx lint",
+      "pre-commit": "pretty-quick --staged --pattern '**/*.*(ts|tsx|json|md)'; yarn lint",
       "pre-push": "yarn test && yarn build"
     }
   },
