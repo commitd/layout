@@ -27,7 +27,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      To publish storybook docs
       - name: Publish Docs
         run: yarn deploy-storybook --ci
         env:
