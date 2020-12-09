@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import {
   AppBar,
   IconButton,
@@ -13,6 +14,7 @@ import React, { CSSProperties, ReactNode } from 'react'
 import { Icons } from './Icons'
 import { useLayout } from './Root'
 import { Layout, Position } from './types'
+import clsx from 'clsx'
 
 export interface HeaderProps {
   /**
@@ -80,7 +82,10 @@ interface ElevationScrollProps {
   children: React.ReactElement
 }
 
-const ElevationScroll = ({ children, base }: ElevationScrollProps) => {
+const ElevationScroll = ({
+  children,
+  base,
+}: ElevationScrollProps): React.ReactElement => {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
@@ -102,7 +107,7 @@ interface DumbProps extends Pick<Layout, 'open' | 'setOpen'> {
   showMenuRight: boolean
 }
 
-export const DumbHeader = ({
+export const DumbHeader: React.FC<HeaderProps & DumbProps> = ({
   className,
   elevation,
   style,
@@ -131,7 +136,7 @@ export const DumbHeader = ({
       className={classes.menuButton}
       {...menuButtonProps}
     >
-      {open ? closeMenuIcon : openMenuIcon || closeMenuIcon}
+      {open ? closeMenuIcon : openMenuIcon ?? closeMenuIcon}
     </IconButton>
   )
 
@@ -139,7 +144,7 @@ export const DumbHeader = ({
     <AppBar
       color={color}
       elevation={elevation}
-      className={`${className} ${classes.root}`}
+      className={clsx(className, classes.root)}
       position={headerPosition}
       style={{
         zIndex,
@@ -150,26 +155,26 @@ export const DumbHeader = ({
       }}
     >
       <Toolbar {...toolbarProps}>
-        {showMenuLeft && icon}
+        {showMenuLeft ? icon : null}
         {children}
-        {showMenuRight && icon}
+        {showMenuRight ? icon : null}
       </Toolbar>
     </AppBar>
   )
 }
 
-export const Header = ({
+export const Header: React.FC<HeaderProps> = ({
   className = '',
   style = {},
   closeMenuIcon,
   openMenuIcon = <Icons.Menu />,
   color = 'primary',
-  children,
   toolbarProps = {},
   menuButtonProps = {},
   showMenuIcon = true,
   elevation = 0,
-}: HeaderProps) => {
+  ...props
+}) => {
   const theme = useTheme()
   const layout = useLayout()
   const {
@@ -183,7 +188,7 @@ export const Header = ({
   } = layout
 
   closeMenuIcon =
-    closeMenuIcon || navAnchor === 'left' ? (
+    typeof closeMenuIcon !== 'undefined' || navAnchor === 'left' ? (
       <Icons.ChevronLeft />
     ) : (
       <Icons.ChevronRight />
@@ -217,7 +222,6 @@ export const Header = ({
       closeMenuIcon={closeMenuIcon}
       openMenuIcon={openMenuIcon}
       color={color}
-      children={children}
       toolbarProps={toolbarProps}
       menuButtonProps={menuButtonProps}
       zIndex={
@@ -233,6 +237,7 @@ export const Header = ({
       setOpen={setOpen}
       showMenuLeft={showMenuLeft}
       showMenuRight={showMenuRight}
+      {...props}
     />
   )
 

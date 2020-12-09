@@ -1,11 +1,13 @@
+/* eslint-disable security/detect-object-injection */
+import { Box, makeStyles } from '@committed/components'
+import clsx from 'clsx'
 import React, {
-  ReactNode,
+  CSSProperties,
   ElementType,
   HTMLAttributes,
-  CSSProperties,
+  ReactNode,
 } from 'react'
 import { useLayout } from './Root'
-import { makeStyles, Box } from '@committed/components'
 
 export interface FooterProps {
   /**
@@ -50,7 +52,7 @@ interface DumbProps {
 /**
  * Footer with no layout knowledge
  */
-export const DumbFooter = ({
+export const DumbFooter: React.FC<FooterProps & DumbProps> = ({
   component: Component = 'footer',
   className,
   color,
@@ -64,7 +66,7 @@ export const DumbFooter = ({
   const classes = useStyles()
   return (
     <Component
-      className={`${className} ${classes.root}`}
+      className={clsx(className, classes.root)}
       style={{
         width,
         marginLeft,
@@ -80,14 +82,14 @@ export const DumbFooter = ({
 /**
  * The footer is to be used after the Content and will grow and shrink according to the current state of the Navigation
  */
-export const Footer = ({
+export const Footer: React.FC<FooterProps> = ({
   className = '',
   component = 'footer',
   color = 'primary.contrastText',
   bgcolor = 'primary.main',
   style = {},
   ...props
-}: FooterProps) => {
+}) => {
   const { currentNavWidth, footerResponse, navAnchor } = useLayout()
 
   const margin = {

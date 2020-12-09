@@ -121,7 +121,7 @@ interface DumbProps
   width: number
 }
 
-export const DumbNav = ({
+export const DumbNav: React.FC<NavProps & DumbProps> = ({
   component: Component = 'div',
   contained = false,
   className,
@@ -152,13 +152,13 @@ export const DumbNav = ({
   const paperClasses = clsx(contained && classes.contained)
 
   collapseIcon =
-    collapseIcon || navAnchor === 'left' ? (
+    typeof collapseIcon !== 'undefined' || navAnchor === 'left' ? (
       <Icons.ChevronLeft />
     ) : (
       <Icons.ChevronRight />
     )
   expandIcon =
-    expandIcon || navAnchor === 'left' ? (
+    typeof expandIcon !== 'undefined' || navAnchor === 'left' ? (
       <Icons.ChevronRight />
     ) : (
       <Icons.ChevronLeft />
@@ -182,7 +182,7 @@ export const DumbNav = ({
           <div ref={contentRef} className={contentClasses}>
             {children}
           </div>
-          {showCollapseButton && (
+          {showCollapseButton ? (
             <Button
               className={classes.collapseButton}
               fullWidth
@@ -190,7 +190,7 @@ export const DumbNav = ({
             >
               {collapsed ? expandIcon : collapseIcon}
             </Button>
-          )}
+          ) : null}
         </Component>
       </Drawer>
       <Grow in={open && navVariant === 'temporary'}>
@@ -209,12 +209,12 @@ export const DumbNav = ({
   )
 }
 
-export const Nav = ({
+export const Nav: React.FC<NavProps> = ({
   className = '',
   component = 'div',
   closeButtonProps = {},
   ...props
-}: NavProps) => {
+}) => {
   const {
     open,
     contained,

@@ -32,17 +32,14 @@ export default {
 
 export const CustomIcons = () => {
   return (
-   <div>
-   <ThemeProvider>
-      <Root contained style={{ minHeight: '50vh' }}>
-        <Nav
-          collapseIcon={<Clear />}
-          expandIcon={<Forward />}
-          >
-          <Typography>This is the Nav</Typography>
-        </Nav>
-      </Root>
-    </ThemeProvider>
+    <div>
+      <ThemeProvider>
+        <Root contained style={{ minHeight: '50vh' }}>
+          <Nav collapseIcon={<Clear />} expandIcon={<Forward />}>
+            <Typography>This is the Nav</Typography>
+          </Nav>
+        </Root>
+      </ThemeProvider>
     </div>
   )
 }

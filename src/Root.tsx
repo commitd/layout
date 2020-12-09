@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react'
 import { presets } from './presets'
-import { LayoutConfig } from './types'
+import { Layout, LayoutConfig } from './types'
 import { createNewContext, defaultContext, getNavWidth } from './utils'
 
 export interface RootProps {
@@ -65,7 +65,7 @@ const useStyles = makeStyles({
  *
  * When providing a config it is merged on to the default so only changes from the default need to be specified.
  */
-export const Root = ({
+export const Root: React.FC<RootProps> = ({
   className = '',
   component = 'div',
   config = presets.createDefaultLayout(),
@@ -108,4 +108,4 @@ export const Root = ({
   )
 }
 
-export const useLayout = () => React.useContext(LayoutContext)
+export const useLayout = (): Layout => React.useContext(LayoutContext)

@@ -60,11 +60,7 @@ export const NoHeader = () => {
 export const NoNav = () => {
   return (
     <ThemeProvider>
-      <Root
-        contained
-        style={{ minHeight: '50vh' }}
-        config={{ navWidth: 0 }}
-      >
+      <Root contained style={{ minHeight: '50vh' }} config={{ navWidth: 0 }}>
         <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />

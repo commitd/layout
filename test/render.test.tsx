@@ -23,7 +23,7 @@ const lorem = new LoremIpsum({
   },
 })
 
-export const Example = () => {
+export const Example: React.FC = () => {
   return (
     <ThemeProvider>
       <Root contained style={{ minHeight: '50vh' }}>
@@ -54,7 +54,7 @@ export const Example = () => {
               </Box>
               <Box mt={3}>
                 {new Array(10).fill(null).map((_, index) => (
-                  <Box key={'lorem' + index} mb={1}>
+                  <Box key={`lorem ${index}`} mb={1}>
                     <Typography variant="body1" color="textSecondary">
                       {lorem.generateParagraphs(1)}
                     </Typography>

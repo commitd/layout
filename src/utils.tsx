@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { LayoutConfig, Layout, Breakpoint, ScreenProps } from './types'
 
 const keys: Array<Breakpoint> = ['xs', 'sm', 'md', 'lg', 'xl']
@@ -74,7 +75,7 @@ export const getNavWidth = ({
   collapsed,
   collapsedWidth,
   open,
-}: Omit<Layout, 'currentNavWidth'>) => {
+}: Omit<Layout, 'currentNavWidth'>): number => {
   if (navVariant === 'permanent' || open) {
     if (collapsible) {
       if (collapsed) return collapsedWidth
@@ -93,8 +94,8 @@ export const createNewContext = (
   width: Breakpoint,
   open: boolean,
   collapsed: boolean,
-  setOpen: (val: boolean) => any,
-  setCollapsed: (val: boolean) => any,
+  setOpen: (val: boolean) => void,
+  setCollapsed: (val: boolean) => void,
   contained: boolean
 ): Omit<Layout, 'currentNavWidth'> => {
   const {
@@ -144,9 +145,9 @@ export const createNewContext = (
       defaultContext.footerResponse
     ),
     screen: width,
-    setOpen: (val: boolean | object) =>
+    setOpen: (val: boolean | object): void =>
       setOpen(typeof val === 'object' ? !open : val),
-    setCollapsed: (val: boolean | object) =>
+    setCollapsed: (val: boolean | object): void =>
       setCollapsed(typeof val === 'object' ? !collapsed : val),
   }
 }

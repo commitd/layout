@@ -44,12 +44,12 @@ export interface Layout {
    * Function to control the collapsed state.
    * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
-  setCollapsed: (val: boolean | object) => any
+  setCollapsed: (val: boolean | object) => void
   /**
    * Function to control the open state.
    * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
-  setOpen: (val: boolean | object) => any
+  setOpen: (val: boolean | object) => void
 
   // The below is the LayoutConfig for the current screen size
 
