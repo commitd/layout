@@ -16,5 +16,5 @@ export const ThemeSwitch = () => {
 }
 
 export default {
-  title: 'Examples|ThemeSwitch',
+  title: 'Examples/ThemeSwitch',
 }

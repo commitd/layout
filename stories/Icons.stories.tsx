@@ -24,5 +24,5 @@ export const SuppliedIcons = () => {
 }
 
 export default {
-  title: 'Examples|Icons',
+  title: 'Examples/Icons',
 }

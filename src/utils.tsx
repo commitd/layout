@@ -9,6 +9,7 @@ const keys: Array<Breakpoint> = ['xs', 'sm', 'md', 'lg', 'xl']
 export const defaultContext: Layout = {
   collapsible: true,
   collapsedWidth: 64,
+  contained: false,
   navAnchor: 'left',
   navVariant: 'permanent',
   navWidth: 256,
@@ -93,7 +94,8 @@ export const createNewContext = (
   open: boolean,
   collapsed: boolean,
   setOpen: (val: boolean) => any,
-  setCollapsed: (val: boolean) => any
+  setCollapsed: (val: boolean) => any,
+  contained: boolean
 ): Omit<Layout, 'currentNavWidth'> => {
   const {
     collapsible,
@@ -110,6 +112,7 @@ export const createNewContext = (
   return {
     open,
     collapsed,
+    contained,
     collapsible: getScreenValue(width, collapsible, defaultContext.collapsible),
     collapsedWidth: getScreenValue(
       width,

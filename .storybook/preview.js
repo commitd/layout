@@ -1,10 +1,19 @@
-import React from 'react'
-import { addParameters } from '@storybook/react'
-import committedTheme from './theme.js'
+import { committedLight } from './committed/theme.js'
 
-addParameters({
+export const parameters = {
+  actions: { argTypesRegex: '^on.*' },
   options: {
-    // Currently required here as well as in manager.js - should be able to remove in 6.0
-    theme: committedTheme,
+    storySort: {
+      order: [
+        'Introduction',
+        'Components',
+        ['Root', 'Header', 'Content', 'Nav', 'NavListItem', 'Footer'],
+        'Hooks',
+        'Examples',
+      ],
+    },
   },
-})
+  docs: {
+    theme: committedLight,
+  },
+}

@@ -1,16 +1,17 @@
+import { makeStyles, useWidth } from '@committed/components'
+import clsx from 'clsx'
 import React, {
-  useState,
-  useMemo,
-  CSSProperties,
   createContext,
+  CSSProperties,
+  ElementType,
   HTMLAttributes,
   ReactNode,
-  ElementType,
+  useMemo,
+  useState,
 } from 'react'
-import { useWidth, makeStyles } from '@committed/components'
-import { LayoutConfig } from './types'
-import { defaultContext, createNewContext, getNavWidth } from './utils'
 import { presets } from './presets'
+import { LayoutConfig } from './types'
+import { createNewContext, defaultContext, getNavWidth } from './utils'
 
 export interface RootProps {
   /**
@@ -33,10 +34,11 @@ export interface RootProps {
    */
   config?: Partial<LayoutConfig>
   /**
-   * Set false to remove the full screen setting and control the size yourself
-   * @default true
+   * Set true to indicate this layout is contained inside some other element
+   * Not normally needed.
+   * @default false
    */
-  fullscreen?: boolean
+  contained?: boolean
   children?: ReactNode
 }
 
@@ -49,6 +51,9 @@ const useStyles = makeStyles({
   },
   fullscreen: {
     height: '100vh',
+  },
+  contained: {
+    position: 'relative',
   },
 })
 
@@ -64,7 +69,7 @@ export const Root = ({
   className = '',
   component = 'div',
   config = presets.createDefaultLayout(),
-  fullscreen = true,
+  contained = false,
   children,
   ...props
 }: RootProps) => {
@@ -81,18 +86,20 @@ export const Root = ({
       open,
       collapsed,
       setOpen,
-      setCollapsed
+      setCollapsed,
+      contained
     )
     const currentNavWidth = getNavWidth(layout)
     return { currentNavWidth, ...layout }
-  }, [config, width, open, collapsed])
+  }, [config, width, open, collapsed, contained])
 
   return (
     <LayoutContext.Provider value={value}>
       <Component
-        className={`${className} ${classes.root} ${
-          fullscreen ? classes.fullscreen : ''
-        }`}
+        className={clsx(className, classes.root, {
+          [classes.contained]: contained,
+          [classes.fullscreen]: !contained,
+        })}
         {...props}
       >
         {children}

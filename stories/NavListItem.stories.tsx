@@ -6,7 +6,7 @@ import { ThemeProvider, List } from '@committed/components'
 export const Use = () => {
   return (
     <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
+      <Root contained style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
             <NavListItem icon={<People />} text="Shared with me" />
@@ -18,14 +18,14 @@ export const Use = () => {
 }
 
 export default {
-  title: 'Components|NavListItem',
+  title: 'Components/NavListItem',
   component: NavListItem,
 }
 
 export const Selected = () => {
   return (
     <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
+      <Root contained style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
             <NavListItem icon={<People />} text="Selected" selected />
@@ -41,7 +41,7 @@ export const CloseTemporary = () => {
   return (
     <ThemeProvider>
       <Root
-        fullscreen={false}
+        contained
         style={{ minHeight: '50vh' }}
         config={{ navVariant: 'temporary' }}
       >
@@ -61,7 +61,7 @@ export const ClosePersistent = () => {
   return (
     <ThemeProvider>
       <Root
-        fullscreen={false}
+        contained
         style={{ minHeight: '50vh' }}
         config={{ navVariant: 'persistent' }}
       >
@@ -90,7 +90,7 @@ export const LeavePersistent = () => {
   return (
     <ThemeProvider>
       <Root
-        fullscreen={false}
+        contained
         style={{ minHeight: '50vh' }}
         config={{ navVariant: 'persistent' }}
       >
@@ -109,7 +109,7 @@ export const LeavePersistent = () => {
 export const NoIcon = () => {
   return (
     <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
+      <Root contained style={{ minHeight: '50vh' }}>
         <Nav>
           <List>
             <NavListItem text="No icon" />

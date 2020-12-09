@@ -8,7 +8,6 @@ import {
   ThemeProvider,
   ThemeSwitch,
   Typography,
-  useThemeChoice,
 } from '@committed/components'
 import AccountCircle from '@material-ui/icons/AccountCircleSharp'
 import { LoremIpsum } from 'lorem-ipsum'
@@ -49,66 +48,57 @@ export const Themed: FC<{
   openMenuIcon,
   collapseIcon,
   expandIcon,
-}) => {
-  const [themeChoice, toggleThemeChoice, componentMounted] = useThemeChoice()
-  const component = componentMounted ? (
-    <ThemeProvider choice={themeChoice}>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={config}>
-        <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
-          <Typography variant="h5">Application Name</Typography>
-          <Box flexGrow={1} />
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <ThemeSwitch
-            themeChoice={themeChoice}
-            toggleThemeChoice={toggleThemeChoice}
-            variant="celestial"
-          />
-        </Header>
-        <Nav
-          collapseIcon={collapseIcon}
-          expandIcon={expandIcon}
-          header={React.createElement(() => {
-            const { collapsed } = useLayout()
-            return (
-              <Heading.h2 align="center">{collapsed ? 'M' : 'Menu'}</Heading.h2>
-            )
-          })}
-        >
-          <List>
-            <NavListItem key="1" text="Menu Item 1" icon={<AccountCircle />} />
-            <NavListItem key="2" text="Menu Item 2" icon={<AccountCircle />} />
-            <NavListItem key="3" text="Menu Item 3" icon={<AccountCircle />} />
-          </List>
-        </Nav>
-        <Content>
-          <Container maxWidth="lg">
-            <Box pt={2}>
-              <Box mb={2}>
-                <Typography variant="h4">@committed/layout</Typography>
-              </Box>
-              <Card p={3}>{content}</Card>
-              <Box mt={3}>
-                {[...Array(10).keys()].map((i) => (
-                  <Box key={'lorem' + i} mb={1}>
-                    <Typography variant="body1" color="textSecondary">
-                      {lorem.generateParagraphs(1)}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
+}) => (
+  <ThemeProvider>
+    <Root contained style={{ minHeight: '50vh' }} config={config}>
+      <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
+        <Typography variant="h5">Application Name</Typography>
+        <Box flexGrow={1} />
+        <IconButton color="inherit">
+          <AccountCircle />
+        </IconButton>
+        <ThemeSwitch variant="celestial" />
+      </Header>
+      <Nav
+        collapseIcon={collapseIcon}
+        expandIcon={expandIcon}
+        header={React.createElement(() => {
+          const { collapsed } = useLayout()
+          return (
+            <Heading.h2 align="center">{collapsed ? 'M' : 'Menu'}</Heading.h2>
+          )
+        })}
+      >
+        <List>
+          <NavListItem key="1" text="Menu Item 1" icon={<AccountCircle />} />
+          <NavListItem key="2" text="Menu Item 2" icon={<AccountCircle />} />
+          <NavListItem key="3" text="Menu Item 3" icon={<AccountCircle />} />
+        </List>
+      </Nav>
+      <Content>
+        <Container maxWidth="lg">
+          <Box pt={2}>
+            <Box mb={2}>
+              <Typography variant="h4">@committed/layout</Typography>
             </Box>
-          </Container>
-        </Content>
-        <Footer>
-          <Box p={2}>
-            <Typography>Footer</Typography>
+            <Card p={3}>{content}</Card>
+            <Box mt={3}>
+              {[...Array(10).keys()].map((i) => (
+                <Box key={'lorem' + i} mb={1}>
+                  <Typography variant="body1" color="textSecondary">
+                    {lorem.generateParagraphs(1)}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
           </Box>
-        </Footer>
-      </Root>
-    </ThemeProvider>
-  ) : null
-
-  return component
-}
+        </Container>
+      </Content>
+      <Footer>
+        <Box p={2}>
+          <Typography>Footer</Typography>
+        </Box>
+      </Footer>
+    </Root>
+  </ThemeProvider>
+)

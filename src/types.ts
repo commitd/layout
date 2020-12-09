@@ -29,6 +29,10 @@ export interface Layout {
    */
   collapsed: boolean
   /**
+   * Is the layout contained inside some other component.
+   */
+  contained: boolean
+  /**
    * In which breakpoint range is the screen currently
    */
   screen: Breakpoint

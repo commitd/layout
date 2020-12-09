@@ -46,9 +46,10 @@ export const Example: FC<{
   collapseIcon,
   expandIcon,
 }) => {
+  // Force light mode until docs can correctly switch between the two.
   return (
-    <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={config}>
+    <ThemeProvider choice="light">
+      <Root contained style={{ minHeight: '50vh' }} config={config}>
         <Header closeMenuIcon={closeMenuIcon} openMenuIcon={openMenuIcon}>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />

@@ -26,7 +26,7 @@ const lorem = new LoremIpsum({
 export const Example = () => {
   return (
     <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }}>
+      <Root contained style={{ minHeight: '50vh' }}>
         <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />

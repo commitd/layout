@@ -12,13 +12,13 @@ import { Content, Footer, Header, Nav, NavListItem, Root } from '../src'
 import { lorem } from './Example'
 
 export default {
-  title: 'Examples|Missing',
+  title: 'Examples/Missing',
 }
 
 export const NoHeader = () => {
   return (
     <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={{}}>
+      <Root contained style={{ minHeight: '50vh' }} config={{}}>
         <Nav>
           <List>
             <NavListItem key="1" text="Menu Item 1" icon={<AccountCircle />} />
@@ -61,7 +61,7 @@ export const NoNav = () => {
   return (
     <ThemeProvider>
       <Root
-        fullscreen={false}
+        contained
         style={{ minHeight: '50vh' }}
         config={{ navWidth: 0 }}
       >
@@ -108,7 +108,7 @@ export const NoNav = () => {
 export const NoFooter = () => {
   return (
     <ThemeProvider>
-      <Root fullscreen={false} style={{ minHeight: '50vh' }} config={{}}>
+      <Root contained style={{ minHeight: '50vh' }} config={{}}>
         <Header>
           <Typography variant="h5">Application Name</Typography>
           <Box flexGrow={1} />

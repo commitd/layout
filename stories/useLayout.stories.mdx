@@ -3,7 +3,7 @@ import { Monospace } from '@committed/components'
 import { useLayout } from '../src'
 import { Example } from './Example'
 
-<Meta title="Hooks|useLayout" />
+<Meta title="Hooks/useLayout" />
 
 # `useLayout`
 
@@ -24,6 +24,10 @@ export interface Layout {
    * Is the navigation currently collapsed
    */
   collapsed: boolean
+  /**
+   * Is the layout contained in some other element
+   */
+  contained: boolean
   /**
    * In which breakpoint range is the screen currently
    */
