@@ -62,7 +62,7 @@ export function getScreenValue<S>(
     index += 1
   }
 
-  throw Error('Config not valid')
+  throw new Error('Config not valid')
 }
 
 /**

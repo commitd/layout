@@ -31,10 +31,7 @@
     "deploy-storybook": "storybook-to-ghpages"
   },
   "peerDependencies": {
-    "@committed/components": ">=4.0.0",
-    "@material-ui/core": "4.x",
-    "@material-ui/icons": "4.x",
-    "react": ">=16"
+    "@committed/components": ">=4.0.0"
   },
   "husky": {
     "hooks": {
@@ -69,15 +66,14 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.9.6",
-    "@committed/components": "^4.0.1",
+    "@committed/components": "^4.1.0",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@size-limit/preset-small-lib": "^4.9.1",
-    "@storybook/addon-essentials": "^6.1.10",
-    "@storybook/addon-links": "^6.1.10",
-    "@storybook/addons": "^6.1.10",
-    "@storybook/react": "^6.1.10",
+    "@storybook/addon-essentials": "^6.1.11",
+    "@storybook/addons": "^6.1.11",
+    "@storybook/react": "^6.1.11",
     "@storybook/storybook-deployer": "^2.8.7",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",

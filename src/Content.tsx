@@ -26,9 +26,10 @@ export interface ContentProps {
   children?: ReactNode
 }
 
-const useStyles = makeStyles(({ transitions }) => ({
+const useStyles = makeStyles(({ transitions, palette }) => ({
   root: {
     flexGrow: 1,
+    backgroundColor: palette.background.default,
     transition: transitions.create(['margin'], {
       easing: transitions.easing.sharp,
       duration: transitions.duration.leavingScreen,

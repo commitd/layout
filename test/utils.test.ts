@@ -1,5 +1,70 @@
 import { Layout } from '../src/types'
-import { defaultContext, getNavWidth, getScreenValue } from '../src/utils'
+import {
+  createNewContext,
+  defaultContext,
+  getNavWidth,
+  getScreenValue,
+} from '../src/utils'
+
+describe('createNewContext', () => {
+  describe('Can create new context', () => {
+    const setOpen = jest.fn()
+    const setCollapsed = jest.fn()
+    const open = true
+    const collapsed = false
+    const context = createNewContext(
+      {},
+      'sm',
+      open,
+      collapsed,
+      setOpen,
+      setCollapsed,
+      false
+    )
+    expect(context).toMatchInlineSnapshot(`
+      Object {
+        "collapsed": false,
+        "collapsedWidth": 64,
+        "collapsible": true,
+        "contained": false,
+        "contentResponse": "squeezed",
+        "footerResponse": "squeezed",
+        "headerPosition": "relative",
+        "headerResponse": "squeezed",
+        "navAnchor": "left",
+        "navVariant": "permanent",
+        "navWidth": 256,
+        "open": true,
+        "screen": "sm",
+        "setCollapsed": [Function],
+        "setOpen": [Function],
+      }
+    `)
+
+    context.setOpen(false)
+    expect(setOpen).toHaveBeenLastCalledWith(false)
+    context.setOpen(true)
+    expect(setOpen).toHaveBeenLastCalledWith(true)
+    context.setOpen({})
+    expect(setOpen).toHaveBeenLastCalledWith(!open)
+    expect(setOpen).toBeCalledTimes(3)
+
+    context.setCollapsed(false)
+    expect(setCollapsed).toHaveBeenLastCalledWith(false)
+    context.setCollapsed(true)
+    expect(setCollapsed).toHaveBeenLastCalledWith(true)
+    context.setCollapsed({})
+    expect(setCollapsed).toHaveBeenLastCalledWith(!collapsed)
+    expect(setCollapsed).toBeCalledTimes(3)
+  })
+
+  describe('for coverage', () => {
+    expect(defaultContext.setOpen).toBeTruthy()
+    expect(defaultContext.setCollapsed).toBeTruthy()
+    expect(defaultContext.setOpen(true)).toBeFalsy()
+    expect(defaultContext.setCollapsed(false)).toBeFalsy()
+  })
+})
 
 describe('getNavWidth', () => {
   describe('variant permanent', () => {
@@ -166,5 +231,16 @@ describe('getScreenValue', () => {
     expect(getScreenValue('md', value, defaultValue)).toBe(value.md)
     expect(getScreenValue('lg', value, defaultValue)).toBe(value.lg)
     expect(getScreenValue('xl', value, defaultValue)).toBe(value.lg)
+  })
+
+  it('throw is input not valid', () => {
+    const defaultValue = '@£F'
+    const value = {
+      aa: 'a',
+    }
+    expect(() =>
+      // @ts-expect-error
+      getScreenValue('bb', value, defaultValue)
+    ).toThrowErrorMatchingInlineSnapshot(`"Config not valid"`)
   })
 })
