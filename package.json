@@ -1,6 +1,6 @@
 {
   "name": "@committed/layout",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Committed layout library",
   "author": "Committed",
   "license": "MIT",
@@ -66,7 +66,7 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.9.6",
-    "@committed/components": "^4.1.0",
+    "@committed/components": "^4.1.1",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
