@@ -31,7 +31,11 @@
     "deploy-storybook": "storybook-to-ghpages"
   },
   "peerDependencies": {
-    "@committed/components": ">=4.0.0"
+    "react": ">=16",
+    "react-dom": ">=16",
+    "@committed/components": ">=4.0.0",
+    "@material-ui/core": "^4.9.10",
+    "@material-ui/icons": "^4.9.1"
   },
   "husky": {
     "hooks": {
