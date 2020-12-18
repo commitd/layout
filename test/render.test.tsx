@@ -132,6 +132,14 @@ describe('Layout', () => {
     expect(menuButton[0]).toBeInTheDocument()
   })
 
+  it('Nav list itel closes menu', () => {
+    const { getAllByLabelText, getByText } = render(<Layout />)
+    fireEvent.click(getAllByLabelText(/Open/i)[0])
+    fireEvent.click(getByText(/Menu Item 1/i))
+    const menuButton = getAllByLabelText(/Open/i)
+    expect(menuButton[0]).toBeInTheDocument()
+  })
+
   it('Can collapse if collapsible, then items get titles', () => {
     const { getByTitle, getAllByLabelText } = render(
       <Layout config={{ collapsible: true }} />
