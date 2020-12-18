@@ -38,6 +38,7 @@ export const Themed: FC<{
   config?: Partial<LayoutConfig>
   content: ReactNode
   closeMenuIcon?: ReactNode
+  draggable?: boolean
   openMenuIcon?: ReactNode
   collapseIcon?: ReactNode
   expandIcon?: ReactNode
@@ -45,6 +46,7 @@ export const Themed: FC<{
   config,
   content,
   closeMenuIcon,
+  draggable = false,
   openMenuIcon,
   collapseIcon,
   expandIcon,
@@ -62,6 +64,7 @@ export const Themed: FC<{
       <Nav
         collapseIcon={collapseIcon}
         expandIcon={expandIcon}
+        draggable={draggable}
         header={React.createElement(() => {
           const { collapsed } = useLayout()
           return (

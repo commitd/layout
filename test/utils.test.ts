@@ -10,36 +10,22 @@ describe('createNewContext', () => {
   describe('Can create new context', () => {
     const setOpen = jest.fn()
     const setCollapsed = jest.fn()
+    const setNavWidth = jest.fn()
     const open = true
     const collapsed = false
+    const currentWidth = 300
     const context = createNewContext(
+      false,
       {},
       'sm',
       open,
       collapsed,
+      currentWidth,
       setOpen,
       setCollapsed,
-      false
+      setNavWidth
     )
-    expect(context).toMatchInlineSnapshot(`
-      Object {
-        "collapsed": false,
-        "collapsedWidth": 64,
-        "collapsible": true,
-        "contained": false,
-        "contentResponse": "squeezed",
-        "footerResponse": "squeezed",
-        "headerPosition": "relative",
-        "headerResponse": "squeezed",
-        "navAnchor": "left",
-        "navVariant": "permanent",
-        "navWidth": 256,
-        "open": true,
-        "screen": "sm",
-        "setCollapsed": [Function],
-        "setOpen": [Function],
-      }
-    `)
+    expect(context).toMatchInlineSnapshot()
 
     context.setOpen(false)
     expect(setOpen).toHaveBeenLastCalledWith(false)

@@ -61,6 +61,7 @@ const config: Partial<LayoutConfig> = {
     sm: 'static',
     md: 'squeezed',
   },
+  navAnchor: 'right',
 }
 const Layout = () => {
   const layout = useLayout()
@@ -78,7 +79,7 @@ const App = () => (
         </IconButton>
         <ThemeSwitch />
       </Header>
-      <Nav>
+      <Nav draggable>
         <List>
           <NavListItem
             key="item1"

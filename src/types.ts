@@ -50,6 +50,10 @@ export interface Layout {
    * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
   setOpen: (val: boolean | object) => void
+  /**
+   * Function to control the nav width.
+   */
+  setNavWidth: (val: number) => void
 
   // The below is the LayoutConfig for the current screen size
 
@@ -81,6 +85,11 @@ export interface Layout {
    * @default 256
    */
   navWidth: number
+  /**
+   * Maximum allow width, id draggable of the navigation drawer (px)
+   * @default 1256
+   */
+  maxNavWidth: number
   /**
    * Position applied to the AppBar header
    * one of 'static', 'relative', 'sticky', 'fixed', 'absolute'
@@ -150,6 +159,11 @@ export interface LayoutConfig {
    * @default 256
    */
   navWidth: number | ScreenProps<number>
+  /**
+   * Maximum width of the navigation drawer
+   * @default 1256
+   */
+  maxNavWidth: number | ScreenProps<number>
   /**
    * Position applied to the AppBar header
    * one of 'static', 'relative', 'sticky', 'fixed', 'absolute'

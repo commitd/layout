@@ -17,6 +17,11 @@ export interface ControlledDocsProps {
    */
   collapsible: boolean
   /**
+   * Can the navigation be dragged to resize
+   * @default false
+   */
+  draggable: boolean
+  /**
    * Width of the collapsed navigation (px)
    * @default 64
    */
@@ -88,6 +93,7 @@ export const ControlledDocs: React.FC<ControlledDocsProps> = (
 ControlledDocs.defaultProps = {
   collapsedWidth: 64,
   collapsible: true,
+  draggable: false,
   headerPosition: 'relative',
   navAnchor: 'left',
   navVariant: 'permanent',
@@ -111,6 +117,7 @@ export default {
       },
     },
     collapsible: {},
+    draggable: {},
     headerPosition: {
       control: {
         type: 'select',
@@ -156,6 +163,7 @@ export default {
 const Template: Story<ControlledDocsProps> = ({
   collapsedWidth,
   collapsible,
+  draggable,
   headerPosition,
   navAnchor,
   navVariant,
@@ -177,6 +185,7 @@ const Template: Story<ControlledDocsProps> = ({
         contentResponse,
         footerResponse,
       }}
+      draggable={draggable}
       content={
         <Typography variant="body2" color="textPrimary">
           In canvas view, use the knobs tab below to try out different props!

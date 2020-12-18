@@ -46,12 +46,21 @@ export interface NavProps extends DrawerProps {
    * Supply a different expand icon
    */
   expandIcon?: ReactNode
+  /**
+   * Set true to allow the navigation to be dragged
+   */
+  draggable?: boolean
   children?: ReactNode
 }
 
 const useStyles = makeStyles(
   ({ breakpoints, transitions, palette, spacing, zIndex, shadows }) => ({
-    root: {},
+    containerLeft: {
+      paddingRight: '5px',
+    },
+    containerRight: {
+      paddingLeft: '5px',
+    },
     container: {
       overflow: 'hidden',
       display: 'flex',
@@ -102,6 +111,23 @@ const useStyles = makeStyles(
         backgroundColor: palette.background.paper,
       },
     },
+    dragger: {
+      width: '5px',
+      cursor: 'ew-resize',
+      padding: '4px 0 0',
+      borderTop: '1px solid #ddd',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      zIndex: 100,
+      backgroundColor: palette.action.selected,
+    },
+    draggerLeft: {
+      right: 0,
+    },
+    draggerRight: {
+      left: 0,
+    },
   })
 )
 
@@ -119,11 +145,13 @@ interface DumbProps
   clipped: boolean
   showCollapseButton: boolean
   width: number
+  setWidth: (val: number) => void
 }
 
 export const DumbNav: React.FC<NavProps & DumbProps> = ({
   component: Component = 'div',
   contained = false,
+  draggable = false,
   className,
   header = null,
   collapseIcon,
@@ -138,16 +166,13 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
   setCollapsed,
   clipped,
   width,
+  setWidth,
   children,
   ...props
 }: NavProps & DumbProps) => {
   const classes = useStyles()
   const contentRef = useRef(null)
-  const drawerClasses = clsx(
-    className,
-    classes.root,
-    collapsed && classes.collapsed
-  )
+  const drawerClasses = clsx(className, collapsed && classes.collapsed)
   const contentClasses = collapsed ? classes.contentCollapsed : classes.content
   const paperClasses = clsx(contained && classes.contained)
 
@@ -164,6 +189,24 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
       <Icons.ChevronLeft />
     )
 
+  const handleMouseMove = React.useCallback(
+    (e: MouseEvent): void => {
+      e.preventDefault()
+      setWidth(e.clientX)
+    },
+    [setWidth]
+  )
+
+  const handleMouseUp = (): void => {
+    document.removeEventListener('mouseup', handleMouseUp, true)
+    document.removeEventListener('mousemove', handleMouseMove, true)
+  }
+
+  const handleMouseDown = (): void => {
+    document.addEventListener('mouseup', handleMouseUp, true)
+    document.addEventListener('mousemove', handleMouseMove, true)
+  }
+
   return (
     <Fragment>
       <Drawer
@@ -175,9 +218,27 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
         anchor={navAnchor}
         classes={{ paper: paperClasses }}
       >
+        {draggable ? (
+          <div
+            key="dragger"
+            onMouseDown={handleMouseDown}
+            className={clsx(
+              classes.dragger,
+              navAnchor === 'left' ? classes.draggerLeft : classes.draggerRight
+            )}
+          />
+        ) : null}
         {/* Just for spacing */}
         {clipped && navVariant !== 'temporary' ? <Toolbar /> : null}
-        <Component className={classes.container} style={{ width }}>
+        <Component
+          className={clsx(
+            classes.container,
+            draggable && navAnchor === 'left'
+              ? classes.containerLeft
+              : classes.containerRight
+          )}
+          style={{ width }}
+        >
           {header}
           <div ref={contentRef} className={contentClasses}>
             {children}
@@ -217,6 +278,7 @@ export const Nav: React.FC<NavProps> = ({
   className = '',
   component = 'div',
   closeButtonProps = {},
+  draggable = false,
   ...props
 }) => {
   const {
@@ -230,6 +292,7 @@ export const Nav: React.FC<NavProps> = ({
     collapsed,
     setCollapsed,
     currentNavWidth,
+    setNavWidth,
   } = useLayout()
   const showCollapseButton = collapsible
   const clipped = headerResponse === 'clipped'
@@ -239,6 +302,7 @@ export const Nav: React.FC<NavProps> = ({
       contained={contained}
       className={className}
       closeButtonProps={closeButtonProps}
+      draggable={draggable}
       showCollapseButton={showCollapseButton}
       open={open}
       setOpen={setOpen}
@@ -248,6 +312,7 @@ export const Nav: React.FC<NavProps> = ({
       collapsed={collapsed}
       setCollapsed={setCollapsed}
       width={currentNavWidth}
+      setWidth={setNavWidth}
       {...props}
     />
   )

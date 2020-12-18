@@ -11,7 +11,12 @@ import React, {
 } from 'react'
 import { presets } from './presets'
 import { Layout, LayoutConfig } from './types'
-import { createNewContext, defaultContext, getNavWidth } from './utils'
+import {
+  createNewContext,
+  defaultContext,
+  getNavWidth,
+  getScreenValue,
+} from './utils'
 
 export interface RootProps {
   /**
@@ -74,24 +79,30 @@ export const Root: React.FC<RootProps> = ({
   ...props
 }: RootProps) => {
   const Component = component
+
   const width = useWidth()
   const classes = useStyles()
   const [collapsed, setCollapsed] = useState(false)
   const [open, setOpen] = useState(false)
+  const [navWidth, setNavWidth] = React.useState(() =>
+    getScreenValue(width, config.navWidth, defaultContext.navWidth)
+  )
 
   const value = useMemo(() => {
     const layout = createNewContext(
+      contained,
       config,
       width,
       open,
       collapsed,
+      navWidth,
       setOpen,
       setCollapsed,
-      contained
+      setNavWidth
     )
     const currentNavWidth = getNavWidth(layout)
     return { currentNavWidth, ...layout }
-  }, [config, width, open, collapsed, contained])
+  }, [config, width, open, collapsed, contained, navWidth, setNavWidth])
 
   return (
     <LayoutContext.Provider value={value}>

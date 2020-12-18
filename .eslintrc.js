@@ -88,6 +88,7 @@ module.exports = {
         'warn',
         {
           allowNullable: true,
+          allowSafe: true,
           ignoreRhs: true
         }
       ],

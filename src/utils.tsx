@@ -14,6 +14,7 @@ export const defaultContext: Layout = {
   navAnchor: 'left',
   navVariant: 'permanent',
   navWidth: 256,
+  maxNavWidth: 1256,
   headerPosition: 'relative',
   headerResponse: 'squeezed',
   contentResponse: 'squeezed',
@@ -23,8 +24,10 @@ export const defaultContext: Layout = {
   collapsed: false,
   screen: 'xl',
   currentNavWidth: 256,
+  // setters
   setCollapsed: () => null,
   setOpen: () => null,
+  setNavWidth: () => null,
 }
 
 /**
@@ -90,19 +93,22 @@ export const getNavWidth = ({
  * Create a context from the config and current width and settings.
  */
 export const createNewContext = (
+  contained: boolean,
   config: Partial<LayoutConfig>,
   width: Breakpoint,
   open: boolean,
   collapsed: boolean,
+  currentNavWidth: number,
   setOpen: (val: boolean) => void,
   setCollapsed: (val: boolean) => void,
-  contained: boolean
+  setNavWidth: (val: number) => void
 ): Omit<Layout, 'currentNavWidth'> => {
   const {
     collapsible,
     collapsedWidth,
     navVariant,
     navWidth,
+    maxNavWidth,
     navAnchor,
     headerPosition,
     headerResponse,
@@ -110,19 +116,34 @@ export const createNewContext = (
     footerResponse,
   } = config
 
+  const currentCollapsedWidth = getScreenValue(
+    width,
+    collapsedWidth,
+    defaultContext.collapsedWidth
+  )
+
+  const currentMaxNavWidth = getScreenValue(
+    width,
+    maxNavWidth,
+    defaultContext.maxNavWidth
+  )
+
+  const currentNavAnchor = getScreenValue(
+    width,
+    navAnchor,
+    defaultContext.navAnchor
+  )
+
   return {
     open,
     collapsed,
     contained,
     collapsible: getScreenValue(width, collapsible, defaultContext.collapsible),
-    collapsedWidth: getScreenValue(
-      width,
-      collapsedWidth,
-      defaultContext.collapsedWidth
-    ),
+    collapsedWidth: currentCollapsedWidth,
     navVariant: getScreenValue(width, navVariant, defaultContext.navVariant),
-    navWidth: getScreenValue(width, navWidth, defaultContext.navWidth),
-    navAnchor: getScreenValue(width, navAnchor, defaultContext.navAnchor),
+    navWidth: getScreenValue(width, navWidth, currentNavWidth),
+    maxNavWidth: currentMaxNavWidth,
+    navAnchor: currentNavAnchor,
     headerPosition: getScreenValue(
       width,
       headerPosition,
@@ -149,5 +170,14 @@ export const createNewContext = (
       setOpen(typeof val === 'object' ? !open : val),
     setCollapsed: (val: boolean | object): void =>
       setCollapsed(typeof val === 'object' ? !collapsed : val),
+    setNavWidth: (screenX: number): void => {
+      const newWidth =
+        currentNavAnchor === 'left'
+          ? screenX - document.body.offsetLeft
+          : document.body.offsetWidth - screenX
+      if (newWidth > currentCollapsedWidth && newWidth < currentMaxNavWidth) {
+        setNavWidth(newWidth)
+      }
+    },
   }
 }
