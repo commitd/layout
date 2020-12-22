@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { makeStyles } from '@committed/components'
+import { makeStyles, Toolbar } from '@committed/components'
 import clsx from 'clsx'
 import React, {
   CSSProperties,
@@ -37,56 +37,26 @@ const useStyles = makeStyles(({ transitions, palette }) => ({
   },
 }))
 
-interface DumbProps {
-  marginLeft: number
-  marginRight: number
-  width: string
-}
-
-/*
- * Content with no layout knowledge
- */
-export const DumbContent: React.FC<ContentProps & DumbProps> = ({
-  component: Component = 'main',
-  className,
-  style,
-  marginLeft,
-  marginRight,
-  width,
-  ...props
-}: ContentProps & DumbProps) => {
-  const classes = useStyles()
-  return (
-    <Component
-      {...props}
-      className={clsx(className, classes.root)}
-      style={{
-        marginLeft,
-        marginRight,
-        width,
-        ...style,
-      }}
-    />
-  )
-}
-
 /**
  * To contain the main content of the page.
  *
  * Always visible, grows to fill the vertical space
  */
 export const Content: React.FC<ContentProps> = ({
-  className = '',
-  component = 'main',
+  className,
+  component: Component = 'main',
   style = {},
+  children,
   ...props
-}) => {
-  const { currentNavWidth, navAnchor, contentResponse } = useLayout()
+}: ContentProps) => {
+  const { navWidth, navAnchor, contentResponse, headerPosition } = useLayout()
+  const classes = useStyles()
 
+  const addSpacer = ['fixed', 'absolute'].includes(headerPosition)
   const margin = {
     static: 0,
-    squeezed: currentNavWidth,
-    pushed: currentNavWidth,
+    squeezed: navWidth,
+    pushed: navWidth,
   }[contentResponse]
 
   const marginLeft = navAnchor === 'left' ? margin : 0
@@ -94,19 +64,25 @@ export const Content: React.FC<ContentProps> = ({
 
   const width = {
     static: '100%',
-    squeezed: `calc(100% - ${currentNavWidth}px)`,
+    squeezed: `calc(100% - ${navWidth}px)`,
     pushed: '100%',
   }[contentResponse]
 
   return (
-    <DumbContent
+    <Component
       {...props}
-      className={className}
-      component={component}
-      style={style}
-      marginLeft={marginLeft}
-      marginRight={marginRight}
-      width={width}
-    />
+      role="main"
+      className={clsx(className, classes.root)}
+      style={{
+        marginLeft,
+        marginRight,
+        width,
+        ...style,
+      }}
+    >
+      {/* Just for spacing */}
+      {addSpacer ? <Toolbar /> : null}
+      {children}
+    </Component>
   )
 }

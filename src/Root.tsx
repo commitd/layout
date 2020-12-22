@@ -11,12 +11,7 @@ import React, {
 } from 'react'
 import { presets } from './presets'
 import { Layout, LayoutConfig } from './types'
-import {
-  createNewContext,
-  defaultContext,
-  getNavWidth,
-  getScreenValue,
-} from './utils'
+import { createNewContext, LAYOUT_DEFAULTS } from './utils'
 
 export interface RootProps {
   /**
@@ -47,7 +42,7 @@ export interface RootProps {
   children?: ReactNode
 }
 
-const LayoutContext = createContext(defaultContext)
+const LayoutContext = createContext(LAYOUT_DEFAULTS)
 
 const useStyles = makeStyles({
   root: {
@@ -71,38 +66,35 @@ const useStyles = makeStyles({
  * When providing a config it is merged on to the default so only changes from the default need to be specified.
  */
 export const Root: React.FC<RootProps> = ({
-  className = '',
-  component = 'div',
+  className,
+  component: Component = 'div',
   config = presets.createDefaultLayout(),
   contained = false,
   children,
   ...props
 }: RootProps) => {
-  const Component = component
-
   const width = useWidth()
   const classes = useStyles()
   const [collapsed, setCollapsed] = useState(false)
+  const [dragged, setDragged] = useState(false)
   const [open, setOpen] = useState(false)
-  const [navWidth, setNavWidth] = React.useState(() =>
-    getScreenValue(width, config.navWidth, defaultContext.navWidth)
-  )
+  const [overrideNavWidth, setNavWidth] = useState<number | null>(null)
 
   const value = useMemo(() => {
-    const layout = createNewContext(
-      contained,
-      config,
-      width,
-      open,
+    return createNewContext(
       collapsed,
-      navWidth,
-      setOpen,
+      config,
+      contained,
+      dragged,
+      open,
+      overrideNavWidth,
+      width,
       setCollapsed,
-      setNavWidth
+      setDragged,
+      setNavWidth,
+      setOpen
     )
-    const currentNavWidth = getNavWidth(layout)
-    return { currentNavWidth, ...layout }
-  }, [config, width, open, collapsed, contained, navWidth, setNavWidth])
+  }, [config, dragged, width, open, collapsed, contained, overrideNavWidth])
 
   return (
     <LayoutContext.Provider value={value}>

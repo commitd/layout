@@ -1,12 +1,12 @@
-import React from 'react'
 import {
   ListItem,
   ListItemIcon,
-  ListItemText,
-  makeStyles,
   ListItemIconProps,
+  ListItemText,
   ListItemTextProps,
+  makeStyles,
 } from '@committed/components'
+import React from 'react'
 import { useLayout } from './Root'
 import { Variant } from './types'
 
@@ -50,30 +50,6 @@ const useStyles = makeStyles({
   },
 })
 
-export const DumbNavListItem: React.FC<NavListItemProps> = ({
-  icon,
-  text,
-  onClick,
-  listItemIconProps,
-  listItemTextProps,
-  ...listItemProps
-}: NavListItemProps) => {
-  const classes = useStyles()
-  return (
-    <ListItem button onClick={onClick} {...listItemProps}>
-      {typeof icon !== 'undefined' ? (
-        <ListItemIcon {...listItemIconProps}>{icon}</ListItemIcon>
-      ) : null}
-      <ListItemText
-        primary={text}
-        primaryTypographyProps={{ noWrap: true }}
-        className={classes.menuItemText}
-        {...listItemTextProps}
-      />
-    </ListItem>
-  )
-}
-
 /**
  * This is a ListItem that is aware of the layout.
  * In particular, it will close the navigation panel depending on the nav variant.
@@ -86,9 +62,13 @@ export const NavListItem: React.FC<NavListItemProps> = ({
   closeFor = ['temporary'],
   onClick,
   text,
+  icon,
+  listItemIconProps,
+  listItemTextProps,
   ...props
 }: NavListItemProps) => {
   const { setOpen, collapsed, navVariant } = useLayout()
+  const classes = useStyles()
   let action:
     | undefined
     | ((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) = undefined
@@ -104,11 +84,21 @@ export const NavListItem: React.FC<NavListItemProps> = ({
   }
 
   return (
-    <DumbNavListItem
+    <ListItem
+      button
       onClick={action}
       title={collapsed ? text : undefined}
-      text={text}
       {...props}
-    />
+    >
+      {typeof icon !== 'undefined' ? (
+        <ListItemIcon {...listItemIconProps}>{icon}</ListItemIcon>
+      ) : null}
+      <ListItemText
+        primary={text}
+        primaryTypographyProps={{ noWrap: true }}
+        className={classes.menuItemText}
+        {...listItemTextProps}
+      />
+    </ListItem>
   )
 }

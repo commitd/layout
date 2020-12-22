@@ -25,27 +25,35 @@ export interface Layout {
    */
   collapsed: boolean
   /**
-   * Is the layout contained in some other element
+   * Is the layout contained inside some other component.
    */
   contained: boolean
+  /**
+   * Is the layout currently being dragged.
+   */
+  dragged: boolean
   /**
    * In which breakpoint range is the screen currently
    */
   screen: Breakpoint
   /**
-   * Current nav width
-   */
-  currentNavWidth: number
-  /**
    * Function to control the collapsed state.
    * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
-  setCollapsed: (val: boolean | object) => any
+  setCollapsed: (val: boolean | object) => void
+  /**
+   * Function to control the dragged state.
+   */
+  setDragged: (val: boolean) => void
   /**
    * Function to control the open state.
    * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
    */
-  setOpen: (val: boolean | object) => any
+  setOpen: (val: boolean | object) => void
+  /**
+   * Function to control the nav width.
+   */
+  setNavWidth: (val: number) => void
 
   // The below is the LayoutConfig for the current screen size
 
@@ -59,6 +67,10 @@ export interface Layout {
    * @default 64
    */
   collapsedWidth: number
+  /**
+   * Is the layout navbar draggable.
+   */
+  draggable: boolean
   /**
    * Which side of the screen to show the navigation panel
    * @default left
@@ -77,6 +89,11 @@ export interface Layout {
    * @default 256
    */
   navWidth: number
+  /**
+   * Maximum allow width, id draggable of the navigation drawer (px)
+   * @default 1256
+   */
+  maxNavWidth: number
   /**
    * Position applied to the AppBar header
    * one of 'static', 'relative', 'sticky', 'fixed', 'absolute'

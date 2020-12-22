@@ -1,4 +1,10 @@
-import { Divider, List, ThemeProvider, Typography } from '@committed/components'
+import {
+  Divider,
+  List,
+  Loader,
+  ThemeProvider,
+  Typography,
+} from '@committed/components'
 import Backup from '@material-ui/icons/BackupSharp'
 import Clear from '@material-ui/icons/ClearSharp'
 import Delete from '@material-ui/icons/DeleteSharp'
@@ -11,7 +17,7 @@ import Schedule from '@material-ui/icons/ScheduleSharp'
 import Settings from '@material-ui/icons/SettingsSharp'
 import Star from '@material-ui/icons/StarSharp'
 import React from 'react'
-import { Nav, NavListItem, Root } from '../src'
+import { Content, Nav, NavListItem, Root, useLayout } from '../src'
 
 export default {
   title: 'Components/Nav',
@@ -30,13 +36,25 @@ export const Use = () => {
   )
 }
 
+const DragMarker = () => {
+  const { dragged } = useLayout()
+  return <Loader variant="spin" loading={!dragged} />
+}
+
 export const Draggable = () => {
   return (
     <ThemeProvider>
-      <Root contained style={{ minHeight: '50vh' }}>
-        <Nav draggable>
+      <Root
+        contained
+        style={{ minHeight: '50vh' }}
+        config={{ draggable: true }}
+      >
+        <Nav>
           <Typography>This is the Nav</Typography>
         </Nav>
+        <Content>
+          <DragMarker />
+        </Content>
       </Root>
     </ThemeProvider>
   )
@@ -47,10 +65,10 @@ export const Right = () => {
     <ThemeProvider>
       <Root
         contained
-        config={{ navAnchor: 'right' }}
+        config={{ draggable: true, navAnchor: 'right' }}
         style={{ minHeight: '50vh' }}
       >
-        <Nav draggable>
+        <Nav>
           <Typography>This is the Nav</Typography>
         </Nav>
       </Root>

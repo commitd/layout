@@ -177,6 +177,7 @@ const Template: Story<ControlledDocsProps> = ({
       config={{
         collapsedWidth,
         collapsible,
+        draggable,
         headerPosition,
         navAnchor,
         navVariant,
@@ -185,7 +186,6 @@ const Template: Story<ControlledDocsProps> = ({
         contentResponse,
         footerResponse,
       }}
-      draggable={draggable}
       content={
         <Typography variant="body2" color="textPrimary">
           In canvas view, use the knobs tab below to try out different props!

@@ -1,34 +1,50 @@
 /* eslint-disable security/detect-object-injection */
-import { LayoutConfig, Layout, Breakpoint, ScreenProps } from './types'
+import {
+  Breakpoint,
+  CurrentLayoutConfig,
+  Layout,
+  LayoutConfig,
+  ScreenProps,
+} from './types'
 
-const keys: Array<Breakpoint> = ['xs', 'sm', 'md', 'lg', 'xl']
+const keys: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl']
+
+/**
+ * Base settings for config values.
+ * These are used if none set.
+ */
+export const LAYOUT_CONFIG_DEFAULTS: CurrentLayoutConfig = {
+  collapsible: true,
+  collapsedWidth: 64,
+  draggable: false,
+  navAnchor: 'left',
+  navVariant: 'permanent',
+  navWidth: 256,
+  maxNavWidth: 512,
+  headerPosition: 'relative',
+  headerResponse: 'squeezed',
+  contentResponse: 'squeezed',
+  footerResponse: 'squeezed',
+}
 
 /**
  * Base settings for context values.
  * These are used if none set.
  */
-export const defaultContext: Layout = {
-  collapsible: true,
-  collapsedWidth: 64,
+export const LAYOUT_DEFAULTS = {
+  ...LAYOUT_CONFIG_DEFAULTS,
   contained: false,
-  navAnchor: 'left',
-  navVariant: 'permanent',
-  navWidth: 256,
-  maxNavWidth: 1256,
-  headerPosition: 'relative',
-  headerResponse: 'squeezed',
-  contentResponse: 'squeezed',
-  footerResponse: 'squeezed',
   // dynamic properties
   open: true,
   collapsed: false,
+  dragged: false,
   screen: 'xl',
-  currentNavWidth: 256,
   // setters
   setCollapsed: () => null,
+  setDragged: () => null,
   setOpen: () => null,
   setNavWidth: () => null,
-}
+} as Layout
 
 /**
  * Get the value for the current screen size, from the given config value.
@@ -65,26 +81,60 @@ export function getScreenValue<S>(
     index += 1
   }
 
-  throw new Error('Config not valid')
+  throw new Error(
+    `Config not valid ${currentScreen}: ${JSON.stringify(
+      config
+    )}, ${JSON.stringify(defaultValue)}`
+  )
+}
+
+export function getScreenValues(
+  currentScreen: Breakpoint,
+  config: Partial<LayoutConfig>
+): CurrentLayoutConfig {
+  return (
+    Object.keys(LAYOUT_CONFIG_DEFAULTS)
+      // __docgenInfo and displaadded causes error in storybook, so filtering
+      .filter((key) => !key.startsWith('_'))
+      .filter((key) => key !== 'displayName')
+      .reduce<CurrentLayoutConfig>(function (result, value) {
+        const key = value as keyof CurrentLayoutConfig
+        // @ts-ignore
+        // eslint-disable-next-line  @typescript-eslint/no-unsafe-assignment
+        result[key] = getScreenValue<CurrentLayoutConfig[K]>(
+          currentScreen,
+          config[key],
+          LAYOUT_CONFIG_DEFAULTS[key]
+        )
+        return result
+        // eslint-disable-next-line  @typescript-eslint/prefer-reduce-type-parameter
+      }, {} as CurrentLayoutConfig)
+  )
 }
 
 /**
  * Get the current Nav width, based on the settings.
  */
-export const getNavWidth = ({
-  navWidth,
-  navVariant,
-  collapsible,
-  collapsed,
-  collapsedWidth,
-  open,
-}: Omit<Layout, 'currentNavWidth'>): number => {
+export const getNavWidth = (
+  {
+    navWidth,
+    navVariant,
+    collapsible,
+    collapsedWidth,
+    maxNavWidth,
+  }: CurrentLayoutConfig,
+  collapsed: boolean,
+  open: boolean,
+  overrideNavWidth: number | null
+): number => {
   if (navVariant === 'permanent' || open) {
-    if (collapsible) {
-      if (collapsed) return collapsedWidth
-      return navWidth
+    if (collapsible && collapsed) {
+      return collapsedWidth
     }
-    return navWidth
+    return Math.min(
+      Math.max(overrideNavWidth ?? navWidth, collapsedWidth),
+      maxNavWidth
+    )
   }
   return 0
 }
@@ -93,91 +143,43 @@ export const getNavWidth = ({
  * Create a context from the config and current width and settings.
  */
 export const createNewContext = (
-  contained: boolean,
-  config: Partial<LayoutConfig>,
-  width: Breakpoint,
-  open: boolean,
   collapsed: boolean,
-  currentNavWidth: number,
-  setOpen: (val: boolean) => void,
+  config: Partial<LayoutConfig>,
+  contained: boolean,
+  dragged: boolean,
+  open: boolean,
+  overrideNavWidth: number | null,
+  width: Breakpoint,
   setCollapsed: (val: boolean) => void,
-  setNavWidth: (val: number) => void
-): Omit<Layout, 'currentNavWidth'> => {
-  const {
-    collapsible,
-    collapsedWidth,
-    navVariant,
-    navWidth,
-    maxNavWidth,
-    navAnchor,
-    headerPosition,
-    headerResponse,
-    contentResponse,
-    footerResponse,
-  } = config
+  setDragged: (val: boolean) => void,
+  setNavWidth: (val: number | null) => void,
+  setOpen: (val: boolean) => void
+): Layout => {
+  const screenValues = getScreenValues(width, config)
+  const navWidth = getNavWidth(screenValues, collapsed, open, overrideNavWidth)
 
-  const currentCollapsedWidth = getScreenValue(
-    width,
-    collapsedWidth,
-    defaultContext.collapsedWidth
-  )
-
-  const currentMaxNavWidth = getScreenValue(
-    width,
-    maxNavWidth,
-    defaultContext.maxNavWidth
-  )
-
-  const currentNavAnchor = getScreenValue(
-    width,
-    navAnchor,
-    defaultContext.navAnchor
-  )
-
+  const { navAnchor, collapsedWidth, maxNavWidth } = screenValues
   return {
+    ...screenValues,
     open,
     collapsed,
     contained,
-    collapsible: getScreenValue(width, collapsible, defaultContext.collapsible),
-    collapsedWidth: currentCollapsedWidth,
-    navVariant: getScreenValue(width, navVariant, defaultContext.navVariant),
-    navWidth: getScreenValue(width, navWidth, currentNavWidth),
-    maxNavWidth: currentMaxNavWidth,
-    navAnchor: currentNavAnchor,
-    headerPosition: getScreenValue(
-      width,
-      headerPosition,
-
-      defaultContext.headerPosition
-    ),
-    headerResponse: getScreenValue(
-      width,
-      headerResponse,
-      defaultContext.headerResponse
-    ),
-    contentResponse: getScreenValue(
-      width,
-      contentResponse,
-      defaultContext.contentResponse
-    ),
-    footerResponse: getScreenValue(
-      width,
-      footerResponse,
-      defaultContext.footerResponse
-    ),
+    navWidth,
+    dragged,
     screen: width,
-    setOpen: (val: boolean | object): void =>
-      setOpen(typeof val === 'object' ? !open : val),
     setCollapsed: (val: boolean | object): void =>
       setCollapsed(typeof val === 'object' ? !collapsed : val),
+    setDragged: setDragged,
     setNavWidth: (screenX: number): void => {
       const newWidth =
-        currentNavAnchor === 'left'
+        navAnchor === 'left'
           ? screenX - document.body.offsetLeft
           : document.body.offsetWidth - screenX
-      if (newWidth > currentCollapsedWidth && newWidth < currentMaxNavWidth) {
+      if (newWidth > collapsedWidth && newWidth < maxNavWidth) {
         setNavWidth(newWidth)
       }
     },
+    setOpen: (val: boolean | object): void =>
+      setOpen(typeof val === 'object' ? !open : val),
   }
 }

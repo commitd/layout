@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   AppBar,
+  AppBarProps,
   IconButton,
   IconButtonProps,
   makeStyles,
@@ -10,13 +11,12 @@ import {
 } from '@committed/components'
 import { PropTypes } from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
+import clsx from 'clsx'
 import React, { CSSProperties, ReactNode } from 'react'
 import { Icons } from './Icons'
 import { useLayout } from './Root'
-import { Layout, Position } from './types'
-import clsx from 'clsx'
 
-export interface HeaderProps {
+export interface HeaderProps extends AppBarProps {
   /**
    * Add a class name to the component, can be used for additional styling
    */
@@ -96,74 +96,6 @@ const ElevationScroll = ({
   })
 }
 
-interface DumbProps extends Pick<Layout, 'open' | 'setOpen'> {
-  zIndex: number
-  elevation: number
-  headerPosition: Position
-  width: string
-  marginLeft: number
-  marginRight: number
-  showMenuLeft: boolean
-  showMenuRight: boolean
-}
-
-export const DumbHeader: React.FC<HeaderProps & DumbProps> = ({
-  className,
-  elevation,
-  style,
-  closeMenuIcon,
-  openMenuIcon,
-  color,
-  children,
-  toolbarProps,
-  menuButtonProps,
-  zIndex,
-  headerPosition,
-  width,
-  marginLeft,
-  marginRight,
-  open,
-  setOpen,
-  showMenuLeft,
-  showMenuRight,
-}: HeaderProps & DumbProps) => {
-  const classes = useStyles()
-
-  const icon = (
-    <IconButton
-      color="inherit"
-      onClick={setOpen}
-      className={classes.menuButton}
-      aria-label={open ? 'Close' : 'Open'}
-      {...menuButtonProps}
-    >
-      {open ? closeMenuIcon : openMenuIcon ?? closeMenuIcon}
-    </IconButton>
-  )
-
-  return (
-    <AppBar
-      color={color}
-      elevation={elevation}
-      className={clsx(className, classes.root)}
-      position={headerPosition}
-      style={{
-        zIndex,
-        width,
-        marginLeft,
-        marginRight,
-        ...style,
-      }}
-    >
-      <Toolbar {...toolbarProps}>
-        {showMenuLeft ? icon : null}
-        {children}
-        {showMenuRight ? icon : null}
-      </Toolbar>
-    </AppBar>
-  )
-}
-
 export const Header: React.FC<HeaderProps> = ({
   className = '',
   style = {},
@@ -174,12 +106,15 @@ export const Header: React.FC<HeaderProps> = ({
   menuButtonProps = {},
   showMenuIcon = true,
   elevation = 0,
+  children,
   ...props
 }) => {
   const theme = useTheme()
   const layout = useLayout()
+  const classes = useStyles()
+
   const {
-    currentNavWidth,
+    navWidth,
     navVariant,
     navAnchor,
     headerPosition,
@@ -201,8 +136,8 @@ export const Header: React.FC<HeaderProps> = ({
   const margin = {
     clipped: 0,
     static: 0,
-    squeezed: currentNavWidth,
-    pushed: currentNavWidth,
+    squeezed: navWidth,
+    pushed: navWidth,
   }[headerResponse]
 
   const marginLeft = navAnchor === 'left' ? margin : 0
@@ -211,35 +146,47 @@ export const Header: React.FC<HeaderProps> = ({
   const width = {
     clipped: '100%',
     static: '100%',
-    squeezed: `calc(100% - ${currentNavWidth}px)`,
+    squeezed: `calc(100% - ${navWidth}px)`,
     pushed: '100%',
   }[headerResponse]
 
+  const zIndex =
+    headerResponse === 'clipped' ? theme.zIndex.drawer + 1 : theme.zIndex.appBar
+
+  const icon = (
+    <IconButton
+      color="inherit"
+      onClick={setOpen}
+      className={classes.menuButton}
+      aria-label={open ? 'Close' : 'Open'}
+      {...menuButtonProps}
+    >
+      {open ? closeMenuIcon : openMenuIcon ?? closeMenuIcon}
+    </IconButton>
+  )
+
   const header = (
-    <DumbHeader
-      className={className}
-      style={style}
-      elevation={elevation}
-      closeMenuIcon={closeMenuIcon}
-      openMenuIcon={openMenuIcon}
+    <AppBar
+      role="header"
       color={color}
-      toolbarProps={toolbarProps}
-      menuButtonProps={menuButtonProps}
-      zIndex={
-        headerResponse === 'clipped'
-          ? theme.zIndex.drawer + 1
-          : theme.zIndex.appBar
-      }
-      headerPosition={headerPosition}
-      width={width}
-      marginLeft={marginLeft}
-      marginRight={marginRight}
-      open={open}
-      setOpen={setOpen}
-      showMenuLeft={showMenuLeft}
-      showMenuRight={showMenuRight}
+      elevation={elevation}
+      className={clsx(className, classes.root)}
+      position={headerPosition}
+      style={{
+        zIndex,
+        width,
+        marginLeft,
+        marginRight,
+        ...style,
+      }}
       {...props}
-    />
+    >
+      <Toolbar {...toolbarProps}>
+        {showMenuLeft ? icon : null}
+        {children}
+        {showMenuRight ? icon : null}
+      </Toolbar>
+    </AppBar>
   )
 
   if (headerPosition === 'sticky') {

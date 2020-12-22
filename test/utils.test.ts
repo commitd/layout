@@ -1,31 +1,61 @@
-import { Layout } from '../src/types'
+import { CurrentLayoutConfig } from '../src/types'
 import {
   createNewContext,
-  defaultContext,
   getNavWidth,
   getScreenValue,
+  LAYOUT_CONFIG_DEFAULTS,
+  LAYOUT_DEFAULTS,
 } from '../src/utils'
 
 describe('createNewContext', () => {
   describe('Can create new context', () => {
-    const setOpen = jest.fn()
     const setCollapsed = jest.fn()
+    const setDragged = jest.fn()
     const setNavWidth = jest.fn()
+    const setOpen = jest.fn()
     const open = true
     const collapsed = false
-    const currentWidth = 300
+    const dragged = false
+    const contained = false
+    const width = 'sm'
+    const overrideNavWidth = 300
     const context = createNewContext(
-      false,
-      {},
-      'sm',
-      open,
       collapsed,
-      currentWidth,
-      setOpen,
+      {},
+      contained,
+      dragged,
+      open,
+      overrideNavWidth,
+      width,
       setCollapsed,
-      setNavWidth
+      setDragged,
+      setNavWidth,
+      setOpen
     )
-    expect(context).toMatchInlineSnapshot()
+    expect(context).toMatchInlineSnapshot(`
+      Object {
+        "collapsed": false,
+        "collapsedWidth": 64,
+        "collapsible": true,
+        "contained": false,
+        "contentResponse": "squeezed",
+        "draggable": false,
+        "dragged": false,
+        "footerResponse": "squeezed",
+        "headerPosition": "relative",
+        "headerResponse": "squeezed",
+        "maxNavWidth": 512,
+        "navAnchor": "left",
+        "navVariant": "permanent",
+        "navWidth": 300,
+        "open": true,
+        "screen": "sm",
+        "setCollapsed": [Function],
+        "setDragged": [MockFunction],
+        "setNavWidth": [Function],
+        "setOpen": [Function],
+      }
+    `)
 
     context.setOpen(false)
     expect(setOpen).toHaveBeenLastCalledWith(false)
@@ -45,113 +75,177 @@ describe('createNewContext', () => {
   })
 
   describe('for coverage', () => {
-    expect(defaultContext.setOpen).toBeTruthy()
-    expect(defaultContext.setCollapsed).toBeTruthy()
-    expect(defaultContext.setOpen(true)).toBeFalsy()
-    expect(defaultContext.setCollapsed(false)).toBeFalsy()
+    expect(LAYOUT_DEFAULTS.setOpen).toBeTruthy()
+    expect(LAYOUT_DEFAULTS.setCollapsed).toBeTruthy()
+    expect(LAYOUT_DEFAULTS.setOpen(true)).toBeFalsy()
+    expect(LAYOUT_DEFAULTS.setCollapsed(false)).toBeFalsy()
   })
 })
 
 describe('getNavWidth', () => {
   describe('variant permanent', () => {
-    let config: Omit<Layout, 'currentNavWidth'>
+    let config: CurrentLayoutConfig
 
     beforeEach(() => {
-      config = Object.assign({}, defaultContext, {
+      config = Object.assign({}, LAYOUT_CONFIG_DEFAULTS, {
         navVariant: 'permanent',
       })
     })
 
     it('returns navWidth when not collapsed and open', () => {
-      config.collapsed = false
-      config.open = true
-      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
+      const collapsed = false
+      const open = true
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.navWidth
+      )
+    })
+
+    it('returns overrideNavWidth when not collapsed, open and overridden', () => {
+      const collapsed = false
+      const open = true
+      const overrideNavWidth = 500
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        overrideNavWidth
+      )
     })
 
     it('returns navWidth when not collapsed and closed', () => {
-      config.collapsed = false
-      config.open = false
-      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
+      const collapsed = false
+      const open = false
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.navWidth
+      )
     })
 
     it('returns collapsedWidth when collapsed and open', () => {
-      config.collapsed = true
-      config.open = true
-      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
+      const collapsed = true
+      const open = true
+      const overrideNavWidth = 100
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.collapsedWidth
+      )
     })
 
     it('returns collapsedWidth when collapsed and closed', () => {
-      config.collapsed = true
-      config.open = false
-      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
+      const collapsed = true
+      const open = false
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.collapsedWidth
+      )
     })
   })
 
   describe('variant persistent', () => {
-    let config: Omit<Layout, 'currentNavWidth'>
+    let config: CurrentLayoutConfig
 
     beforeEach(() => {
-      config = Object.assign({}, defaultContext, {
+      config = Object.assign({}, LAYOUT_CONFIG_DEFAULTS, {
         navVariant: 'persistent',
       })
     })
 
     it('returns navWidth when not collapsed and open', () => {
-      config.collapsed = false
-      config.open = true
-      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
+      const collapsed = false
+      const open = true
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.navWidth
+      )
     })
 
     it('returns 0 when not collapsed and closed', () => {
-      config.collapsed = false
-      config.open = false
-      expect(getNavWidth(config)).toBe(0)
+      const collapsed = false
+      const open = false
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(0)
     })
 
     it('returns collapsedWidth when collapsed and open', () => {
-      config.collapsed = true
-      config.open = true
-      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
+      const collapsed = true
+      const open = true
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.collapsedWidth
+      )
     })
 
     it('returns 0 when collapsed and closed', () => {
-      config.collapsed = true
-      config.open = false
-      expect(getNavWidth(config)).toBe(0)
+      const collapsed = true
+      const open = false
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(0)
     })
   })
 
   describe('variant temporary', () => {
-    let config: Omit<Layout, 'currentNavWidth'>
+    let config: CurrentLayoutConfig
 
     beforeEach(() => {
-      config = Object.assign({}, defaultContext, {
+      config = Object.assign({}, LAYOUT_CONFIG_DEFAULTS, {
         navVariant: 'temporary',
       })
     })
 
     it('returns navWidth when not collapsed and open', () => {
-      config.collapsed = false
-      config.open = true
-      expect(getNavWidth(config)).toBe(defaultContext.navWidth)
+      const collapsed = false
+      const open = true
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.navWidth
+      )
+    })
+
+    it('returns overrideNavWidth when not collapsed and open and override set', () => {
+      const collapsed = false
+      const open = true
+      const overrideNavWidth = 400
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        overrideNavWidth
+      )
+    })
+
+    it('returns max if override too high', () => {
+      const collapsed = false
+      const open = true
+      const overrideNavWidth = 600
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.maxNavWidth
+      )
+    })
+
+    it('returns collapsedWidth if override too low', () => {
+      const collapsed = false
+      const open = true
+      const overrideNavWidth = 1
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.collapsedWidth
+      )
     })
 
     it('returns 0 when not collapsed and closed', () => {
-      config.collapsed = false
-      config.open = false
-      expect(getNavWidth(config)).toBe(0)
+      const collapsed = false
+      const open = false
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(0)
     })
 
     it('returns collapsedWidth when collapsed and open', () => {
-      config.collapsed = true
-      config.open = true
-      expect(getNavWidth(config)).toBe(defaultContext.collapsedWidth)
+      const collapsed = true
+      const open = true
+      const overrideNavWidth = null
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(
+        LAYOUT_CONFIG_DEFAULTS.collapsedWidth
+      )
     })
 
     it('returns 0 when collapsed and closed', () => {
-      config.collapsed = true
-      config.open = false
-      expect(getNavWidth(config)).toBe(0)
+      const collapsed = true
+      const open = false
+      const overrideNavWidth = 100
+      expect(getNavWidth(config, collapsed, open, overrideNavWidth)).toBe(0)
     })
   })
 })
@@ -227,6 +321,8 @@ describe('getScreenValue', () => {
     expect(() =>
       // @ts-expect-error
       getScreenValue('bb', value, defaultValue)
-    ).toThrowErrorMatchingInlineSnapshot(`"Config not valid"`)
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Config not valid bb: {\\"aa\\":\\"a\\"}, \\"@£F\\""`
+    )
   })
 })

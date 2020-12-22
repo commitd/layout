@@ -43,29 +43,38 @@ const useStyles = makeStyles(({ transitions }) => ({
   },
 }))
 
-interface DumbProps {
-  width: string
-  marginLeft: number
-  marginRight: number
-}
-
 /**
- * Footer with no layout knowledge
+ * The footer is to be used after the Content and will grow and shrink according to the current state of the Navigation
  */
-export const DumbFooter: React.FC<FooterProps & DumbProps> = ({
+export const Footer: React.FC<FooterProps> = ({
+  className = '',
   component: Component = 'footer',
-  className,
-  color,
-  bgcolor,
-  style,
-  width,
-  marginLeft,
-  marginRight,
+  color = 'primary.contrastText',
+  bgcolor = 'primary.main',
+  style = {},
   ...props
-}: FooterProps & DumbProps) => {
+}) => {
+  const { navWidth, footerResponse, navAnchor } = useLayout()
   const classes = useStyles()
+
+  const margin = {
+    static: 0,
+    squeezed: navWidth,
+    pushed: navWidth,
+  }[footerResponse]
+
+  const marginLeft = navAnchor === 'left' ? margin : 0
+  const marginRight = navAnchor === 'right' ? margin : 0
+
+  const width = {
+    static: '100%',
+    squeezed: `calc(100% - ${navWidth}px)`,
+    pushed: '100%',
+  }[footerResponse]
+
   return (
     <Component
+      role="footer"
       className={clsx(className, classes.root)}
       style={{
         width,
@@ -76,48 +85,5 @@ export const DumbFooter: React.FC<FooterProps & DumbProps> = ({
     >
       <Box color={color} bgcolor={bgcolor} {...props} />
     </Component>
-  )
-}
-
-/**
- * The footer is to be used after the Content and will grow and shrink according to the current state of the Navigation
- */
-export const Footer: React.FC<FooterProps> = ({
-  className = '',
-  component = 'footer',
-  color = 'primary.contrastText',
-  bgcolor = 'primary.main',
-  style = {},
-  ...props
-}) => {
-  const { currentNavWidth, footerResponse, navAnchor } = useLayout()
-
-  const margin = {
-    static: 0,
-    squeezed: currentNavWidth,
-    pushed: currentNavWidth,
-  }[footerResponse]
-
-  const marginLeft = navAnchor === 'left' ? margin : 0
-  const marginRight = navAnchor === 'right' ? margin : 0
-
-  const width = {
-    static: '100%',
-    squeezed: `calc(100% - ${currentNavWidth}px)`,
-    pushed: '100%',
-  }[footerResponse]
-
-  return (
-    <DumbFooter
-      {...props}
-      className={className}
-      component={component}
-      color={color}
-      bgcolor={bgcolor}
-      style={style}
-      marginLeft={marginLeft}
-      marginRight={marginRight}
-      width={width}
-    />
   )
 }
