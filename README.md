@@ -12,6 +12,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=commitd_layout&metric=alert_status)](https://sonarcloud.io/dashboard?id=commitd_layout)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=commitd_layout&metric=coverage)](https://sonarcloud.io/dashboard?id=commitd_layout)
 ![GitHub repo size](https://img.shields.io/github/repo-size/commitd/layout)
+![Bundle size](https://img.shields.io/bundlephobia/min/@committed/layout)
 [![Storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://committed.software/layout)
 
 For documentation see <https://committed.software/layout>

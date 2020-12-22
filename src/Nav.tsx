@@ -1,24 +1,23 @@
-import React, {
-  useRef,
-  ReactNode,
-  ElementType,
-  HTMLAttributes,
-  Fragment,
-} from 'react'
 import {
-  Grow,
+  Button,
   Drawer,
   DrawerProps,
-  Button,
+  Grow,
   IconButton,
   IconButtonProps,
   makeStyles,
   Toolbar,
 } from '@committed/components'
-import { Icons } from './Icons'
-import { Layout } from './types'
-import { useLayout } from './Root'
 import clsx from 'clsx'
+import React, {
+  ElementType,
+  Fragment,
+  HTMLAttributes,
+  ReactNode,
+  useRef,
+} from 'react'
+import { Icons } from './Icons'
+import { useLayout } from './Root'
 
 export interface NavProps extends DrawerProps {
   /**
@@ -51,7 +50,12 @@ export interface NavProps extends DrawerProps {
 
 const useStyles = makeStyles(
   ({ breakpoints, transitions, palette, spacing, zIndex, shadows }) => ({
-    root: {},
+    containerLeft: {
+      paddingRight: '5px',
+    },
+    containerRight: {
+      paddingLeft: '5px',
+    },
     container: {
       overflow: 'hidden',
       display: 'flex',
@@ -102,52 +106,59 @@ const useStyles = makeStyles(
         backgroundColor: palette.background.paper,
       },
     },
+    dragger: {
+      width: '5px',
+      cursor: 'ew-resize',
+      padding: '4px 0 0',
+      borderTop: '1px solid #ddd',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      zIndex: 100,
+      backgroundColor: palette.action.selected,
+    },
+    draggerLeft: {
+      right: 0,
+    },
+    draggerRight: {
+      left: 0,
+    },
   })
 )
 
-interface DumbProps
-  extends Pick<
-    Layout,
-    | 'open'
-    | 'setOpen'
-    | 'navVariant'
-    | 'navAnchor'
-    | 'setCollapsed'
-    | 'collapsed'
-    | 'contained'
-  > {
-  clipped: boolean
-  showCollapseButton: boolean
-  width: number
-}
-
-export const DumbNav: React.FC<NavProps & DumbProps> = ({
+export const Nav: React.FC<NavProps> = ({
+  className = '',
   component: Component = 'div',
-  contained = false,
-  className,
-  header = null,
-  collapseIcon,
+  closeButtonProps = {},
   expandIcon,
-  closeButtonProps,
-  showCollapseButton,
-  open,
-  setOpen,
-  navVariant,
-  navAnchor,
-  collapsed,
-  setCollapsed,
-  clipped,
-  width,
+  collapseIcon,
+  header = null,
   children,
   ...props
-}: NavProps & DumbProps) => {
+}: NavProps) => {
+  const {
+    open,
+    contained,
+    draggable: canDrag,
+    dragged,
+    setOpen,
+    headerResponse,
+    navVariant,
+    navAnchor,
+    collapsible,
+    collapsed,
+    setCollapsed,
+    navWidth,
+    setNavWidth,
+    setDragged,
+  } = useLayout()
   const classes = useStyles()
   const contentRef = useRef(null)
-  const drawerClasses = clsx(
-    className,
-    classes.root,
-    collapsed && classes.collapsed
-  )
+
+  const showCollapseButton = collapsible
+  const clipped = headerResponse === 'clipped'
+
+  const drawerClasses = clsx(className, collapsed && classes.collapsed)
   const contentClasses = collapsed ? classes.contentCollapsed : classes.content
   const paperClasses = clsx(contained && classes.contained)
 
@@ -164,6 +175,26 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
       <Icons.ChevronLeft />
     )
 
+  const handleMouseMove = React.useCallback(
+    (e: MouseEvent): void => {
+      e.preventDefault()
+      setNavWidth(e.clientX)
+    },
+    [setNavWidth]
+  )
+
+  const handleMouseUp = (): void => {
+    setDragged(false)
+    document.removeEventListener('mouseup', handleMouseUp, true)
+    document.removeEventListener('mousemove', handleMouseMove, true)
+  }
+
+  const handleMouseDown = (): void => {
+    setDragged(true)
+    document.addEventListener('mouseup', handleMouseUp, true)
+    document.addEventListener('mousemove', handleMouseMove, true)
+  }
+
   return (
     <Fragment>
       <Drawer
@@ -175,9 +206,34 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
         anchor={navAnchor}
         classes={{ paper: paperClasses }}
       >
+        {canDrag && !collapsed ? (
+          <div
+            key="dragger"
+            role="button"
+            draggable="true"
+            aria-label="drag-handle"
+            aria-grabbed={dragged}
+            onMouseDown={handleMouseDown}
+            className={clsx(
+              classes.dragger,
+              navAnchor === 'left' ? classes.draggerLeft : classes.draggerRight
+            )}
+          />
+        ) : null}
         {/* Just for spacing */}
         {clipped && navVariant !== 'temporary' ? <Toolbar /> : null}
-        <Component className={classes.container} style={{ width }}>
+        <Component
+          role="nav"
+          className={clsx(
+            classes.container,
+            canDrag
+              ? navAnchor === 'left'
+                ? classes.containerLeft
+                : classes.containerRight
+              : undefined
+          )}
+          style={{ width: navWidth }}
+        >
           {header}
           <div ref={contentRef} className={contentClasses}>
             {children}
@@ -199,7 +255,9 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
         <IconButton
           className={classes.closeButton}
           style={
-            navAnchor === 'left' ? { left: width + 16 } : { right: width + 16 }
+            navAnchor === 'left'
+              ? { left: navWidth + 16 }
+              : { right: navWidth + 16 }
           }
           onClick={setOpen}
           title={open ? 'Close' : 'Open'}
@@ -210,45 +268,5 @@ export const DumbNav: React.FC<NavProps & DumbProps> = ({
         </IconButton>
       </Grow>
     </Fragment>
-  )
-}
-
-export const Nav: React.FC<NavProps> = ({
-  className = '',
-  component = 'div',
-  closeButtonProps = {},
-  ...props
-}) => {
-  const {
-    open,
-    contained,
-    setOpen,
-    headerResponse,
-    navVariant,
-    navAnchor,
-    collapsible,
-    collapsed,
-    setCollapsed,
-    currentNavWidth,
-  } = useLayout()
-  const showCollapseButton = collapsible
-  const clipped = headerResponse === 'clipped'
-  return (
-    <DumbNav
-      component={component}
-      contained={contained}
-      className={className}
-      closeButtonProps={closeButtonProps}
-      showCollapseButton={showCollapseButton}
-      open={open}
-      setOpen={setOpen}
-      clipped={clipped}
-      navVariant={navVariant}
-      navAnchor={navAnchor}
-      collapsed={collapsed}
-      setCollapsed={setCollapsed}
-      width={currentNavWidth}
-      {...props}
-    />
   )
 }

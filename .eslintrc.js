@@ -14,6 +14,7 @@ module.exports = {
       'prettier/@typescript-eslint',
 
       'plugin:react/recommended',
+      "plugin:react-hooks/recommended",
       'plugin:security/recommended',
       // remove rules covered by prettier
       'prettier/@typescript-eslint',
@@ -88,6 +89,7 @@ module.exports = {
         'warn',
         {
           allowNullable: true,
+          allowSafe: true,
           ignoreRhs: true
         }
       ],

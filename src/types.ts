@@ -19,40 +19,7 @@ export type HeaderResponse = 'clipped' | Response
 
 export type ScreenProps<P> = Partial<Record<Breakpoint, P>>
 
-export interface Layout {
-  /**
-   * Is the navigation panel currently open
-   */
-  open: boolean
-  /**
-   * Is the navigation currently collapsed
-   */
-  collapsed: boolean
-  /**
-   * Is the layout contained inside some other component.
-   */
-  contained: boolean
-  /**
-   * In which breakpoint range is the screen currently
-   */
-  screen: Breakpoint
-  /**
-   * Current nav width
-   */
-  currentNavWidth: number
-  /**
-   * Function to control the collapsed state.
-   * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
-   */
-  setCollapsed: (val: boolean | object) => void
-  /**
-   * Function to control the open state.
-   * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
-   */
-  setOpen: (val: boolean | object) => void
-
-  // The below is the LayoutConfig for the current screen size
-
+export interface CurrentLayoutConfig {
   /**
    * Can the navigation be collapsed to a smaller form
    * @default true
@@ -63,6 +30,10 @@ export interface Layout {
    * @default 64
    */
   collapsedWidth: number
+  /**
+   * Is the layout navbar draggable.
+   */
+  draggable: boolean
   /**
    * Which side of the screen to show the navigation panel
    * @default left
@@ -81,6 +52,11 @@ export interface Layout {
    * @default 256
    */
   navWidth: number
+  /**
+   * Maximum allow width, id draggable of the navigation drawer (px)
+   * @default 1256
+   */
+  maxNavWidth: number
   /**
    * Position applied to the AppBar header
    * one of 'static', 'relative', 'sticky', 'fixed', 'absolute'
@@ -121,6 +97,47 @@ export interface Layout {
   footerResponse: Response
 }
 
+export interface Layout extends CurrentLayoutConfig {
+  /**
+   * Is the navigation panel currently open
+   */
+  open: boolean
+  /**
+   * Is the navigation currently collapsed
+   */
+  collapsed: boolean
+  /**
+   * Is the layout contained inside some other component.
+   */
+  contained: boolean
+  /**
+   * Is the layout currently being dragged.
+   */
+  dragged: boolean
+  /**
+   * In which breakpoint range is the screen currently
+   */
+  screen: Breakpoint
+  /**
+   * Function to control the collapsed state.
+   * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
+   */
+  setCollapsed: (val: boolean | object) => void
+  /**
+   * Function to control the dragged state.
+   */
+  setDragged: (val: boolean) => void
+  /**
+   * Function to control the open state.
+   * Set explicitly using a boolean or pass an object to toggle (this allow convenient use as a mouse event handler)
+   */
+  setOpen: (val: boolean | object) => void
+  /**
+   * Function to control the nav width.
+   */
+  setNavWidth: (val: number) => void
+}
+
 export interface LayoutConfig {
   /**
    * Can the navigation be collapsed to a smaller form
@@ -132,6 +149,11 @@ export interface LayoutConfig {
    * @default 64
    */
   collapsedWidth: number | ScreenProps<number>
+  /**
+   * Can the navigation be dragged to resize
+   * @default true
+   */
+  draggable: boolean | ScreenProps<boolean>
   /**
    * Which side of the screen to show the nav panel
    * @default left
@@ -150,6 +172,11 @@ export interface LayoutConfig {
    * @default 256
    */
   navWidth: number | ScreenProps<number>
+  /**
+   * Maximum width of the navigation drawer
+   * @default 1256
+   */
+  maxNavWidth: number | ScreenProps<number>
   /**
    * Position applied to the AppBar header
    * one of 'static', 'relative', 'sticky', 'fixed', 'absolute'
