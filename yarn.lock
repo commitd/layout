@@ -1051,10 +1051,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@committed/components@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@committed/components/-/components-4.1.1.tgz#58c581dc4a3697cb14098274e2426812f5820737"
-  integrity sha512-/PIimCQ5fIxCdrP8hq8naIa2JUlHwiaUMdbPIXRCUdPvHQUfQtlUiOY5v9VFO2OyBSLsA73bTiocnJOdsq+e9g==
+"@committed/components@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@committed/components/-/components-4.2.0.tgz#4dbf7a1893e2f1ba81c8fcdc893f3950548cb522"
+  integrity sha512-KXwn2U3r0lSufTKRVWgjtfNTWjluXuB6NjSe+pzjffMFnc/NdBSou6zR2ahMEokmTpF+E/GJA+elcLsRORLxgA==
   dependencies:
     clsx "^1.1.0"
 
