@@ -1,4 +1,4 @@
-import { committedLight } from './committed/theme.js'
+import { DocsContainer } from './components/DocsContainer.jsx'
 
 export const parameters = {
   actions: { argTypesRegex: '^on.*' },
@@ -14,6 +14,6 @@ export const parameters = {
     },
   },
   docs: {
-    theme: committedLight,
+    container: DocsContainer,
   },
 }
